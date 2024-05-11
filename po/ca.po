@@ -5,25 +5,25 @@
 # 
 # Translators:
 # Martin Wimpress <code@flexion.org>, 2018
-# Pere Orga <gotrunks@gmail.com>, 2018
+# Pere O. <gotrunks@gmail.com>, 2018
 # Stefano Karapetsas <stefano@karapetsas.com>, 2018
-# Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2020
+# Robert Antoni Buj i Gelonch <rbuj@fedoraproject.org>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mate-panel 1.25.0\n"
+"Project-Id-Version: mate-panel 1.27.2\n"
 "Report-Msgid-Bugs-To: https://github.com/mate-desktop/mate-panel/issues\n"
-"POT-Creation-Date: 2020-08-08 12:56+0200\n"
+"POT-Creation-Date: 2023-09-02 19:26+0200\n"
 "PO-Revision-Date: 2018-03-11 19:58+0000\n"
-"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2020\n"
-"Language-Team: Catalan (https://www.transifex.com/mate/teams/13566/ca/)\n"
+"Last-Translator: Robert Antoni Buj i Gelonch <rbuj@fedoraproject.org>, 2023\n"
+"Language-Team: Catalan (https://app.transifex.com/mate/teams/13566/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: applets/clock/calendar-window.c:257 applets/clock/clock.ui:689
+#: applets/clock/calendar-window.c:257 applets/clock/clock.ui:708
 msgid "Locations"
 msgstr "Ubicacions"
 
@@ -31,21 +31,21 @@ msgstr "Ubicacions"
 msgid "Edit"
 msgstr "Edita"
 
-#: applets/clock/calendar-window.c:482
+#: applets/clock/calendar-window.c:484
 msgid "Calendar"
 msgstr "Calendari"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format (eg, like
 #. * in the US: 8:10 am). The %p expands to am/pm.
-#: applets/clock/clock.c:449
+#: applets/clock/clock.c:461
 msgid "%l:%M:%S %p"
 msgstr "%l:%M:%S %p"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format (eg, like
 #. * in the US: 8:10 am). The %p expands to am/pm.
-#: applets/clock/clock.c:449 applets/clock/clock-location-tile.c:502
+#: applets/clock/clock.c:461 applets/clock/clock-location-tile.c:500
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -56,7 +56,7 @@ msgstr "%l:%M %p"
 #. * string.
 #. * It is used to display the time in 24-hours
 #. * format (eg, like in France: 20:10).
-#: applets/clock/clock.c:454 applets/clock/clock.c:1624
+#: applets/clock/clock.c:466 applets/clock/clock.c:1736
 msgid "%H:%M:%S"
 msgstr "%k:%M:%S"
 
@@ -70,9 +70,9 @@ msgstr "%k:%M:%S"
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 24-hours format (eg, like
 #. * in France: 20:10).
-#: applets/clock/clock.c:454 applets/clock/clock.c:1630
-#: applets/clock/clock-location-tile.c:462
-#: applets/clock/clock-location-tile.c:509
+#: applets/clock/clock.c:466 applets/clock/clock.c:1742
+#: applets/clock/clock-location-tile.c:460
+#: applets/clock/clock-location-tile.c:507
 msgid "%H:%M"
 msgstr "%k:%M"
 
@@ -81,11 +81,11 @@ msgstr "%k:%M"
 #. * the day of the month as a decimal number is a single digit,
 #. * it should begin with a 0 in your locale (e.g. "May 01"
 #. * instead of "May  1").
-#: applets/clock/clock.c:465
+#: applets/clock/clock.c:477
 msgid "%a %b %e"
 msgstr "%a %-d %b"
 
-#: applets/clock/clock.c:472
+#: applets/clock/clock.c:484
 #, c-format
 msgid ""
 "%1$s\n"
@@ -94,7 +94,7 @@ msgstr ""
 "%1$s\n"
 "%2$s"
 
-#: applets/clock/clock.c:480
+#: applets/clock/clock.c:492
 #, c-format
 msgid "%1$s, %2$s"
 msgstr "%1$s, %2$s"
@@ -102,19 +102,19 @@ msgstr "%1$s, %2$s"
 #. Translators: This is a strftime format string.
 #. * It is used to display a date. Please leave "%%s" as it is:
 #. * it will be used to insert the timezone name later.
-#: applets/clock/clock.c:663
+#: applets/clock/clock.c:674
 msgid "%A %B %d (%%s)"
 msgstr "%A, %-d %B (%%s)"
 
-#: applets/clock/clock.c:689
+#: applets/clock/clock.c:700
 msgid "Click to hide month calendar"
 msgstr "Feu clic per ocultar el calendari del mes"
 
-#: applets/clock/clock.c:691
+#: applets/clock/clock.c:702
 msgid "Click to view month calendar"
 msgstr "Feu clic per veure el calendari del mes"
 
-#: applets/clock/clock.c:1462
+#: applets/clock/clock.c:1574
 msgid "Computer Clock"
 msgstr "Rellotge del sistema"
 
@@ -124,7 +124,7 @@ msgstr "Rellotge del sistema"
 #. * format with a leading 0 if needed (eg, like
 #. * in the US: 08:10 am). The %p expands to
 #. * am/pm.
-#: applets/clock/clock.c:1609
+#: applets/clock/clock.c:1721
 msgid "%I:%M:%S %p"
 msgstr "%l:%M:%S %p"
 
@@ -134,110 +134,110 @@ msgstr "%l:%M:%S %p"
 #. * format with a leading 0 if needed (eg, like
 #. * in the US: 08:10 am). The %p expands to
 #. * am/pm.
-#: applets/clock/clock.c:1617
+#: applets/clock/clock.c:1729
 msgid "%I:%M %p"
 msgstr "%l:%M %p"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display a date in the full format (so that people can
 #. * copy and paste it elsewhere).
-#: applets/clock/clock.c:1663
+#: applets/clock/clock.c:1775
 msgid "%A, %B %d %Y"
 msgstr "%A, %-d %B de %Y"
 
-#: applets/clock/clock.c:1694
+#: applets/clock/clock.c:1806
 msgid "Set System Time..."
 msgstr "Estableix l'hora del sistema..."
 
-#: applets/clock/clock.c:1695
+#: applets/clock/clock.c:1807
 msgid "Set System Time"
 msgstr "Establiu l'hora del sistema"
 
-#: applets/clock/clock.c:1710
+#: applets/clock/clock.c:1821
 msgid "Failed to set the system time"
 msgstr "No s'ha pogut establir l'hora del sistema"
 
-#: applets/clock/clock.c:1906 applets/fish/fish.c:1694
-#: applets/notification_area/main.c:292 applets/wncklet/window-list.c:362
-#: applets/wncklet/workspace-switcher.c:393
+#: applets/clock/clock.c:2011 applets/fish/fish.c:1690
+#: applets/notification_area/main.c:290 applets/wncklet/window-list.c:551
+#: applets/wncklet/workspace-switcher.c:468
 msgid "_Preferences"
 msgstr "_Preferències"
 
-#: applets/clock/clock.c:1909 applets/clock/clock.ui:293
-#: applets/fish/fish.c:1697 applets/fish/fish.ui:46
-#: applets/notification_area/main.c:295 applets/wncklet/showdesktop.c:242
-#: applets/wncklet/window-list.c:370 applets/wncklet/window-list.ui:32
-#: applets/wncklet/window-menu.c:98 applets/wncklet/workspace-switcher.c:401
-#: applets/wncklet/workspace-switcher.ui:46 mate-panel/drawer.c:562
-#: mate-panel/panel-action-button.c:731 mate-panel/panel-addto.c:1310
-#: mate-panel/panel-context-menu.c:318 mate-panel/panel-ditem-editor.c:648
-#: mate-panel/panel-menu-bar.c:351 mate-panel/panel-menu-button.c:704
-#: mate-panel/panel-properties-dialog.ui:78
+#: applets/clock/clock.c:2014 applets/clock/clock.ui:312
+#: applets/fish/fish.c:1693 applets/fish/fish.ui:46
+#: applets/notification_area/main.c:293 applets/wncklet/showdesktop.c:239
+#: applets/wncklet/window-list.c:559 applets/wncklet/window-list.ui:37
+#: applets/wncklet/window-menu.c:105 applets/wncklet/workspace-switcher.c:476
+#: applets/wncklet/workspace-switcher.ui:46 mate-panel/drawer.c:558
+#: mate-panel/panel-action-button.c:730 mate-panel/panel-addto.c:1267
+#: mate-panel/panel-context-menu.c:320
+#: mate-panel/panel-ditem-editor-dialog.ui:45 mate-panel/panel-menu-bar.c:355
+#: mate-panel/panel-menu-button.c:699 mate-panel/panel-properties-dialog.ui:78
 #: mate-panel/panel-properties-dialog.ui:724 mate-panel/panel-run-dialog.ui:39
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: applets/clock/clock.c:1912 applets/fish/fish.c:1700
-#: applets/notification_area/main.c:298 applets/wncklet/showdesktop.c:250
-#: applets/wncklet/window-list.c:378 applets/wncklet/window-menu.c:106
-#: applets/wncklet/workspace-switcher.c:409
+#: applets/clock/clock.c:2017 applets/fish/fish.c:1696
+#: applets/notification_area/main.c:296 applets/wncklet/showdesktop.c:247
+#: applets/wncklet/window-list.c:567 applets/wncklet/window-menu.c:113
+#: applets/wncklet/workspace-switcher.c:484
 msgid "_About"
 msgstr "_Quant a"
 
-#: applets/clock/clock.c:1915
+#: applets/clock/clock.c:2020
 msgid "Copy _Time"
 msgstr "Copia l'_hora"
 
-#: applets/clock/clock.c:1918
+#: applets/clock/clock.c:2023
 msgid "Copy _Date"
 msgstr "Copia la _data"
 
-#: applets/clock/clock.c:1921
+#: applets/clock/clock.c:2026
 msgid "Ad_just Date & Time"
 msgstr "A_justa la data i l'hora"
 
-#: applets/clock/clock.c:2919
+#: applets/clock/clock.c:3099
 msgid "Choose Location"
 msgstr "Seleccioneu la ubicació"
 
-#: applets/clock/clock.c:2998
+#: applets/clock/clock.c:3178
 msgid "Edit Location"
 msgstr "Edita la ubicació"
 
-#: applets/clock/clock.c:3125
+#: applets/clock/clock.c:3304
 msgid "City Name"
 msgstr "Nom de la ciutat"
 
-#: applets/clock/clock.c:3129
+#: applets/clock/clock.c:3308
 msgid "City Time Zone"
 msgstr "Zona horària de la ciutat"
 
-#: applets/clock/clock.c:3404
+#: applets/clock/clock.c:3581
 #: applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.desktop.in.in:10
 msgid "Clock"
 msgstr "Rellotge"
 
-#: applets/clock/clock.c:3405
+#: applets/clock/clock.c:3582
 msgid "About Clock"
 msgstr "Quant al rellotge"
 
-#: applets/clock/clock.c:3407
+#: applets/clock/clock.c:3584
 msgid "The Clock displays the current time and date"
 msgstr "El rellotge mostra l'hora i la data actual"
 
-#: applets/clock/clock.c:3408
+#: applets/clock/clock.c:3585
 msgid ""
 "Copyright © 1998-2004 Free Software Foundation, Inc.\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 "Drets d'autor © 1998-2004 Free Software Foundation, Inc.\n"
-"Drets d'autor © 2012-2020 Els desenvolupadors de MATE"
+"Drets d'autor © 2012-2021 Els desenvolupadors de MATE"
 
-#: applets/clock/clock.c:3412 applets/fish/fish.c:567
-#: applets/notification_area/main.c:286 applets/wncklet/showdesktop.c:509
-#: applets/wncklet/window-list.c:801 applets/wncklet/window-menu.c:88
-#: applets/wncklet/workspace-switcher.c:648
-#: mate-panel/panel-context-menu.c:124
+#: applets/clock/clock.c:3589 applets/fish/fish.c:562
+#: applets/notification_area/main.c:284 applets/wncklet/showdesktop.c:531
+#: applets/wncklet/window-list.c:1052 applets/wncklet/window-menu.c:95
+#: applets/wncklet/workspace-switcher.c:735
+#: mate-panel/panel-context-menu.c:125
 msgid "translator-credits"
 msgstr ""
 "Ivan Vilata i Balaguer <ivan@selidor.net>\n"
@@ -250,12 +250,13 @@ msgstr ""
 msgid "Time & Date"
 msgstr "Hora i data"
 
-#: applets/clock/clock.ui:46 applets/clock/clock.ui:923
-#: mate-panel/libpanel-util/panel-gtk.c:136
-#: mate-panel/panel-context-menu.c:213 mate-panel/panel-ditem-editor.c:664
-#: mate-panel/panel-force-quit.c:240 mate-panel/panel-recent.c:154
-#: mate-panel/panel-run-dialog.ui:55 mate-panel/panel.c:689
-#: mate-panel/panel.c:1497
+#: applets/clock/clock.ui:46 applets/clock/clock.ui:952
+#: mate-panel/libpanel-util/panel-gtk.c:137
+#: mate-panel/panel-context-menu.c:214
+#: mate-panel/panel-ditem-editor-dialog.ui:92
+#: mate-panel/panel-force-quit.c:241 mate-panel/panel-recent.c:154
+#: mate-panel/panel-run-dialog.ui:55 mate-panel/panel.c:688
+#: mate-panel/panel.c:1491
 msgid "_Cancel"
 msgstr "_Cancel·la"
 
@@ -263,133 +264,133 @@ msgstr "_Cancel·la"
 msgid "_Set System Time"
 msgstr "_Estableix l'hora del sistema"
 
-#: applets/clock/clock.ui:191
+#: applets/clock/clock.ui:198
 msgid "_Time:"
 msgstr "_Hora:"
 
-#: applets/clock/clock.ui:205
+#: applets/clock/clock.ui:212
 msgid "Current Time:"
 msgstr "Hora actual:"
 
-#: applets/clock/clock.ui:277
+#: applets/clock/clock.ui:296
 msgid "Clock Preferences"
 msgstr "Preferències del rellotge"
 
-#: applets/clock/clock.ui:309
+#: applets/clock/clock.ui:328
 msgid "Time _Settings"
 msgstr "Ajust_s de l'hora"
 
-#: applets/clock/clock.ui:324 applets/fish/fish.c:853 applets/fish/fish.ui:62
+#: applets/clock/clock.ui:343 applets/fish/fish.c:849 applets/fish/fish.ui:62
 #: applets/notification_area/notification-area-preferences-dialog.ui:65
-#: applets/wncklet/window-list.ui:48 applets/wncklet/workspace-switcher.ui:62
-#: mate-panel/panel-addto.c:1321 mate-panel/panel-ditem-editor.c:660
+#: applets/wncklet/window-list.ui:53 applets/wncklet/workspace-switcher.ui:62
+#: mate-panel/panel-addto.c:1278 mate-panel/panel-ditem-editor-dialog.ui:76
 #: mate-panel/panel-properties-dialog.ui:94
 #: mate-panel/panel-properties-dialog.ui:740
 #: mate-panel/panel-test-applets.ui:52
 msgid "_Close"
 msgstr "Tan_ca"
 
-#: applets/clock/clock.ui:369
+#: applets/clock/clock.ui:388
 msgid "Clock Format"
 msgstr "Format del rellotge"
 
-#: applets/clock/clock.ui:393
+#: applets/clock/clock.ui:412
 msgid "_12 hour format"
 msgstr "Format de _12 hores"
 
-#: applets/clock/clock.ui:408
+#: applets/clock/clock.ui:427
 msgid "_24 hour format"
 msgstr "Format de _24 hores"
 
-#: applets/clock/clock.ui:448
+#: applets/clock/clock.ui:467
 msgid "Panel Display"
 msgstr "Visualització del tauler"
 
-#: applets/clock/clock.ui:473
+#: applets/clock/clock.ui:492
 msgid "Show the _date"
 msgstr "Mostra la _data"
 
-#: applets/clock/clock.ui:488
+#: applets/clock/clock.ui:507
 msgid "Show seco_nds"
 msgstr "Mostra els _segons"
 
-#: applets/clock/clock.ui:503
+#: applets/clock/clock.ui:522
 msgid "Show wee_k numbers in calendar"
 msgstr "Mostra els nú_meros de les setmanes al calendari"
 
-#: applets/clock/clock.ui:518
+#: applets/clock/clock.ui:537
 msgid "Show _weather"
 msgstr "Mostra la informació _meteorològica"
 
-#: applets/clock/clock.ui:533
+#: applets/clock/clock.ui:552
 msgid "Show _temperature"
 msgstr "Mostra la _temperatura"
 
-#: applets/clock/clock.ui:568 applets/fish/fish.ui:102
+#: applets/clock/clock.ui:587 applets/fish/fish.ui:102
 #: mate-panel/panel-properties-dialog.ui:384
 msgid "General"
 msgstr "General"
 
-#: applets/clock/clock.ui:620 mate-panel/panel-addto.c:1317
+#: applets/clock/clock.ui:639 mate-panel/panel-addto.c:1274
 msgid "_Add"
 msgstr "_Afegeix"
 
-#: applets/clock/clock.ui:636
+#: applets/clock/clock.ui:655
 msgid "_Edit"
 msgstr "_Edita"
 
-#: applets/clock/clock.ui:652
+#: applets/clock/clock.ui:671
 msgid "_Remove"
 msgstr "_Suprimeix"
 
-#: applets/clock/clock.ui:713
+#: applets/clock/clock.ui:732
 msgid "Display"
 msgstr "Visualització"
 
-#: applets/clock/clock.ui:749
+#: applets/clock/clock.ui:769
 msgid "_Visibility unit:"
 msgstr "Unitat de _visibilitat:"
 
-#: applets/clock/clock.ui:771
+#: applets/clock/clock.ui:791
 msgid "_Pressure unit:"
 msgstr "Unitat de _pressió:"
 
-#: applets/clock/clock.ui:805
+#: applets/clock/clock.ui:825
 msgid "_Wind speed unit:"
 msgstr "Unitat de velocitat del _vent:"
 
-#: applets/clock/clock.ui:819
+#: applets/clock/clock.ui:839
 msgid "_Temperature unit:"
 msgstr "Unitat de _temperatura:"
 
-#: applets/clock/clock.ui:854
+#: applets/clock/clock.ui:886
 msgid "Weather"
 msgstr "Informació meteorològica"
 
-#: applets/clock/clock.ui:886
+#: applets/clock/clock.ui:915
 msgid "East"
 msgstr "Est"
 
-#: applets/clock/clock.ui:889
+#: applets/clock/clock.ui:918
 msgid "West"
 msgstr "Oest"
 
-#: applets/clock/clock.ui:900
+#: applets/clock/clock.ui:929
 msgid "North"
 msgstr "Nord"
 
-#: applets/clock/clock.ui:903
+#: applets/clock/clock.ui:932
 msgid "South"
 msgstr "Sud"
 
-#: applets/clock/clock.ui:939 mate-panel/libpanel-util/panel-gtk.c:140
-#: mate-panel/panel-applet-frame.c:962 mate-panel/panel-ditem-editor.c:668
+#: applets/clock/clock.ui:968 mate-panel/libpanel-util/panel-gtk.c:141
+#: mate-panel/panel-applet-frame.c:959
 msgid "_OK"
 msgstr "D'ac_ord"
 
 #. Languages that have a single word that translates as either "state" or
 #. "province" should use that instead of "region".
-#: applets/clock/clock.ui:1012
+#: applets/clock/clock.ui:1043
 msgid ""
 "<small><i>Type a city, region, or country name and then select a match from "
 "the pop-up.</i></small>"
@@ -397,39 +398,39 @@ msgstr ""
 "<small><i>Teclegeu el nom d'una ciutat, una regió o un país i seleccioneu "
 "una de les coincidències en el desplegable.</i></small>"
 
-#: applets/clock/clock.ui:1057
+#: applets/clock/clock.ui:1088
 msgid "_Timezone:"
 msgstr "_Zona horària:"
 
-#: applets/clock/clock.ui:1070
+#: applets/clock/clock.ui:1101
 msgid "_Location Name:"
 msgstr "Nom de la _ubicació:"
 
-#: applets/clock/clock.ui:1114 applets/clock/clock.ui:1128
+#: applets/clock/clock.ui:1145 applets/clock/clock.ui:1159
 msgid "<i>(optional)</i>"
 msgstr "<i>(opcional)</i>"
 
-#: applets/clock/clock.ui:1171
+#: applets/clock/clock.ui:1202
 msgid "L_ongitude:"
 msgstr "L_ongitud:"
 
-#: applets/clock/clock.ui:1192
+#: applets/clock/clock.ui:1223
 msgid "L_atitude:"
 msgstr "L_atitud:"
 
-#: applets/clock/clock-location-tile.c:183
+#: applets/clock/clock-location-tile.c:181
 msgid "Failed to set the system timezone"
 msgstr "No s'ha pogut establir la zona horària del sistema"
 
-#: applets/clock/clock-location-tile.c:229
+#: applets/clock/clock-location-tile.c:227
 msgid "<small>Set...</small>"
 msgstr "<small>Estableix...</small>"
 
-#: applets/clock/clock-location-tile.c:230
+#: applets/clock/clock-location-tile.c:228
 msgid "<small>Set</small>"
 msgstr "<small>Estableix</small>"
 
-#: applets/clock/clock-location-tile.c:306
+#: applets/clock/clock-location-tile.c:304
 msgid ""
 "Set location as current location and use its timezone for this computer"
 msgstr ""
@@ -442,7 +443,7 @@ msgstr ""
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: applets/clock/clock-location-tile.c:439
+#: applets/clock/clock-location-tile.c:437
 msgid "%l:%M <small>%p (%A)</small>"
 msgstr "%l:%M <small>%p (%A)</small>"
 
@@ -451,7 +452,7 @@ msgstr "%l:%M <small>%p (%A)</small>"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: applets/clock/clock-location-tile.c:447
+#: applets/clock/clock-location-tile.c:445
 msgid "%H:%M <small>(%A)</small>"
 msgstr "%k:%M <small>(%A)</small>"
 
@@ -459,40 +460,40 @@ msgstr "%k:%M <small>(%A)</small>"
 #. * It is used to display the time in 12-hours format
 #. * (eg, like in the US: 8:10 am). The %p expands to
 #. * am/pm.
-#: applets/clock/clock-location-tile.c:456
+#: applets/clock/clock-location-tile.c:454
 msgid "%l:%M <small>%p</small>"
 msgstr "%l:%M <small>%p</small>"
 
-#: applets/clock/clock-location-tile.c:598
+#: applets/clock/clock-location-tile.c:596
 #, c-format
 msgid "%s, %s"
 msgstr "%s, %s"
 
-#: applets/clock/clock-location-tile.c:610
-#: applets/clock/clock-location-tile.c:619
+#: applets/clock/clock-location-tile.c:608
+#: applets/clock/clock-location-tile.c:617
 msgid "Unknown"
 msgstr "Desconegut"
 
 #. Translators: The two strings are temperatures.
-#: applets/clock/clock-location-tile.c:612
+#: applets/clock/clock-location-tile.c:610
 #, c-format
 msgid "%s, feels like %s"
 msgstr "%s, sensació de %s"
 
-#: applets/clock/clock-location-tile.c:635
+#: applets/clock/clock-location-tile.c:633
 #, c-format
 msgid "Sunrise: %s / Sunset: %s"
 msgstr "Sortida del sol: %s / Posta del sol: %s"
 
-#: applets/clock/clock-utils.c:92 applets/fish/fish.c:170
-#: applets/notification_area/main.c:238 applets/wncklet/wncklet.c:75
-#: mate-panel/libpanel-util/panel-show.c:234
+#: applets/clock/clock-utils.c:92 applets/fish/fish.c:168
+#: applets/notification_area/main.c:236 applets/wncklet/wncklet.c:74
+#: mate-panel/libpanel-util/panel-show.c:235
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr "No s'ha pogut mostrar el document d'ajuda «%s»"
 
-#: applets/clock/clock-utils.c:121 applets/fish/fish.c:196
-#: applets/notification_area/main.c:252 applets/wncklet/wncklet.c:92
+#: applets/clock/clock-utils.c:121 applets/fish/fish.c:194
+#: applets/notification_area/main.c:250 applets/wncklet/wncklet.c:91
 msgid "Error displaying help document"
 msgstr "S'ha produït un error en mostrar el document d'ajuda"
 
@@ -637,7 +638,7 @@ msgstr "Fàbrica per a la miniaplicació del rellotge"
 msgid "Get the current time and date"
 msgstr "Obteniu la data i hora actual"
 
-#: applets/fish/fish.c:266
+#: applets/fish/fish.c:264
 #, c-format
 msgid ""
 "Warning:  The command appears to be something actually useful.\n"
@@ -650,16 +651,16 @@ msgstr ""
 "Us recomanem que no feu servir %s per a res que pugui fer\n"
 "de la miniaplicació una cosa «pràctica» o útil."
 
-#: applets/fish/fish.c:428
+#: applets/fish/fish.c:423
 msgid "Images"
 msgstr "Imatges"
 
-#: applets/fish/fish.c:534 applets/fish/fish.c:578 applets/fish/fish.c:684
+#: applets/fish/fish.c:529 applets/fish/fish.c:573 applets/fish/fish.c:679
 #, no-c-format
 msgid "%s the Fish"
 msgstr "El peix %s"
 
-#: applets/fish/fish.c:535
+#: applets/fish/fish.c:530
 #, c-format
 msgid ""
 "%s has no use what-so-ever. It only takes up disk space and compilation "
@@ -671,44 +672,44 @@ msgstr ""
 " troba algú utilitzant aquesta miniaplicació, se l'hauria de sotmetre "
 "urgentment a una avaluació psiquiàtrica."
 
-#: applets/fish/fish.c:552
+#: applets/fish/fish.c:547
 msgid "(with minor help from George)"
 msgstr "(amb una petita ajuda de George)"
 
-#: applets/fish/fish.c:558
+#: applets/fish/fish.c:553
 #: applets/fish/org.mate.panel.FishApplet.mate-panel-applet.desktop.in.in:10
 msgid "Fish"
 msgstr "Peix"
 
-#: applets/fish/fish.c:559
+#: applets/fish/fish.c:554
 msgid "About Fish"
 msgstr "Quant al peix"
 
-#: applets/fish/fish.c:562
+#: applets/fish/fish.c:557
 msgid ""
 "Copyright © 1998-2002 Free Software Foundation, Inc.\n"
 "Copyright © 2002-2005 Vincent Untz\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 "Drets d'autor © 1998-2002 Free Software Foundation, Inc.\n"
 "Drets d'autor © 2002-2005 Vincent Untz\n"
-"Drets d'autor © 2012-2020 Els desenvolupadors de MATE"
+"Drets d'autor © 2012-2021 Els desenvolupadors de MATE"
 
-#: applets/fish/fish.c:579
+#: applets/fish/fish.c:574
 #, c-format
 msgid "%s the Fish, a contemporary oracle"
 msgstr "El peix %s, un oracle contemporani"
 
-#: applets/fish/fish.c:645
+#: applets/fish/fish.c:640
 msgid "Unable to locate the command to execute"
 msgstr "No es pot trobar l'ordre a executar"
 
-#: applets/fish/fish.c:689
+#: applets/fish/fish.c:684
 #, no-c-format
 msgid "%s the Fish Says:"
 msgstr "El peix %s diu:"
 
-#: applets/fish/fish.c:752
+#: applets/fish/fish.c:746
 #, c-format
 msgid ""
 "Unable to read output from command\n"
@@ -719,16 +720,16 @@ msgstr ""
 "\n"
 "Detalls: %s"
 
-#: applets/fish/fish.c:849
+#: applets/fish/fish.c:845
 msgid "_Speak again"
 msgstr "_Torna a parlar"
 
-#: applets/fish/fish.c:930
+#: applets/fish/fish.c:926
 #, c-format
 msgid "The configured command is not working and has been replaced by: %s"
 msgstr "L'ordre configurada no funciona i s'ha substituït amb: %s"
 
-#: applets/fish/fish.c:963
+#: applets/fish/fish.c:959
 #, c-format
 msgid ""
 "Unable to execute '%s'\n"
@@ -739,7 +740,7 @@ msgstr ""
 "\n"
 "Detalls: %s"
 
-#: applets/fish/fish.c:979
+#: applets/fish/fish.c:975
 #, c-format
 msgid ""
 "Unable to read from '%s'\n"
@@ -750,15 +751,15 @@ msgstr ""
 "\n"
 "Detalls: %s"
 
-#: applets/fish/fish.c:1551
+#: applets/fish/fish.c:1547
 msgid "The water needs changing"
 msgstr "Cal canviar l'aigua"
 
-#: applets/fish/fish.c:1553
+#: applets/fish/fish.c:1549
 msgid "Look at today's date!"
 msgstr "Mireu la data d'avui!"
 
-#: applets/fish/fish.c:1635
+#: applets/fish/fish.c:1631
 #, c-format
 msgid "%s the Fish, the fortune teller"
 msgstr "El peix %s, el rondallaire"
@@ -893,28 +894,28 @@ msgstr "D'on va venir aquest peix beneit"
 msgid "Display a swimming fish or another animated creature"
 msgstr "Mostreu un peix nedant o una altra criatura animada"
 
-#: applets/notification_area/main.c:276
+#: applets/notification_area/main.c:274
 #: applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.desktop.in.in:10
 msgid "Notification Area"
 msgstr "Àrea de notificacions"
 
-#: applets/notification_area/main.c:277
+#: applets/notification_area/main.c:275
 msgid "About Notification Area"
 msgstr "Quant a l'àrea de notificació"
 
-#: applets/notification_area/main.c:280
+#: applets/notification_area/main.c:278
 msgid ""
 "Copyright © 2002 Red Hat, Inc.\n"
 "Copyright © 2003-2006 Vincent Untz\n"
 "Copyright © 2011 Perberos\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 "Drets d'autor © 2002 Red Hat, Inc.\n"
 "Drets d'autor © 2003-2006 Vincent Untz\n"
 "Drets d'autor © 2011 Perberos\n"
-"Drets d'autor © 2012-2020 Els desenvolupadors de MATE"
+"Drets d'autor © 2012-2021 Els desenvolupadors de MATE"
 
-#: applets/notification_area/main.c:485
+#: applets/notification_area/main.c:482
 msgid "Panel Notification Area"
 msgstr "Àrea de notificacions del tauler"
 
@@ -992,6 +993,30 @@ msgstr ""
 "En cas que fos cert, quan es desminimitza una finestra, es mou a l'espai de "
 "treball actual. Altrament, canvia a l'espai de treball de la finestra."
 
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:25
+msgid "Whether to enable mouse scrolling in the switch window list"
+msgstr ""
+"Si voleu activar el desplaçament del ratolí a la llista de canvi de finestra"
+
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:26
+msgid ""
+"If true, enable mouse scrolling in window list, otherwise disable mouse "
+"scrolling in window list."
+msgstr ""
+"Si és cert, habilita el desplaçament del ratolí a la llista de finestres, en"
+" cas contrari, inhabilita el desplaçament del ratolí a la llista de "
+"finestres."
+
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:30
+msgid "Close window on middle mouse click"
+msgstr ""
+
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:31
+msgid ""
+"If true, then clicking the middle mouse button over a taskbar item will "
+"close the window."
+msgstr ""
+
 #: applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in:5
 msgid "Display workspace names"
 msgstr "Mostra els noms dels espais de treball"
@@ -1058,7 +1083,7 @@ msgstr ""
 "finestres"
 
 #: applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.desktop.in.in:10
-#: applets/wncklet/window-menu.c:76 applets/wncklet/window-menu.c:227
+#: applets/wncklet/window-menu.c:83 applets/wncklet/window-menu.c:235
 msgid "Window Selector"
 msgstr "Selector de finestres"
 
@@ -1067,7 +1092,7 @@ msgid "Switch between open windows using a menu"
 msgstr "Canvieu entre les finestres obertes mitjançant un menú"
 
 #: applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.desktop.in.in:23
-#: applets/wncklet/workspace-switcher.c:638
+#: applets/wncklet/workspace-switcher.c:725
 msgid "Workspace Switcher"
 msgstr "Selector d'espais de treball"
 
@@ -1076,7 +1101,7 @@ msgid "Switch between workspaces"
 msgstr "Canvieu entre els espais de treball"
 
 #: applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.desktop.in.in:36
-#: applets/wncklet/window-list.c:791
+#: applets/wncklet/window-list.c:1042
 msgid "Window List"
 msgstr "Llista de les finestres"
 
@@ -1092,48 +1117,48 @@ msgstr "Mostra l'escriptori"
 msgid "Hide application windows and show the desktop"
 msgstr "Oculteu les finestres de les aplicacions i mostreu l'escriptori"
 
-#: applets/wncklet/showdesktop.c:184
+#: applets/wncklet/showdesktop.c:181
 #, c-format
 msgid "Failed to load %s: %s\n"
 msgstr "No s'ha pogut carregar %s: %s\n"
 
-#: applets/wncklet/showdesktop.c:184
+#: applets/wncklet/showdesktop.c:181
 msgid "Icon not found"
 msgstr "No s'ha trobat la icona"
 
-#: applets/wncklet/showdesktop.c:266
+#: applets/wncklet/showdesktop.c:263
 msgid "Click here to restore hidden windows."
 msgstr "Feu clic aquí per restaurar les finestres ocultes."
 
-#: applets/wncklet/showdesktop.c:270
+#: applets/wncklet/showdesktop.c:267
 msgid "Click here to hide all windows and show the desktop."
 msgstr "Feu clic aquí per ocultar totes les finestres i mostrar l'escriptori."
 
-#: applets/wncklet/showdesktop.c:440 applets/wncklet/showdesktop.c:499
+#: applets/wncklet/showdesktop.c:450 applets/wncklet/showdesktop.c:521
 msgid "Show Desktop Button"
 msgstr "Botó «Mostra l'escriptori»"
 
-#: applets/wncklet/showdesktop.c:500
+#: applets/wncklet/showdesktop.c:522
 msgid "About Show Desktop Button"
 msgstr "Quant al botó per mostrar l'escriptori"
 
-#: applets/wncklet/showdesktop.c:502
+#: applets/wncklet/showdesktop.c:524
 msgid "This button lets you hide all windows and show the desktop."
 msgstr ""
 "Aquest botó us permet ocultar totes les finestres i mostrar l'escriptori."
 
-#: applets/wncklet/showdesktop.c:503 applets/wncklet/window-list.c:795
-#: applets/wncklet/workspace-switcher.c:642
+#: applets/wncklet/showdesktop.c:525 applets/wncklet/window-list.c:1046
+#: applets/wncklet/workspace-switcher.c:729
 msgid ""
 "Copyright © 2002 Red Hat, Inc.\n"
 "Copyright © 2011 Perberos\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 "Drets d'autor © 2002 Red Hat, Inc.\n"
 "Drets d'autor © 2011 Perberos\n"
-"Drets d'autor © 2012-2020 Els desenvolupadors de MATE"
+"Drets d'autor © 2012-2021 Els desenvolupadors de MATE"
 
-#: applets/wncklet/showdesktop.c:530
+#: applets/wncklet/showdesktop.c:571
 msgid ""
 "Your window manager does not support the show desktop button, or you are not"
 " running a window manager."
@@ -1141,15 +1166,15 @@ msgstr ""
 "El vostre gestor de finestres no permet el botó «Mostra l'escriptori», o no "
 "esteu executant cap gestor de finestres."
 
-#: applets/wncklet/window-list.c:354
+#: applets/wncklet/window-list.c:543
 msgid "_System Monitor"
 msgstr "_Monitor del sistema"
 
-#: applets/wncklet/window-list.c:792
+#: applets/wncklet/window-list.c:1043
 msgid "About Window List"
 msgstr "Quant a la llista de finestres"
 
-#: applets/wncklet/window-list.c:794
+#: applets/wncklet/window-list.c:1045
 msgid ""
 "The Window List shows a list of all windows in a set of buttons and lets you"
 " browse them."
@@ -1157,77 +1182,106 @@ msgstr ""
 "La llista de les finestres mostra una llista de totes les finestres en un "
 "conjunt de botons i us permet navegar-hi."
 
-#: applets/wncklet/window-list.ui:18
+#: applets/wncklet/window-list.ui:23
 msgid "Window List Preferences"
 msgstr "Preferències de la llista de les finestres"
 
-#: applets/wncklet/window-list.ui:89
-msgid "Window List Content"
-msgstr "Contingut de la llista de les finestres"
-
-#: applets/wncklet/window-list.ui:115
-msgid "Sh_ow windows from current workspace"
-msgstr "_Mostra les finestres de l'espai de treball actual"
-
-#: applets/wncklet/window-list.ui:130
-msgid "Show windows from a_ll workspaces"
-msgstr "M_ostra les finestres de tots els espais de treball"
-
-#: applets/wncklet/window-list.ui:170
+#: applets/wncklet/window-list.ui:97
 msgid "Window Thumbnails"
 msgstr "Miniatures de les finestres"
 
-#: applets/wncklet/window-list.ui:196
+#: applets/wncklet/window-list.ui:118
 msgid "Show _thumbnails on hover"
-msgstr "Mos_tra les miniature en passar el ratolí per sobre"
+msgstr "Mos_tra les miniatures en passar el ratolí per sobre"
 
-#: applets/wncklet/window-list.ui:233
+#: applets/wncklet/window-list.ui:140
 msgid "Thumbnail width in pixels. Window aspect ratio will be maintained."
 msgstr ""
 "L'amplada de la miniatura en píxels. Es mantindrà la relació d’aspecte de la"
 " finestra."
 
-#: applets/wncklet/window-list.ui:234
+#: applets/wncklet/window-list.ui:141
 msgid "Thumbnail width:"
 msgstr "Amplada de la miniatura:"
 
-#: applets/wncklet/window-list.ui:248
+#: applets/wncklet/window-list.ui:154
+msgid "0"
+msgstr "0"
+
+#: applets/wncklet/window-list.ui:156
 msgid "px"
 msgstr "px"
 
-#: applets/wncklet/window-list.ui:286
+#: applets/wncklet/window-list.ui:199
 msgid "Window Grouping"
 msgstr "Agrupació de les finestres"
 
-#: applets/wncklet/window-list.ui:312
+#: applets/wncklet/window-list.ui:220
 msgid "_Never group windows"
 msgstr "_No agrupis mai les finestres"
 
-#: applets/wncklet/window-list.ui:327
+#: applets/wncklet/window-list.ui:236
 msgid "Group windows when _space is limited"
 msgstr "_Agrupa les finestres quan l'espai sigui limitat"
 
-#: applets/wncklet/window-list.ui:343
+#: applets/wncklet/window-list.ui:252
 msgid "_Always group windows"
 msgstr "Agrupa les finestres _sempre"
 
-#: applets/wncklet/window-list.ui:383
+#: applets/wncklet/window-list.ui:290
+msgid "Middle mouse button"
+msgstr "Botó central del ratolí"
+
+#: applets/wncklet/window-list.ui:311
+msgid "_Click to close window"
+msgstr ""
+
+#: applets/wncklet/window-list.ui:348
+msgid "Mouse Scrolling"
+msgstr "Desplaçament del ratolí"
+
+#: applets/wncklet/window-list.ui:369
+msgid "_Enable mouse scrolling"
+msgstr "Habilita el d_esplaçament del ratolí"
+
+#: applets/wncklet/window-list.ui:402
+msgid "Behaviour"
+msgstr "Comportament"
+
+#: applets/wncklet/window-list.ui:425
+msgid "Window List Content"
+msgstr "Contingut de la llista de les finestres"
+
+#: applets/wncklet/window-list.ui:446
+msgid "Sh_ow windows from current workspace"
+msgstr "_Mostra les finestres de l'espai de treball actual"
+
+#: applets/wncklet/window-list.ui:462
+msgid "Show windows from a_ll workspaces"
+msgstr "M_ostra les finestres de tots els espais de treball"
+
+#: applets/wncklet/window-list.ui:500
 msgid "Restoring Minimized Windows"
 msgstr "Restauració de les finestres minimitzades"
 
-#: applets/wncklet/window-list.ui:409
+#: applets/wncklet/window-list.ui:521
 msgid "Restore to current _workspace"
 msgstr "_Restaura a l'espai de treball actual"
 
-#: applets/wncklet/window-list.ui:424
+#: applets/wncklet/window-list.ui:537
 msgid "Restore to na_tive workspace"
 msgstr "R_estaura a l'espai de treball natiu"
 
-#: applets/wncklet/window-menu.c:77
+#: applets/wncklet/window-list.ui:574
+#: applets/wncklet/workspace-switcher.ui:356
+msgid "Workspaces"
+msgstr "Espais de treball"
+
+#: applets/wncklet/window-menu.c:84
 msgid "About Window Selector"
 msgstr "Quant al selector de finestres"
 
-#: applets/wncklet/window-menu.c:79
+#: applets/wncklet/window-menu.c:86
 msgid ""
 "The Window Selector shows a list of all windows in a menu and lets you "
 "browse them."
@@ -1235,36 +1289,36 @@ msgstr ""
 "El selector de finestres mostra una llista de totes les finestres en un "
 "menú, i us permet navegar-hi."
 
-#: applets/wncklet/window-menu.c:80
+#: applets/wncklet/window-menu.c:87
 msgid ""
 "Copyright © 2000 Helix Code, Inc.\n"
 "Copyright © 2001 Free Software Foundation, Inc.\n"
 "Copyright © 2003 Sun Microsystems, Inc.\n"
 "Copyright © 2011 Perberos\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 "Drets d'autor © 2000 Helix Code, Inc.\n"
 "Drets d'autor © 2001 Free Software Foundation, Inc.\n"
 "Drets d'autor © 2003 Sun Microsystems, Inc.\n"
 "Drets d'autor © 2011 Perberos\n"
-"Drets d'autor © 2012-2020 Els desenvolupadors de MATE"
+"Drets d'autor © 2012-2021 Els desenvolupadors de MATE"
 
-#: applets/wncklet/workspace-switcher.c:240
-#: applets/wncklet/workspace-switcher.c:943
+#: applets/wncklet/workspace-switcher.c:294
+#: applets/wncklet/workspace-switcher.c:1061
 #: applets/wncklet/workspace-switcher.ui:170
 msgid "rows"
 msgstr "files"
 
-#: applets/wncklet/workspace-switcher.c:240
-#: applets/wncklet/workspace-switcher.c:943
+#: applets/wncklet/workspace-switcher.c:294
+#: applets/wncklet/workspace-switcher.c:1061
 msgid "columns"
 msgstr "columnes"
 
-#: applets/wncklet/workspace-switcher.c:639
+#: applets/wncklet/workspace-switcher.c:726
 msgid "About Workspace Switcher"
 msgstr "Quant al selector d'espais de treball"
 
-#: applets/wncklet/workspace-switcher.c:641
+#: applets/wncklet/workspace-switcher.c:728
 msgid ""
 "The Workspace Switcher shows you a small version of your workspaces that "
 "lets you manage your windows."
@@ -1307,10 +1361,6 @@ msgstr "Mostra els _noms dels espais de treball al selector"
 #: applets/wncklet/workspace-switcher.ui:334
 msgid "Allow workspace _wrap around in switcher"
 msgstr "Permet en_voltar els espais de treball al selector"
-
-#: applets/wncklet/workspace-switcher.ui:356
-msgid "Workspaces"
-msgstr "Espais de treball"
 
 #: data/org.mate.panel.gschema.xml.in:5
 msgid "Default panel layout"
@@ -1611,6 +1661,18 @@ msgstr ""
 "El nombre màxim d'elements de menú (p. ex. marcadors) que es mostren sense "
 "que es posin en un submenú."
 
+#: data/org.mate.panel.menubar.gschema.xml.in:56
+msgid "Maximum number of recent documents displayed in the Places menu"
+msgstr "Nombre màxim de Documents recents que es mostren al menú Llocs"
+
+#: data/org.mate.panel.menubar.gschema.xml.in:57
+msgid ""
+"Maximum number of recent documents that are displayed in the Places menu at "
+"a time. If this is set to -1, all known recent documents will be displayed."
+msgstr ""
+"El nombre màxim de documents recents que es mostren al menú Llocs alhora. Si"
+" s'estableix en -1, es mostraran tots els documents recents coneguts."
+
 #: data/org.mate.panel.object.gschema.xml.in:5
 msgid "Panel object type"
 msgstr "Tipus d'objecte de tauler"
@@ -1641,22 +1703,36 @@ msgstr ""
 "de píxels des del cantó esquerre (o superior, si és vertical) del tauler."
 
 #: data/org.mate.panel.object.gschema.xml.in:20
-msgid "Interpret position relative to bottom/right edge"
-msgstr "Interpreta la posició relativa al costat inferior/dret"
+msgid "Interpret position relative to bottom/right edge (DEPRECATED)"
+msgstr ""
 
 #: data/org.mate.panel.object.gschema.xml.in:21
 msgid ""
 "If true, the position of the object is interpreted relative to the right (or"
-" bottom if vertical) edge of the panel."
+" bottom if vertical) edge of the panel. This key is provided only for "
+"backward compatibility with old panel layouts; please set the \"relative-to-"
+"edge\" property instead."
 msgstr ""
-"En cas que fos cert, la posició de l'objecte s'interpreta relativa al costat"
-" dret (o inferior, si és vertical) del tauler."
 
 #: data/org.mate.panel.object.gschema.xml.in:25
+msgid ""
+"Whether to interpret the value of the \"position\" key relative to the "
+"start, center or end of the panel"
+msgstr ""
+
+#: data/org.mate.panel.object.gschema.xml.in:26
+msgid ""
+"The position of the object is interpreted relative to one edge of the panel."
+" The value of this key determines whether the object is positioned relative "
+"to the start (left/top edge), center, or end (right/bottom edge) of the "
+"panel. Valid values for this key are 'start', 'center', and 'end'."
+msgstr ""
+
+#: data/org.mate.panel.object.gschema.xml.in:30
 msgid "Lock the object to the panel"
 msgstr "Bloqueja l'objecte al tauler"
 
-#: data/org.mate.panel.object.gschema.xml.in:26
+#: data/org.mate.panel.object.gschema.xml.in:31
 msgid ""
 "If true, the user may not move the applet without first unlocking the object"
 " using the \"Unlock\" menuitem."
@@ -1665,111 +1741,85 @@ msgstr ""
 "primer no hagi desbloquejat l'objecte mitjançant l'element del menú "
 "«Desbloqueja»."
 
-#: data/org.mate.panel.object.gschema.xml.in:30
+#: data/org.mate.panel.object.gschema.xml.in:35
 msgid "Applet IID"
 msgstr "Id. de les miniaplicacions"
 
-#: data/org.mate.panel.object.gschema.xml.in:31
+#: data/org.mate.panel.object.gschema.xml.in:36
 msgid ""
 "The implementation ID of the applet - e.g. "
 "\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"matecomponent-"
-"applet\")."
+"object-type key is 'applet'."
 msgstr ""
-"L'id. de la implementació de la miniaplicació - p. ex. "
-"«ClockAppletFactory::ClockApplet». Aquesta clau només té efecte si la clau "
-"object_type és «external-applet» (o el valor en desús «matecomponent-"
-"applet»)."
 
-#: data/org.mate.panel.object.gschema.xml.in:35
+#: data/org.mate.panel.object.gschema.xml.in:40
 msgid "Panel attached to drawer"
 msgstr "El tauler connectat a aquest calaix"
 
-#: data/org.mate.panel.object.gschema.xml.in:36
+#: data/org.mate.panel.object.gschema.xml.in:41
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
-"relevant if the object_type key is \"drawer-object\"."
+"relevant if the object-type key is 'drawer'."
 msgstr ""
-"L'identificador del tauler associat a aquest calaix. Aquesta clau només té "
-"efecte si la clau object_type és «drawer-object»."
 
-#: data/org.mate.panel.object.gschema.xml.in:40
+#: data/org.mate.panel.object.gschema.xml.in:45
 msgid "Tooltip displayed for drawer or menu"
 msgstr "El rètol indicador mostrat per a aquest calaix o menú"
 
-#: data/org.mate.panel.object.gschema.xml.in:41
+#: data/org.mate.panel.object.gschema.xml.in:46
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
-"only relevant if the object_type key is \"drawer-object\" or \"menu-"
-"object\"."
+"only relevant if the object-type key is 'drawer' or 'menu'."
 msgstr ""
-"El text a mostrar en un rètol indicador per aquest calaix o menú. Aquesta "
-"clau només té efecte si la clau object_type és «drawer-object» o «menu-"
-"object»."
 
-#: data/org.mate.panel.object.gschema.xml.in:45
+#: data/org.mate.panel.object.gschema.xml.in:50
 msgid "Use custom icon for object's button"
 msgstr "Utilitza una icona personalitzada per al botó de l'objecte"
 
-#: data/org.mate.panel.object.gschema.xml.in:46
+#: data/org.mate.panel.object.gschema.xml.in:51
 msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
-"false, the custom_icon key is ignored. This key is only relevant if the "
-"object_type key is \"menu-object\" or \"drawer-object\"."
+"false, the custom-icon key is ignored. This key is only relevant if the "
+"object-type key is 'menu' or 'drawer-object'."
 msgstr ""
-"En cas que fos cert, la clau custom_icon s'utilitza com una icona "
-"personalitzada per al botó. Si és fals, la clau custom_icon s'ignora. "
-"Aquesta clau només té efecte si la clau object_type és «menu-object» o "
-"«drawer-object»."
 
-#: data/org.mate.panel.object.gschema.xml.in:50
+#: data/org.mate.panel.object.gschema.xml.in:55
 msgid "Icon used for object's button"
 msgstr "La icona utilitzada per al botó de l'objecte"
 
-#: data/org.mate.panel.object.gschema.xml.in:51
+#: data/org.mate.panel.object.gschema.xml.in:56
 msgid ""
 "The location of the image file used as the icon for the object's button. "
-"This key is only relevant if the object_type key is \"drawer-object\" or "
-"\"menu-object\" and the use_custom_icon key is true."
+"This key is only relevant if the object-type key is 'drawer' or 'menu' and "
+"the use-custom-icon key is true."
 msgstr ""
-"La ubicació del fitxer d'imatge utilitzat com la icona per al botó de "
-"l'objecte. Aquesta clau només té efecte si la clau object_type és «drawer-"
-"object» o «menu-object» i la clau use_custom_icon és certa."
 
-#: data/org.mate.panel.object.gschema.xml.in:55
+#: data/org.mate.panel.object.gschema.xml.in:60
 msgid "Use custom path for menu contents"
 msgstr "Utilitza un camí personalitzat per al contingut del menú"
 
-#: data/org.mate.panel.object.gschema.xml.in:56
+#: data/org.mate.panel.object.gschema.xml.in:61
 msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
-"should be constructed. If false, the menu_path key is ignored. This key is "
-"only relevant if the object_type key is \"menu-object\"."
+"should be constructed. If false, the menu-path key is ignored. This key is "
+"only relevant if the object-type key is 'menu'."
 msgstr ""
-"En cas que fos cert, la clau menu_path s'utilitza com el camí des del qual "
-"es construeixen els continguts del menú. Si és fals, la clau menu_path "
-"s'ignora. Aquesta clau només té efecte si la clau object_type és «menu-"
-"object»."
 
-#: data/org.mate.panel.object.gschema.xml.in:60
+#: data/org.mate.panel.object.gschema.xml.in:65
 msgid "Menu content path"
 msgstr "Camí al contingut del menú"
 
-#: data/org.mate.panel.object.gschema.xml.in:61
+#: data/org.mate.panel.object.gschema.xml.in:66
 msgid ""
 "The path from which the menu contents is contructed. This key is only "
-"relevant if the use_menu_path key is true and the object_type key is \"menu-"
-"object\"."
+"relevant if the use-menu-path key is true and the object-type key is 'menu'."
 msgstr ""
-"El camí a partir del qual es construeixen els continguts del menú. Aquesta "
-"clau només té efecte si la clau use_menu_path és certa i la clau object_type"
-" és «menu-object»."
 
-#: data/org.mate.panel.object.gschema.xml.in:65
+#: data/org.mate.panel.object.gschema.xml.in:70
 msgid "Draw arrow in menu button"
 msgstr "Dibuixa la fletxa al botó del menú"
 
-#: data/org.mate.panel.object.gschema.xml.in:66
+#: data/org.mate.panel.object.gschema.xml.in:71
 msgid ""
 "If true, an arrow is drawn over the menu button icon. If false, menu button "
 "has only the icon."
@@ -1777,31 +1827,26 @@ msgstr ""
 "En cas que fos cert, una fletxa es dibuixa sobre la icona del botó del menú."
 " En cas que fos fals, el botó del menú només té la icona."
 
-#: data/org.mate.panel.object.gschema.xml.in:70
+#: data/org.mate.panel.object.gschema.xml.in:75
 msgid "Launcher location"
 msgstr "Ubicació del llançador"
 
-#: data/org.mate.panel.object.gschema.xml.in:71
+#: data/org.mate.panel.object.gschema.xml.in:76
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
-"relevant if the object_type key is \"launcher-object\"."
+"relevant if the object-type key is 'launcher'."
 msgstr ""
-"La ubicació del fitxer .desktop que descriu el llançador. Aquesta clau només"
-" té efecte si la clau object_type és «launcher-object»."
 
-#: data/org.mate.panel.object.gschema.xml.in:75
+#: data/org.mate.panel.object.gschema.xml.in:80
 msgid "Action button type"
 msgstr "Tipus del botó d'acció"
 
-#: data/org.mate.panel.object.gschema.xml.in:76
+#: data/org.mate.panel.object.gschema.xml.in:81
 msgid ""
-"The action type this button represents. Possible values are \"lock\", "
-"\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
-"relevant if the object_type key is \"action-applet\"."
+"The action type this button represents. Possible values are 'none', 'lock', "
+"'logout', 'run', 'search', 'force-quit', 'connect-server' and 'shutdown'. "
+"This key is only relevant if the object-type key is 'action'."
 msgstr ""
-"El tipus d'acció que representa aquest botó. Els valors possibles són "
-"«lock», «logout», «run», «search» i «screenshot». Aquesta clau només té "
-"efecte si la clau object_type és «action-applet»."
 
 #: data/org.mate.panel.toplevel.gschema.xml.in:5
 msgid "Name to identify panel"
@@ -2195,130 +2240,130 @@ msgstr ""
 "En cas que fos cert, la imatge de fons es rotarà si el tauler s'orienta "
 "verticalment."
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:168
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:169
 msgid "File is not a valid .desktop file"
 msgstr "El fitxer no és un fitxer .desktop vàlid"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:193
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:194
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
 msgstr "No es reconeix la versió «%s» del fitxer d'escriptori"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:975
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:984
 #, c-format
 msgid "Starting %s"
 msgstr "S'està iniciant %s"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1117
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1126
 msgid "Application does not accept documents on command line"
 msgstr "L'aplicació no accepta documents des de la línia d'ordres"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1185
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1194
 #, c-format
 msgid "Unrecognized launch option: %d"
 msgstr "No es reconeix l'opció de llançament: %d"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1401
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1410
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr ""
 "No es poden passar els URI de document a una entrada d'escriptori "
 "«Type=Link»"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1422
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1431
 msgid "Not a launchable item"
 msgstr "No és un element executable"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:233
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:234
 msgid "Disable connection to session manager"
 msgstr "Inhabilita la connexió al gestor de sessions"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:238
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:239
 msgid "Specify file containing saved configuration"
 msgstr "Especifica el fitxer que conté la configuració desada"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:238
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:239
 msgid "FILE"
 msgstr "FITXER"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:243
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:244
 msgid "Specify session management ID"
 msgstr "Especifica l'ID de gestió de la sessió"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:243
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:244
 msgid "ID"
 msgstr "id."
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:269
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:270
 msgid "Session management options:"
 msgstr "Opcions de gestió de la sessió:"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:270
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:271
 msgid "Show session management options"
 msgstr "Mostra les opcions de gestió de la sessió"
 
-#: mate-panel/libpanel-util/panel-gtk.c:138
+#: mate-panel/libpanel-util/panel-gtk.c:139
 msgid "_Open"
 msgstr "_Obre"
 
-#: mate-panel/libpanel-util/panel-error.c:76
-#: mate-panel/panel-applet-frame.c:800 mate-panel/panel-applet-frame.c:988
+#: mate-panel/libpanel-util/panel-error.c:77
+#: mate-panel/panel-applet-frame.c:797 mate-panel/panel-applet-frame.c:985
 msgid "Error"
 msgstr "Error"
 
-#: mate-panel/libpanel-util/panel-icon-chooser.c:374
+#: mate-panel/libpanel-util/panel-icon-chooser.c:366
 msgid "Choose an icon"
 msgstr "Seleccioneu una icona"
 
-#: mate-panel/libpanel-util/panel-launch.c:45
+#: mate-panel/libpanel-util/panel-launch.c:46
 #, c-format
 msgid "Could not launch '%s'"
 msgstr "No s'ha pogut executar «%s»"
 
-#: mate-panel/libpanel-util/panel-launch.c:48 mate-panel/launcher.c:162
+#: mate-panel/libpanel-util/panel-launch.c:49 mate-panel/launcher.c:163
 msgid "Could not launch application"
 msgstr "No s'ha pogut llançar l'aplicació"
 
-#: mate-panel/libpanel-util/panel-show.c:44
+#: mate-panel/libpanel-util/panel-show.c:45
 #, c-format
 msgid "Could not open location '%s'"
 msgstr "No s'ha pogut obrir la ubicació «%s»"
 
-#: mate-panel/libpanel-util/panel-show.c:158
+#: mate-panel/libpanel-util/panel-show.c:159
 msgid "No application to handle search folders is installed."
 msgstr ""
 "No hi ha instal·lada cap aplicació per a gestionar les carpetes de cerca."
 
-#: mate-panel/applet.c:468
+#: mate-panel/applet.c:466
 msgid "???"
 msgstr "???"
 
-#: mate-panel/applet.c:548 libmate-panel-applet/mate-panel-applet.c:139
+#: mate-panel/applet.c:546 libmate-panel-applet/mate-panel-applet.c:140
 msgid "_Remove From Panel"
 msgstr "_Suprimeix del tauler"
 
-#: mate-panel/applet.c:556 libmate-panel-applet/mate-panel-applet.c:142
+#: mate-panel/applet.c:554 libmate-panel-applet/mate-panel-applet.c:143
 msgid "_Move"
 msgstr "_Mou"
 
-#: mate-panel/applet.c:574 libmate-panel-applet/mate-panel-applet.c:148
+#: mate-panel/applet.c:572 libmate-panel-applet/mate-panel-applet.c:149
 msgid "Loc_k To Panel"
 msgstr "B_loqueja al tauler"
 
-#: mate-panel/applet.c:1313
+#: mate-panel/applet.c:1321
 msgid "Cannot find an empty spot"
 msgstr "No es pot trobar cap forat lliure"
 
-#: mate-panel/drawer.c:443 mate-panel/panel-addto.c:189
-#: mate-panel/panel-toplevel.c:1643
+#: mate-panel/drawer.c:441 mate-panel/panel-addto.c:190
+#: mate-panel/panel-toplevel.c:1640
 msgid "Drawer"
 msgstr "Calaix"
 
-#: mate-panel/drawer.c:550
+#: mate-panel/drawer.c:546
 msgid "_Add to Drawer..."
 msgstr "_Afegeix al calaix..."
 
-#: mate-panel/drawer.c:556 mate-panel/launcher.c:602
-#: mate-panel/panel-action-button.c:172 mate-panel/panel-context-menu.c:246
+#: mate-panel/drawer.c:552 mate-panel/launcher.c:607
+#: mate-panel/panel-action-button.c:173 mate-panel/panel-context-menu.c:248
 msgid "_Properties"
 msgstr "_Propietats"
 
@@ -2335,7 +2380,7 @@ msgid "- Edit .desktop files"
 msgstr "- Edita els fitxers .desktop"
 
 #: mate-panel/mate-desktop-item-edit.c:144
-#: mate-panel/mate-desktop-item-edit.c:198 mate-panel/launcher.c:974
+#: mate-panel/mate-desktop-item-edit.c:198 mate-panel/launcher.c:1001
 msgid "Create Launcher"
 msgstr "Crea un llançador"
 
@@ -2344,11 +2389,11 @@ msgstr "Crea un llançador"
 msgid "Directory Properties"
 msgstr "Propietats del directori"
 
-#: mate-panel/mate-desktop-item-edit.c:175 mate-panel/launcher.c:817
+#: mate-panel/mate-desktop-item-edit.c:175 mate-panel/launcher.c:811
 msgid "Launcher Properties"
 msgstr "Propietats del llançador"
 
-#: mate-panel/mate-panel.desktop.in:4 mate-panel/main.c:158
+#: mate-panel/mate-panel.desktop.in:4 mate-panel/main.c:167
 msgid "Panel"
 msgstr "Tauler"
 
@@ -2360,15 +2405,15 @@ msgstr ""
 "Llanceu altres aplicacions i proporcioneu diverses utilitats per a gestionar"
 " finestres, mostrar l'hora, etc."
 
-#: mate-panel/launcher.c:120
+#: mate-panel/launcher.c:121
 msgid "Could not show this URL"
 msgstr "No s'ha pogut mostrar aquest URL"
 
-#: mate-panel/launcher.c:121
+#: mate-panel/launcher.c:122
 msgid "No URL was specified."
 msgstr "No s'ha especificat cap URL."
 
-#: mate-panel/launcher.c:217
+#: mate-panel/launcher.c:218
 msgid "Could not use dropped item"
 msgstr "No s'ha pogut utilitzar l'element deixat anar"
 
@@ -2384,268 +2429,268 @@ msgid "Unable to open desktop file %s for panel launcher%s%s\n"
 msgstr ""
 "No es pot obrir el fitxer d'escriptori %s per al llançador del tauler%s%s\n"
 
-#: mate-panel/launcher.c:594
+#: mate-panel/launcher.c:599
 msgid "_Launch"
 msgstr "_Llança"
 
-#: mate-panel/launcher.c:910
+#: mate-panel/launcher.c:937
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "La clau %s no està establerta, no es pot carregar el llançador\n"
 
-#: mate-panel/launcher.c:1043 mate-panel/panel-ditem-editor.c:1326
-#: mate-panel/panel-ditem-editor.c:1360 mate-panel/panel-ditem-editor.c:1391
+#: mate-panel/launcher.c:1072 mate-panel/panel-ditem-editor.c:1177
+#: mate-panel/panel-ditem-editor.c:1211 mate-panel/panel-ditem-editor.c:1241
 msgid "Could not save launcher"
 msgstr "No s'ha pogut desar el llançador"
 
-#: mate-panel/main.c:54
+#: mate-panel/main.c:55
 msgid "Replace a currently running panel"
 msgstr "Substitueix un tauler que ja s'està executant"
 
-#: mate-panel/main.c:56
+#: mate-panel/main.c:57
 msgid "Reset the panel configuration to default"
 msgstr "Restableix la configuració del tauler als valors predeterminats"
 
-#: mate-panel/main.c:58
+#: mate-panel/main.c:59
 msgid "Execute the run dialog"
 msgstr "Executa el diàleg d'execució"
 
-#: mate-panel/main.c:60
+#: mate-panel/main.c:61
 msgid "Set the default panel layout"
 msgstr "Estableix el disseny de tauler per defecte"
 
-#: mate-panel/menu.c:502
+#: mate-panel/menu.c:500
 msgid "Add this launcher to _panel"
 msgstr "Afegeix aquest llançador al _tauler"
 
-#: mate-panel/menu.c:509
+#: mate-panel/menu.c:507
 msgid "Add this launcher to _desktop"
 msgstr "Afegeix aquest llançador a l'_escriptori"
 
-#: mate-panel/menu.c:521
+#: mate-panel/menu.c:518
 msgid "_Entire menu"
 msgstr "Tot el m_enú"
 
-#: mate-panel/menu.c:526
+#: mate-panel/menu.c:523
 msgid "Add this as _drawer to panel"
 msgstr "Afegeix-ho com un calai_x al tauler"
 
-#: mate-panel/menu.c:533
+#: mate-panel/menu.c:530
 msgid "Add this as _menu to panel"
 msgstr "Afegeix-ho com un _menú al tauler"
 
-#: mate-panel/panel-action-button.c:160
+#: mate-panel/panel-action-button.c:161
 msgid "_Activate Screensaver"
 msgstr "_Activa l'estalvi de pantalla"
 
-#: mate-panel/panel-action-button.c:166
+#: mate-panel/panel-action-button.c:167
 msgid "_Lock Screen"
 msgstr "B_loqueja la pantalla"
 
-#: mate-panel/panel-action-button.c:310
+#: mate-panel/panel-action-button.c:311
 msgid "Could not connect to server"
 msgstr "No s'ha pogut connectar al servidor"
 
-#: mate-panel/panel-action-button.c:341
+#: mate-panel/panel-action-button.c:342
 msgid "Lock Screen"
 msgstr "Bloqueja la pantalla"
 
-#: mate-panel/panel-action-button.c:342
+#: mate-panel/panel-action-button.c:343
 msgid "Protect your computer from unauthorized use"
 msgstr "Protegiu el vostre ordinador d'usos no autoritzats"
 
-#: mate-panel/panel-action-button.c:356
+#: mate-panel/panel-action-button.c:357
 msgid "Log Out..."
 msgstr "Tanca la sessió..."
 
-#: mate-panel/panel-action-button.c:357
+#: mate-panel/panel-action-button.c:358
 msgid "Log out of this session to log in as a different user"
 msgstr "Tanqueu aquesta sessió per iniciar-la com un usuari diferent"
 
-#: mate-panel/panel-action-button.c:366
+#: mate-panel/panel-action-button.c:367
 msgid "Run Application..."
 msgstr "Executa una aplicació..."
 
-#: mate-panel/panel-action-button.c:367
+#: mate-panel/panel-action-button.c:368
 msgid "Run an application by typing a command or choosing from a list"
 msgstr ""
 "Executeu una aplicació introduint una ordre, o triant-ne una d'una llista"
 
-#: mate-panel/panel-action-button.c:376
+#: mate-panel/panel-action-button.c:377
 msgid "Search for Files..."
 msgstr "Cerca de fitxers..."
 
-#: mate-panel/panel-action-button.c:377
+#: mate-panel/panel-action-button.c:378
 msgid "Locate documents and folders on this computer by name or content"
 msgstr ""
 "Localitzeu els documents i les carpetes en aquest ordinador pel nom o "
 "contingut"
 
-#: mate-panel/panel-action-button.c:385 mate-panel/panel-force-quit.c:250
+#: mate-panel/panel-action-button.c:386 mate-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "Força la sortida"
 
-#: mate-panel/panel-action-button.c:386
+#: mate-panel/panel-action-button.c:387
 msgid "Force a misbehaving application to quit"
 msgstr "Forceu la sortida d'una aplicació que no es comporti correctament"
 
-#: mate-panel/panel-action-button.c:395
+#: mate-panel/panel-action-button.c:396
 msgid "Connect to Server..."
 msgstr "Connecta't al servidor..."
 
-#: mate-panel/panel-action-button.c:396
+#: mate-panel/panel-action-button.c:397
 msgid "Connect to a remote computer or shared disk"
 msgstr "Connecteu-vos a un servidor remot o a un disc compartit"
 
-#: mate-panel/panel-action-button.c:404
+#: mate-panel/panel-action-button.c:405
 msgid "Shut Down..."
 msgstr "Apaga..."
 
-#: mate-panel/panel-action-button.c:405
+#: mate-panel/panel-action-button.c:406
 msgid "Shut down the computer"
 msgstr "Apagueu l'ordinador"
 
-#: mate-panel/panel-addto.c:125
+#: mate-panel/panel-addto.c:126
 msgid "Custom Application Launcher"
 msgstr "Llançador d'aplicació personalitzada"
 
-#: mate-panel/panel-addto.c:126
+#: mate-panel/panel-addto.c:127
 msgid "Create a new launcher"
 msgstr "Creeu un llançador nou"
 
-#: mate-panel/panel-addto.c:137
+#: mate-panel/panel-addto.c:138
 msgid "Application Launcher..."
 msgstr "Llançador d'aplicació..."
 
-#: mate-panel/panel-addto.c:138
+#: mate-panel/panel-addto.c:139
 msgid "Copy a launcher from the applications menu"
 msgstr "Copieu un llançador del menú d'aplicacions"
 
-#: mate-panel/panel-addto.c:153
+#: mate-panel/panel-addto.c:154
 msgid "Compact Menu"
 msgstr "Menú compacte"
 
-#: mate-panel/panel-addto.c:154
+#: mate-panel/panel-addto.c:155
 msgid "A compact menu"
 msgstr "Un menú compacte"
 
-#: mate-panel/panel-addto.c:165
+#: mate-panel/panel-addto.c:166
 msgid "Classic Menu"
 msgstr "Menú clàssic"
 
-#: mate-panel/panel-addto.c:166
+#: mate-panel/panel-addto.c:167
 msgid "The classic Applications, Places and System menu bar"
 msgstr "La barra de menús clàssica, Aplicacions, Llocs i Sistema"
 
-#: mate-panel/panel-addto.c:177
+#: mate-panel/panel-addto.c:178
 msgid "Separator"
 msgstr "Separador"
 
-#: mate-panel/panel-addto.c:178
+#: mate-panel/panel-addto.c:179
 msgid "A separator to organize the panel items"
 msgstr "Separador per organitzar els elements del tauler"
 
-#: mate-panel/panel-addto.c:190
+#: mate-panel/panel-addto.c:191
 msgid "A pop out drawer to store other items in"
 msgstr "Un calaix emergent per emmagatzemar-hi altres elements"
 
-#: mate-panel/panel-addto.c:274
+#: mate-panel/panel-addto.c:276
 msgid "(empty)"
 msgstr "(buit)"
 
-#: mate-panel/panel-addto.c:419
+#: mate-panel/panel-addto.c:421
 msgid "Not compatible with X11"
 msgstr "No és compatible amb X11"
 
-#: mate-panel/panel-addto.c:426
+#: mate-panel/panel-addto.c:428
 msgid "Not compatible with Wayland"
 msgstr "No és compatible amb Wayland"
 
-#: mate-panel/panel-addto.c:1055
+#: mate-panel/panel-addto.c:1011
 #, c-format
 msgid "Find an _item to add to \"%s\":"
 msgstr "Troba un _element a afegir a «%s»:"
 
-#: mate-panel/panel-addto.c:1059
+#: mate-panel/panel-addto.c:1015
 msgid "Add to Drawer"
 msgstr "Afegeix al calaix"
 
-#: mate-panel/panel-addto.c:1061
+#: mate-panel/panel-addto.c:1017
 msgid "Find an _item to add to the drawer:"
 msgstr "Troba un _element a afegir al calaix:"
 
-#: mate-panel/panel-addto.c:1063
+#: mate-panel/panel-addto.c:1019
 msgid "Add to Panel"
 msgstr "Afegeix al tauler"
 
-#: mate-panel/panel-addto.c:1065
+#: mate-panel/panel-addto.c:1021
 msgid "Find an _item to add to the panel:"
 msgstr "Trobeu un _element per afegir-lo al tauler:"
 
-#: mate-panel/panel-addto.c:1313
+#: mate-panel/panel-addto.c:1270
 msgid "_Back"
 msgstr "_Enrere"
 
-#: mate-panel/panel-applet-frame.c:761
+#: mate-panel/panel-applet-frame.c:758
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "«%s» ha sortit inesperadament"
 
-#: mate-panel/panel-applet-frame.c:763
+#: mate-panel/panel-applet-frame.c:760
 msgid "Panel object has quit unexpectedly"
 msgstr "L'objecte del tauler ha sortit inesperadament"
 
-#: mate-panel/panel-applet-frame.c:770
+#: mate-panel/panel-applet-frame.c:767
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
 msgstr ""
 "Si torneu a carregar un objecte del tauler, s'hi afegirà automàticament."
 
-#: mate-panel/panel-applet-frame.c:777
+#: mate-panel/panel-applet-frame.c:774
 msgid "D_elete"
 msgstr "Suprim_eix"
 
-#: mate-panel/panel-applet-frame.c:778 mate-panel/panel-applet-frame.c:783
+#: mate-panel/panel-applet-frame.c:775 mate-panel/panel-applet-frame.c:780
 msgid "_Don't Reload"
 msgstr "_No el tornis a carregar"
 
-#: mate-panel/panel-applet-frame.c:779 mate-panel/panel-applet-frame.c:784
+#: mate-panel/panel-applet-frame.c:776 mate-panel/panel-applet-frame.c:781
 msgid "_Reload"
 msgstr "To_rna a carregar"
 
-#: mate-panel/panel-applet-frame.c:950
+#: mate-panel/panel-applet-frame.c:947
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "El tauler ha trobat un problema en carregar «%s»."
 
-#: mate-panel/panel-applet-frame.c:965
+#: mate-panel/panel-applet-frame.c:962
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "Voleu eliminar la miniaplicació de la vostra configuració?"
 
-#: mate-panel/panel-applet-frame.c:972 mate-panel/panel.c:1501
+#: mate-panel/panel-applet-frame.c:969 mate-panel/panel.c:1495
 msgid "_Delete"
 msgstr "_Suprimeix"
 
-#: mate-panel/panel-context-menu.c:91
+#: mate-panel/panel-context-menu.c:92
 msgid "And many, many others…"
 msgstr "I molts, molts d'altres…"
 
-#: mate-panel/panel-context-menu.c:114
+#: mate-panel/panel-context-menu.c:115
 msgid "The MATE Panel"
 msgstr "El tauler de MATE"
 
-#: mate-panel/panel-context-menu.c:116
+#: mate-panel/panel-context-menu.c:117
 msgid ""
 "Copyright © 1997-2003 Free Software Foundation, Inc.\n"
 "Copyright © 2004 Vincent Untz\n"
-"Copyright © 2011-2020 MATE developers"
+"Copyright © 2011-2021 MATE developers"
 msgstr ""
 "Drets d'autor © 1997-2003 Free Software Foundation, Inc.\n"
 "Drets d'autor © 2004 Vincent Untz\n"
-"Drets d'autor © 2011-2020 Els desenvolupadors de MATE"
+"Drets d'autor © 2011-2021 Els desenvolupadors de MATE"
 
-#: mate-panel/panel-context-menu.c:119
+#: mate-panel/panel-context-menu.c:120
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
@@ -2653,23 +2698,23 @@ msgstr ""
 "Aquest programa s'encarrega de llançar altres aplicacions, i proporciona "
 "utilitats diverses."
 
-#: mate-panel/panel-context-menu.c:123
+#: mate-panel/panel-context-menu.c:124
 msgid "About the MATE Panel"
 msgstr "Quant al tauler de MATE"
 
-#: mate-panel/panel-context-menu.c:154
+#: mate-panel/panel-context-menu.c:155
 msgid "Cannot delete this panel"
 msgstr "No es pot suprimir aquest tauler"
 
-#: mate-panel/panel-context-menu.c:155
+#: mate-panel/panel-context-menu.c:156
 msgid "You must always have at least one panel."
 msgstr "Sempre heu de tenir com a mínim un tauler."
 
-#: mate-panel/panel-context-menu.c:199
+#: mate-panel/panel-context-menu.c:200
 msgid "Reset all panels?"
 msgstr "Voleu restablir tots els taulers?"
 
-#: mate-panel/panel-context-menu.c:200
+#: mate-panel/panel-context-menu.c:201
 msgid ""
 "When the panels are reset, all \n"
 "custom settings are lost."
@@ -2677,114 +2722,119 @@ msgstr ""
 "Quan es restableixen els taulers,\n"
 "es perden tots ajusts."
 
-#: mate-panel/panel-context-menu.c:214
+#: mate-panel/panel-context-menu.c:215
 msgid "_Reset Panels"
 msgstr "_Restableix els taulers"
 
-#: mate-panel/panel-context-menu.c:236
+#: mate-panel/panel-context-menu.c:237
 msgid "_Add to Panel…"
 msgstr "_Afegeix al tauler…"
 
-#: mate-panel/panel-context-menu.c:256
+#: mate-panel/panel-context-menu.c:258
 msgid "_Reset All Panels"
 msgstr "_Restableix tots els taulers"
 
-#: mate-panel/panel-context-menu.c:263
+#: mate-panel/panel-context-menu.c:265
 msgid "_Delete This Panel"
 msgstr "_Suprimeix aquest tauler"
 
-#: mate-panel/panel-context-menu.c:276
+#: mate-panel/panel-context-menu.c:278
 msgid "_New Panel"
 msgstr "Tauler _nou"
 
-#: mate-panel/panel-context-menu.c:325
+#: mate-panel/panel-context-menu.c:327
 msgid "A_bout Panels"
 msgstr "_Quant al tauler"
 
-#: mate-panel/panel-ditem-editor.c:115
+#: mate-panel/panel-ditem-editor.c:117
 msgid "Application"
 msgstr "Aplicació"
 
-#: mate-panel/panel-ditem-editor.c:117
+#: mate-panel/panel-ditem-editor.c:119
 msgid "Application in Terminal"
 msgstr "Aplicació en un terminal"
 
-#: mate-panel/panel-ditem-editor.c:119
+#: mate-panel/panel-ditem-editor.c:121
 msgid "Location"
 msgstr "Ubicació"
 
-#: mate-panel/panel-ditem-editor.c:602
-msgid "_Type:"
-msgstr "_Tipus:"
-
-#: mate-panel/panel-ditem-editor.c:609
-msgid "_Name:"
-msgstr "_Nom:"
-
-#: mate-panel/panel-ditem-editor.c:634
-msgid "_Browse..."
-msgstr "_Navega..."
-
-#: mate-panel/panel-ditem-editor.c:641
-msgid "Co_mment:"
-msgstr "Co_mentari:"
-
-#: mate-panel/panel-ditem-editor.c:652
-msgid "_Revert"
-msgstr "_Reverteix"
-
-#: mate-panel/panel-ditem-editor.c:978
+#: mate-panel/panel-ditem-editor.c:847
 msgid "Choose an application..."
 msgstr "Seleccioneu una aplicació..."
 
-#: mate-panel/panel-ditem-editor.c:982
+#: mate-panel/panel-ditem-editor.c:851
 msgid "Choose a file..."
 msgstr "Seleccioneu un fitxer..."
 
-#: mate-panel/panel-ditem-editor.c:1146 mate-panel/panel-ditem-editor.c:1155
+#: mate-panel/panel-ditem-editor.c:1003 mate-panel/panel-ditem-editor.c:1012
+#: mate-panel/panel-ditem-editor-dialog.ui:197
 msgid "Comm_and:"
 msgstr "_Ordre:"
 
-#: mate-panel/panel-ditem-editor.c:1164
+#: mate-panel/panel-ditem-editor.c:1021
 msgid "_Location:"
 msgstr "_Ubicació:"
 
-#: mate-panel/panel-ditem-editor.c:1327
+#: mate-panel/panel-ditem-editor.c:1178
 msgid "The name of the launcher is not set."
 msgstr "El llançador no té cap nom establert."
 
-#: mate-panel/panel-ditem-editor.c:1331
+#: mate-panel/panel-ditem-editor.c:1182
 msgid "Could not save directory properties"
 msgstr "No s'han pogut desar les propietats del directori"
 
-#: mate-panel/panel-ditem-editor.c:1332
+#: mate-panel/panel-ditem-editor.c:1183
 msgid "The name of the directory is not set."
 msgstr "No s'ha establert el nom del directori."
 
-#: mate-panel/panel-ditem-editor.c:1348
+#: mate-panel/panel-ditem-editor.c:1199
 msgid "The command of the launcher is not set."
 msgstr "El llançador no té cap ordre establerta."
 
-#: mate-panel/panel-ditem-editor.c:1351
+#: mate-panel/panel-ditem-editor.c:1202
 msgid "The location of the launcher is not set."
 msgstr "El llançador no té cap ubicació establerta."
 
-#: mate-panel/panel-ditem-editor.c:1428
+#: mate-panel/panel-ditem-editor.c:1278
 msgid "Could not display help document"
 msgstr "No s'ha pogut mostrar el document de l'ajuda"
 
-#: mate-panel/panel-force-quit.c:86
+#: mate-panel/panel-ditem-editor-dialog.ui:60
+msgid "_Revert"
+msgstr "_Reverteix"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:108
+msgid "_Ok"
+msgstr "D'ac_ord"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:163
+msgid "_Type:"
+msgstr "_Tipus:"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:180
+msgid "_Name:"
+msgstr "_Nom:"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:214
+msgid "Co_mment:"
+msgstr "Co_mentari:"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:269
+msgid "_Browse..."
+msgstr "_Navega..."
+
+#: mate-panel/panel-force-quit.c:87
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
 msgstr ""
 "Feu clic a una finestra per a forçar la sortida de l'aplicació. Per "
 "cancel·lar, premeu <ESC>."
 
-#: mate-panel/panel-force-quit.c:232
+#: mate-panel/panel-force-quit.c:233
 msgid "Force this application to exit?"
 msgstr "Voleu forçar la sortida d'aquesta aplicació?"
 
-#: mate-panel/panel-force-quit.c:235
+#: mate-panel/panel-force-quit.c:236
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
@@ -2792,58 +2842,58 @@ msgstr ""
 "Si forceu que surti una aplicació, es poden perdre els canvis sense desar "
 "dels documents oberts."
 
-#: mate-panel/panel-menu-bar.c:97
+#: mate-panel/panel-menu-bar.c:98
 msgid "Browse and run installed applications"
 msgstr "Navegueu per les aplicacions instal·lades i executeu-les"
 
-#: mate-panel/panel-menu-bar.c:98
+#: mate-panel/panel-menu-bar.c:99
 msgid "Access documents, folders and network places"
 msgstr "Accediu a documents, carpetes i llocs de la xarxa"
 
-#: mate-panel/panel-menu-bar.c:99
+#: mate-panel/panel-menu-bar.c:100
 msgid "Change desktop appearance and behavior, get help, or log out"
 msgstr ""
 "Canvieu l'aparença de l'escriptori o el comportament, obtingueu ajuda o "
 "sortiu"
 
-#: mate-panel/panel-menu-bar.c:166
+#: mate-panel/panel-menu-bar.c:170
 msgid "Applications"
 msgstr "Aplicacions"
 
-#: mate-panel/panel-menu-bar.c:356 mate-panel/panel-menu-button.c:710
+#: mate-panel/panel-menu-bar.c:360 mate-panel/panel-menu-button.c:705
 msgid "_Edit Menus"
 msgstr "_Edita els menús"
 
-#: mate-panel/panel-menu-button.c:1133
+#: mate-panel/panel-menu-button.c:1123
 msgid "Main Menu"
 msgstr "Menú principal"
 
-#: mate-panel/panel-menu-items.c:466
+#: mate-panel/panel-menu-items.c:464
 msgid "Bookmarks"
 msgstr "Marcadors"
 
 #. Translators: %s is a URI
-#: mate-panel/panel-menu-items.c:489 mate-panel/panel.c:572
+#: mate-panel/panel-menu-items.c:487 mate-panel/panel.c:571
 #, c-format
 msgid "Open '%s'"
 msgstr "Obre «%s»"
 
-#: mate-panel/panel-menu-items.c:560
+#: mate-panel/panel-menu-items.c:558
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr "No es pot explorar %s per als canvis als mitjans"
 
-#: mate-panel/panel-menu-items.c:604
+#: mate-panel/panel-menu-items.c:602
 #, c-format
 msgid "Rescan %s"
 msgstr "Torna a analitzar %s"
 
-#: mate-panel/panel-menu-items.c:641
+#: mate-panel/panel-menu-items.c:640
 #, c-format
 msgid "Unable to mount %s"
 msgstr "No es pot muntar %s"
 
-#: mate-panel/panel-menu-items.c:704
+#: mate-panel/panel-menu-items.c:703
 #, c-format
 msgid "Mount %s"
 msgstr "Muntatge %s"
@@ -2852,98 +2902,98 @@ msgstr "Muntatge %s"
 msgid "Removable Media"
 msgstr "Mitjans extraïbles"
 
-#: mate-panel/panel-menu-items.c:999
+#: mate-panel/panel-menu-items.c:998
 msgid "Network Places"
 msgstr "Llocs de xarxa"
 
-#: mate-panel/panel-menu-items.c:1038
+#: mate-panel/panel-menu-items.c:1037
 msgid "Open your personal folder"
 msgstr "Obriu la vostra carpeta personal"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: mate-panel/panel-menu-items.c:1057
+#: mate-panel/panel-menu-items.c:1056
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr "Escriptori"
 
-#: mate-panel/panel-menu-items.c:1058
+#: mate-panel/panel-menu-items.c:1057
 msgid "Open the contents of your desktop in a folder"
 msgstr "Obriu el contingut del vostre escriptori en una carpeta"
 
-#: mate-panel/panel-menu-items.c:1075
+#: mate-panel/panel-menu-items.c:1074
 msgid "Computer"
 msgstr "Ordinador"
 
-#: mate-panel/panel-menu-items.c:1081
+#: mate-panel/panel-menu-items.c:1080
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
 msgstr ""
 "Navegueu per tots els discs i carpetes, locals o remots, que es poden "
 "accedir des d'aquest ordinador"
 
-#: mate-panel/panel-menu-items.c:1094
+#: mate-panel/panel-menu-items.c:1093
 msgid "Network"
 msgstr "Xarxa"
 
-#: mate-panel/panel-menu-items.c:1095
+#: mate-panel/panel-menu-items.c:1094
 msgid "Browse bookmarked and local network locations"
 msgstr "Navegueu pels marcadors i les ubicacions de la xarxa local"
 
-#: mate-panel/panel-menu-items.c:1489
+#: mate-panel/panel-menu-items.c:1457
 msgid "Places"
 msgstr "Llocs"
 
-#: mate-panel/panel-menu-items.c:1517
+#: mate-panel/panel-menu-items.c:1485
 msgid "System"
 msgstr "Sistema"
 
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: mate-panel/panel-menu-items.c:1602
+#: mate-panel/panel-menu-items.c:1570
 msgctxt "panel:showusername"
 msgid "1"
 msgstr "1"
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: mate-panel/panel-menu-items.c:1614
+#: mate-panel/panel-menu-items.c:1582
 #, c-format
 msgid "Log Out %s..."
 msgstr "Tanca la sessió de l'usuari %s..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: mate-panel/panel-menu-items.c:1618
+#: mate-panel/panel-menu-items.c:1586
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
 msgstr ""
 "Tanqueu la sessió de l'usuari %s, per iniciar la sessió com un usuari "
 "diferent"
 
-#: mate-panel/panel-properties-dialog.c:119 mate-panel/panel-test-applets.c:58
+#: mate-panel/panel-properties-dialog.c:120 mate-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Top"
 msgstr "Superior"
 
-#: mate-panel/panel-properties-dialog.c:120 mate-panel/panel-test-applets.c:59
+#: mate-panel/panel-properties-dialog.c:121 mate-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr "Inferior"
 
-#: mate-panel/panel-properties-dialog.c:121 mate-panel/panel-test-applets.c:60
+#: mate-panel/panel-properties-dialog.c:122 mate-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Left"
 msgstr "Esquerre"
 
-#: mate-panel/panel-properties-dialog.c:122 mate-panel/panel-test-applets.c:61
+#: mate-panel/panel-properties-dialog.c:123 mate-panel/panel-test-applets.c:62
 msgctxt "Orientation"
 msgid "Right"
 msgstr "Dret"
 
-#: mate-panel/panel-properties-dialog.c:818
+#: mate-panel/panel-properties-dialog.c:827
 msgid "Drawer Properties"
 msgstr "Propietats del calaix"
 
@@ -3002,17 +3052,17 @@ msgstr "Seleccioneu un color"
 msgid "<small>Transparent</small>"
 msgstr "<small>Transparent</small>"
 
-#: mate-panel/panel-properties-dialog.ui:553
+#: mate-panel/panel-properties-dialog.ui:545
+msgid "<small>Opaque</small>"
+msgstr "<small>Opac</small>"
+
+#: mate-panel/panel-properties-dialog.ui:566
 msgid "Co_lor:"
 msgstr "Co_lor:"
 
-#: mate-panel/panel-properties-dialog.ui:566
+#: mate-panel/panel-properties-dialog.ui:579
 msgid "S_tyle:"
 msgstr "Es_til:"
-
-#: mate-panel/panel-properties-dialog.ui:580
-msgid "<small>Opaque</small>"
-msgstr "<small>Opac</small>"
 
 #: mate-panel/panel-properties-dialog.ui:613
 msgid "Background _image:"
@@ -3074,42 +3124,42 @@ msgstr ""
 msgid "Clear Recent Documents"
 msgstr "Neteja la llista dels documents recents"
 
-#: mate-panel/panel-recent.c:199
+#: mate-panel/panel-recent.c:200
 msgid "Recent Documents"
 msgstr "Documents recents"
 
-#: mate-panel/panel-recent.c:238
+#: mate-panel/panel-recent.c:242
 msgid "Clear Recent Documents..."
 msgstr "Neteja la llista dels documents recents..."
 
-#: mate-panel/panel-recent.c:240
+#: mate-panel/panel-recent.c:244
 msgid "Clear all items from the recent documents list"
 msgstr "Voleu netejar tots els elements de la llista dels documents recents?"
 
-#: mate-panel/panel-run-dialog.c:436
+#: mate-panel/panel-run-dialog.c:469
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "No s'ha pogut executar l'ordre «%s»"
 
-#: mate-panel/panel-run-dialog.c:477
+#: mate-panel/panel-run-dialog.c:510
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "No s'ha pogut convertir «%s» d'UTF-8"
 
-#: mate-panel/panel-run-dialog.c:1270
+#: mate-panel/panel-run-dialog.c:1335
 msgid "Choose a file to append to the command..."
 msgstr "Seleccioneu un fitxer a afegir a l'ordre..."
 
-#: mate-panel/panel-run-dialog.c:1652 mate-panel/panel-run-dialog.ui:272
+#: mate-panel/panel-run-dialog.c:1689 mate-panel/panel-run-dialog.ui:272
 msgid "Select an application to view its description."
 msgstr "Seleccioneu una aplicació per veure la seva descripció."
 
-#: mate-panel/panel-run-dialog.c:1690
+#: mate-panel/panel-run-dialog.c:1746
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "S'executarà l'ordre: «%s»"
 
-#: mate-panel/panel-run-dialog.c:1723
+#: mate-panel/panel-run-dialog.c:1779
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
 msgstr ""
@@ -3181,24 +3231,24 @@ msgstr "_Neteja"
 msgid "D_on't Delete"
 msgstr "N_o suprimeixis"
 
-#: mate-panel/panel-test-applets.c:39
+#: mate-panel/panel-test-applets.c:40
 msgid "Specify an applet IID to load"
 msgstr "Especifica un id. de miniaplicació a carregar"
 
-#: mate-panel/panel-test-applets.c:40
+#: mate-panel/panel-test-applets.c:41
 msgid ""
 "Specify a gsettings path in which the applet preferences should be stored"
 msgstr ""
 "Especifica una ubicació gsettings on s'han d'emmagatzemar les preferències "
 "de la miniaplicació"
 
-#: mate-panel/panel-test-applets.c:41
+#: mate-panel/panel-test-applets.c:42
 msgid "Specify the initial size of the applet (xx-small, medium, large etc.)"
 msgstr ""
 "Especifica la mida inicial de la miniaplicació (xx-small, medium, large, "
 "etc.)"
 
-#: mate-panel/panel-test-applets.c:42
+#: mate-panel/panel-test-applets.c:43
 msgid ""
 "Specify the initial orientation of the applet (top, bottom, left or right)"
 msgstr ""
@@ -3262,32 +3312,32 @@ msgstr "Mini_aplicació:"
 msgid "_Prefs Path:"
 msgstr "Ubicació de les _preferències:"
 
-#: mate-panel/panel-toplevel.c:1209
+#: mate-panel/panel-toplevel.c:1207
 msgid "Hide Panel"
 msgstr "Oculta el tauler"
 
-#: mate-panel/panel-toplevel.c:1649 mate-panel/panel-toplevel.c:1659
+#: mate-panel/panel-toplevel.c:1646 mate-panel/panel-toplevel.c:1656
 msgid "Top Panel"
 msgstr "Tauler superior"
 
-#: mate-panel/panel-toplevel.c:1651
+#: mate-panel/panel-toplevel.c:1648
 msgid "Bottom Panel"
 msgstr "Tauler inferior"
 
-#: mate-panel/panel-toplevel.c:1653
+#: mate-panel/panel-toplevel.c:1650
 msgid "Left Panel"
 msgstr "Tauler esquerre"
 
-#: mate-panel/panel-toplevel.c:1655
+#: mate-panel/panel-toplevel.c:1652
 msgid "Right Panel"
 msgstr "Tauler dret"
 
-#: mate-panel/panel-util.c:350
+#: mate-panel/panel-util.c:351
 #, c-format
 msgid "Icon '%s' not found"
 msgstr "No s'ha trobat la icona «%s»"
 
-#: mate-panel/panel-util.c:474
+#: mate-panel/panel-util.c:475
 #, c-format
 msgid "Could not execute '%s'"
 msgstr "No s'ha pogut executar «%s»"
@@ -3296,17 +3346,17 @@ msgstr "No s'ha pogut executar «%s»"
 msgid "file"
 msgstr "fitxer"
 
-#: mate-panel/panel-util.c:876
+#: mate-panel/panel-util.c:870
 msgid "Home Folder"
 msgstr "Carpeta de l'usuari"
 
 #. Translators: this is the same string as the one found in
 #. * caja
-#: mate-panel/panel-util.c:888
+#: mate-panel/panel-util.c:882
 msgid "File System"
 msgstr "Sistema de fitxers"
 
-#: mate-panel/panel-util.c:1062
+#: mate-panel/panel-util.c:1045
 msgid "Search"
 msgstr "Cerca"
 
@@ -3314,47 +3364,47 @@ msgstr "Cerca"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
-#: mate-panel/panel-util.c:1108
+#: mate-panel/panel-util.c:1091
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: mate-panel/panel.c:505
+#: mate-panel/panel.c:504
 #, c-format
 msgid "Open URL: %s"
 msgstr "Obre URL: %s"
 
-#: mate-panel/panel.c:671
+#: mate-panel/panel.c:670
 msgid "You dropped an image on the panel, what do you want to do?"
 msgstr "Heu deixat caure una imatge al tauler, què voleu fer?"
 
-#: mate-panel/panel.c:673
+#: mate-panel/panel.c:672
 #, c-format
 msgid "You dropped the image \"%s\" on the panel."
 msgstr "Heu deixat caure la imatge \"%s\" al tauler."
 
-#: mate-panel/panel.c:676
+#: mate-panel/panel.c:675
 msgid ""
 "Do you want to create a launcher for it or use it as the panel's background?"
 msgstr "Voleu crear un llançador o utilitzar la imatge com a fons del tauler?"
 
-#: mate-panel/panel.c:679
+#: mate-panel/panel.c:678
 msgid "Do you want to use it as the panel's background?"
 msgstr "Voleu utilitzar la imatge com a fons del tauler?"
 
-#: mate-panel/panel.c:693
+#: mate-panel/panel.c:692
 msgid "Create _Launcher"
 msgstr "Crea el _llançador"
 
-#: mate-panel/panel.c:697
+#: mate-panel/panel.c:696
 msgid "Set _Background Image"
 msgstr "Estableix la _imatge de fons"
 
-#: mate-panel/panel.c:1477
+#: mate-panel/panel.c:1471
 msgid "Delete this drawer?"
 msgstr "Voleu suprimir aquest calaix?"
 
-#: mate-panel/panel.c:1478
+#: mate-panel/panel.c:1472
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
@@ -3362,11 +3412,11 @@ msgstr ""
 "Quan se suprimeix un calaix, el calaix i els seus\n"
 "ajusts es perden."
 
-#: mate-panel/panel.c:1481
+#: mate-panel/panel.c:1475
 msgid "Delete this panel?"
 msgstr "Voleu suprimir aquest tauler?"
 
-#: mate-panel/panel.c:1482
+#: mate-panel/panel.c:1476
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."

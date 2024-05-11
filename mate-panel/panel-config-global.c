@@ -2,6 +2,7 @@
  * panel-config-global.c: panel global configuration module
  *
  * Copyright (C) 2001 - 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -93,23 +94,23 @@ panel_global_config_set_entry (GSettings *settings, gchar *key)
 
 	if (strcmp (key, "tooltips-enabled") == 0)
 		global_config.tooltips_enabled =
-				g_settings_get_boolean (settings, key);
+			(g_settings_get_boolean (settings, key) != FALSE);
 
 	else if (strcmp (key, "enable-animations") == 0)
 		global_config.enable_animations =
-				g_settings_get_boolean (settings, key);
+			(g_settings_get_boolean (settings, key) != FALSE);
 
 	else if (strcmp (key, "drawer-autoclose") == 0)
 		global_config.drawer_auto_close =
-			g_settings_get_boolean (settings, key);
+			(g_settings_get_boolean (settings, key) != FALSE);
 
 	else if (strcmp (key, "confirm-panel-remove") == 0)
 		global_config.confirm_panel_remove =
-			g_settings_get_boolean (settings, key);
+			(g_settings_get_boolean (settings, key) != FALSE);
 
 	else if (strcmp (key, "highlight-launchers-on-mouseover") == 0)
 		global_config.highlight_when_over =
-			g_settings_get_boolean (settings, key);
+			(g_settings_get_boolean (settings, key) != FALSE);
 }
 
 static void

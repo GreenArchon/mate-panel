@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
  * Copyright (C) 2004 Vincent Untz
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,6 +31,8 @@
 
 #include <string.h>
 #include <glib/gi18n.h>
+
+#include <libmate-desktop/mate-image-menu-item.h>
 
 #include <libpanel-util/panel-error.h>
 #include <libpanel-util/panel-launch.h>
@@ -105,7 +108,7 @@ static void panel_menu_bar_setup_tooltip(PanelMenuBar* menubar)
 	g_signal_connect(menubar->priv->desktop_item, "activate", G_CALLBACK (panel_menu_bar_hide_tooltip_and_focus), menubar);
 
 	/* Reset tooltip when the menu bar is not used */
-	g_signal_connect(GTK_MENU_SHELL (menubar), "deactivate", G_CALLBACK (panel_menu_bar_reinit_tooltip), menubar);
+	g_signal_connect(menubar, "deactivate", G_CALLBACK (panel_menu_bar_reinit_tooltip), menubar);
 }
 
 static void
@@ -134,12 +137,12 @@ panel_menu_bar_update_visibility (GSettings    *settings,
 			image = gtk_image_new_from_icon_name(str, icon_size);
 		else
 			image = gtk_image_new_from_icon_name(PANEL_ICON_MAIN_MENU, icon_size);
-		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menubar->priv->applications_item), image);
+		mate_image_menu_item_set_image (MATE_IMAGE_MENU_ITEM (menubar->priv->applications_item), image);
 		gtk_image_set_pixel_size (GTK_IMAGE (image), icon_height);
 		g_free (str);
 	}
 	else
-		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menubar->priv->applications_item), NULL);
+		mate_image_menu_item_set_image (MATE_IMAGE_MENU_ITEM (menubar->priv->applications_item), NULL);
 }
 
 static void panel_menu_bar_init(PanelMenuBar* menubar)

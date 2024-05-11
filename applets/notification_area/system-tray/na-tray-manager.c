@@ -148,7 +148,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 						      G_PARAM_STATIC_BLURB));
 
   manager_signals[TRAY_ICON_ADDED] =
-    g_signal_new ("tray_icon_added",
+    g_signal_new ("tray-icon-added",
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (NaTrayManagerClass, tray_icon_added),
@@ -158,7 +158,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 		  GTK_TYPE_SOCKET);
 
   manager_signals[TRAY_ICON_REMOVED] =
-    g_signal_new ("tray_icon_removed",
+    g_signal_new ("tray-icon-removed",
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (NaTrayManagerClass, tray_icon_removed),
@@ -167,7 +167,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 		  G_TYPE_NONE, 1,
 		  GTK_TYPE_SOCKET);
   manager_signals[MESSAGE_SENT] =
-    g_signal_new ("message_sent",
+    g_signal_new ("message-sent",
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (NaTrayManagerClass, message_sent),
@@ -179,7 +179,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 		  G_TYPE_LONG,
 		  G_TYPE_LONG);
   manager_signals[MESSAGE_CANCELLED] =
-    g_signal_new ("message_cancelled",
+    g_signal_new ("message-cancelled",
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (NaTrayManagerClass, message_cancelled),
@@ -306,7 +306,7 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
       return;
     }
 
-  g_signal_connect (child, "plug_removed",
+  g_signal_connect (child, "plug-removed",
 		    G_CALLBACK (na_tray_manager_plug_removed), manager);
 
   gtk_socket_add_id (GTK_SOCKET (child), icon_window);
@@ -537,7 +537,6 @@ na_tray_manager_unmanage (NaTrayManager *manager)
 {
 #ifdef GDK_WINDOWING_X11
   GdkDisplay *display;
-  guint32     timestamp;
   GtkWidget  *invisible;
   GdkWindow  *window;
 
@@ -556,7 +555,7 @@ na_tray_manager_unmanage (NaTrayManager *manager)
   if (gdk_selection_owner_get_for_display (display, manager->selection_atom) ==
       window)
     {
-      timestamp = gdk_x11_get_server_time (window);
+      guint32 timestamp = gdk_x11_get_server_time (window);
       gdk_selection_owner_set_for_display (display,
                                            NULL,
                                            manager->selection_atom,

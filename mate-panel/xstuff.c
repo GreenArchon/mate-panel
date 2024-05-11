@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2000, 2001 Eazel, Inc.
  *               2002 Sun Microsystems Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Authors: George Lebl <jirka@5z.com>
  *          Mark McLoughlin <mark@skynet.ie>
@@ -206,8 +207,9 @@ draw_zoom_animation_composited (GdkScreen *gscreen,
 
 	gtk_window_move (GTK_WINDOW (win), wx, wy);
 
-	g_signal_connect (G_OBJECT (win), "draw",
-			 G_CALLBACK (zoom_draw), zoom);
+	g_signal_connect (win, "draw",
+	                  G_CALLBACK (zoom_draw),
+	                  zoom);
 
 	/* see doc for gtk_widget_set_app_paintable() */
 	gtk_widget_realize (win);
@@ -232,7 +234,7 @@ draw_zoom_animation (GdkScreen *gscreen,
 	int i, j;
 	GC frame_gc;
 	XGCValues gcv;
-	GdkColor color = { 65535, 65535, 65535 };
+	GdkColor color = { .pixel = 0, .red = 65535, .green = 65535, .blue = 65535 };
 	Display *dpy;
 	Window root_win;
 	int screen;

@@ -1,5 +1,5 @@
 # vim: set ts=2 sts=2 sw=2 expandtab :
-dist: bionic
+dist: jammy
 language: shell
 os: linux
 services:
@@ -31,7 +31,7 @@ notifications:
     if: (tag OR branch = master) AND
         repo = "mate-desktop/mate-panel"
     channels:
-      - "irc.freenode.org#mate-dev"
+      - "irc.libera.chat#mate-dev"
     template:
       - "[%{repository_name}] %{author}: %{commit_subject}"
       - "[%{branch}] %{commit} %{message} %{build_url}"
@@ -72,4 +72,4 @@ env:
 #  - DISTRO="archlinux:latest"
   - DISTRO="debian:testing"
   - DISTRO="fedora:latest"
-  - DISTRO="ubuntu:rolling"
+#  - DISTRO="ubuntu:rolling"

@@ -1,5 +1,6 @@
 /* Mate panel: general applet functionality
  * (C) 1997 the Free Software Foundation
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Authors:  George Lebl
  *           Federico Mena
@@ -34,8 +35,6 @@
 #include "panel-properties-dialog.h"
 #include "panel-lockdown.h"
 #include "panel-schemas.h"
-
-#define SMALL_ICON_SIZE 20
 
 static GSList *registered_applets = NULL;
 static GSList *queued_position_saves = NULL;
@@ -312,7 +311,6 @@ applet_menu_show (GtkWidget *w,
 	panel_toplevel_push_autohide_disabler (panel_widget->toplevel);
 }
 
-
 static void
 applet_menu_deactivate (GtkWidget *w,
 			AppletInfo *info)
@@ -395,9 +393,9 @@ setup_an_item (AppletUserMenu *menu,
 
 	gtk_widget_show (menu->menuitem);
 
-	g_signal_connect (G_OBJECT (menu->menuitem), "destroy",
-			  G_CALLBACK (gtk_widget_destroyed),
-			  &menu->menuitem);
+	g_signal_connect (menu->menuitem, "destroy",
+	                  G_CALLBACK (gtk_widget_destroyed),
+	                  &menu->menuitem);
 
 	if(submenu)
 		gtk_menu_shell_append (GTK_MENU_SHELL (submenu), menu->menuitem);
@@ -405,11 +403,11 @@ setup_an_item (AppletUserMenu *menu,
 	/*if an item not a submenu*/
 	if (!is_submenu) {
 		g_signal_connect (menu->menuitem, "activate",
-				  G_CALLBACK (applet_callback_callback),
-				  menu);
+		                  G_CALLBACK (applet_callback_callback),
+		                  menu);
 		g_signal_connect (submenu, "destroy",
-				  G_CALLBACK (gtk_widget_destroyed),
-				  &menu->submenu);
+		                  G_CALLBACK (gtk_widget_destroyed),
+		                  &menu->submenu);
 	/* if the item is a submenu and doesn't have it's menu
 	   created yet*/
 	} else if (!menu->submenu) {
@@ -419,9 +417,9 @@ setup_an_item (AppletUserMenu *menu,
 	if(menu->submenu) {
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu->menuitem),
 					  menu->submenu);
-		g_signal_connect (G_OBJECT (menu->submenu), "destroy",
-				    G_CALLBACK (gtk_widget_destroyed),
-				    &menu->submenu);
+		g_signal_connect (menu->submenu, "destroy",
+		                  G_CALLBACK (gtk_widget_destroyed),
+		                  &menu->submenu);
 	}
 
 	gtk_widget_set_sensitive(menu->menuitem,menu->sensitive);
@@ -762,8 +760,6 @@ mate_panel_applet_destroy (GtkWidget  *widget,
 	mate_panel_applet_clear_user_menu (info);
 
 	g_free (info->id);
-	info->id = NULL;
-
 	g_free (info);
 }
 
@@ -791,11 +787,7 @@ static void
 free_applet_to_load (MatePanelAppletToLoad *applet)
 {
 	g_free (applet->id);
-	applet->id = NULL;
-
 	g_free (applet->toplevel_id);
-	applet->toplevel_id = NULL;
-
 	g_free (applet);
 }
 
@@ -1315,11 +1307,11 @@ mate_panel_applet_register (GtkWidget       *applet,
 
 	if (BUTTON_IS_WIDGET (applet) ||
 	    gtk_widget_get_has_window (applet)) {
-		g_signal_connect (applet, "button_press_event",
+		g_signal_connect (applet, "button-press-event",
 				  G_CALLBACK (applet_button_press),
 				  info);
 
-		g_signal_connect (applet, "popup_menu",
+		g_signal_connect (applet, "popup-menu",
 				  G_CALLBACK (applet_popup_menu),
 				  info);
 	}
@@ -1380,7 +1372,6 @@ mate_panel_applet_lockable (AppletInfo *applet)
 {
 	if (panel_lockdown_get_locked_down ())
 		return FALSE;
-
 
 	return g_settings_is_writable (applet->settings, PANEL_OBJECT_LOCKED_KEY);
 }

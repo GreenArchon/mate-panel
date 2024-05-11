@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
  * Copyright (C) 2005 Vincent Untz
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -40,6 +41,7 @@
 #include <glib/gi18n.h>
 #include <gio/gio.h>
 #include <libmate-desktop/mate-gsettings.h>
+#include <libmate-desktop/mate-image-menu-item.h>
 
 #include <libpanel-util/panel-error.h>
 #include <libpanel-util/panel-glib.h>
@@ -58,6 +60,7 @@
 #include "panel-schemas.h"
 
 #define MAX_BOOKMARK_ITEMS      100
+#define N_MENU_ITEM_SIGNALS       9
 
 struct _PanelPlaceMenuItemPrivate {
 	GtkWidget   *menu;
@@ -72,15 +75,7 @@ struct _PanelPlaceMenuItemPrivate {
 	GFileMonitor *bookmarks_monitor;
 
 	GVolumeMonitor *volume_monitor;
-	gulong       drive_changed_id;
-	gulong       drive_connected_id;
-	gulong       drive_disconnected_id;
-	gulong       volume_added_id;
-	gulong       volume_changed_id;
-	gulong       volume_removed_id;
-	gulong       mount_added_id;
-	gulong       mount_changed_id;
-	gulong       mount_removed_id;
+	gulong       signal_id [N_MENU_ITEM_SIGNALS];
 
 	guint        use_image : 1;
 };
@@ -93,8 +88,8 @@ struct _PanelDesktopMenuItemPrivate {
 	guint        append_lock_logout : 1;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (PanelPlaceMenuItem, panel_place_menu_item, GTK_TYPE_IMAGE_MENU_ITEM)
-G_DEFINE_TYPE_WITH_PRIVATE (PanelDesktopMenuItem, panel_desktop_menu_item, GTK_TYPE_IMAGE_MENU_ITEM)
+G_DEFINE_TYPE_WITH_PRIVATE (PanelPlaceMenuItem, panel_place_menu_item, MATE_TYPE_IMAGE_MENU_ITEM)
+G_DEFINE_TYPE_WITH_PRIVATE (PanelDesktopMenuItem, panel_desktop_menu_item, MATE_TYPE_IMAGE_MENU_ITEM)
 
 static void activate_uri_on_screen(const char* uri, GdkScreen* screen)
 {
@@ -148,7 +143,6 @@ panel_menu_items_append_from_desktop (GtkWidget *menu,
 	char      *uri;
 	char      *type;
 	gboolean   is_application;
-	char      *tryexec;
 	char      *icon;
 	char      *name;
 	char      *comment;
@@ -203,7 +197,7 @@ panel_menu_items_append_from_desktop (GtkWidget *menu,
 	g_free (type);
 
 	if (is_application) {
-		tryexec = panel_key_file_get_string (key_file, "TryExec");
+		char *tryexec = panel_key_file_get_string (key_file, "TryExec");
 		if (tryexec) {
 			char *prog;
 
@@ -237,7 +231,7 @@ panel_menu_items_append_from_desktop (GtkWidget *menu,
 	if (use_icon) {
 		item = panel_image_menu_item_new ();
         } else {
-		item = gtk_image_menu_item_new ();
+		item = mate_image_menu_item_new ();
 	}
 
 	setup_menuitem_with_icon (item, panel_menu_icon_get_size (),
@@ -250,8 +244,9 @@ panel_menu_items_append_from_desktop (GtkWidget *menu,
 			       G_CALLBACK (panel_menu_item_activate_desktop_file),
 			       g_strdup (full_path),
 			       (GClosureNotify) G_CALLBACK (g_free), 0);
-	g_signal_connect (G_OBJECT (item), "button_press_event",
-			  G_CALLBACK (menu_dummy_button_press_event), NULL);
+	g_signal_connect (item, "button-press-event",
+	                  G_CALLBACK (menu_dummy_button_press_event),
+	                  NULL);
 
 	uri = g_filename_to_uri (full_path, NULL, NULL);
 
@@ -299,8 +294,9 @@ panel_menu_items_append_place_item (const char *icon_name,
 	g_signal_connect_data (item, "activate", callback, user_data,
 			       (GClosureNotify) G_CALLBACK (g_free), 0);
 
-	g_signal_connect (G_OBJECT (item), "button_press_event",
-			  G_CALLBACK (menu_dummy_button_press_event), NULL);
+	g_signal_connect (item, "button-press-event",
+	                  G_CALLBACK (menu_dummy_button_press_event),
+	                  NULL);
 
 	if (g_str_has_prefix (uri, "file:")) /*Links only work for local files*/
 		setup_uri_drag (item, uri, icon_name, GDK_ACTION_LINK);
@@ -316,7 +312,7 @@ panel_menu_items_create_action_item_full (PanelActionButtonType  action_type,
 	if (panel_action_get_is_disabled (action_type))
 		return NULL;
 
-	item = gtk_image_menu_item_new ();
+	item = mate_image_menu_item_new ();
         setup_menuitem_with_icon (item,
 				  panel_menu_icon_get_size (),
 				  NULL,
@@ -329,9 +325,11 @@ panel_menu_items_create_action_item_full (PanelActionButtonType  action_type,
 					panel_action_get_tooltip (action_type));
 
 	g_signal_connect (item, "activate",
-			  panel_action_get_invoke (action_type), NULL);
-	g_signal_connect (G_OBJECT (item), "button_press_event",
-			  G_CALLBACK (menu_dummy_button_press_event), NULL);
+			  panel_action_get_invoke (action_type),
+	                  NULL);
+	g_signal_connect (item, "button-press-event",
+	                  G_CALLBACK (menu_dummy_button_press_event),
+	                  NULL);
 	setup_internal_applet_drag (item, action_type);
 
 	return item;
@@ -410,7 +408,6 @@ panel_place_menu_item_append_gtk_bookmarks (GtkWidget *menu, guint max_items_or_
 		char *line = (char*) l->data;
 
 		if (line[0] && !g_hash_table_lookup (table, line)) {
-			GFile    *file;
 			char     *space;
 			char     *label;
 			gboolean  keep;
@@ -431,7 +428,7 @@ panel_place_menu_item_append_gtk_bookmarks (GtkWidget *menu, guint max_items_or_
 				keep = TRUE;
 
 			if (!keep) {
-				file = g_file_new_for_uri (line);
+				GFile *file = g_file_new_for_uri (line);
 				keep = !g_file_is_native (file) ||
 				       g_file_query_exists (file, NULL);
 				g_object_unref (file);
@@ -460,7 +457,7 @@ panel_place_menu_item_append_gtk_bookmarks (GtkWidget *menu, guint max_items_or_
 	} else {
 		GtkWidget *item;
 
-		item = gtk_image_menu_item_new ();
+		item = mate_image_menu_item_new ();
 		setup_menuitem_with_icon (item, panel_menu_icon_get_size (),
 					  NULL, PANEL_ICON_BOOKMARKS,
 					  _("Bookmarks"));
@@ -545,15 +542,16 @@ drive_poll_for_media_cb (GObject      *source_object,
 			 GAsyncResult *res,
 			 gpointer      user_data)
 {
-	GdkScreen *screen;
-	GError    *error;
-	char      *primary;
-	char      *name;
+	GError *error;
 
 	error = NULL;
 	if (!g_drive_poll_for_media_finish (G_DRIVE (source_object),
 					    res, &error)) {
 		if (error->code != G_IO_ERROR_FAILED_HANDLED) {
+			GdkScreen *screen;
+			char      *primary;
+			char      *name;
+
 			screen = GDK_SCREEN (user_data);
 
 			name = g_drive_get_name (G_DRIVE (source_object));
@@ -614,8 +612,9 @@ panel_menu_item_append_drive (GtkWidget *menu,
 			       g_object_ref (drive),
 			       (GClosureNotify) G_CALLBACK (g_object_unref), 0);
 
-	g_signal_connect (G_OBJECT (item), "button_press_event",
-			  G_CALLBACK (menu_dummy_button_press_event), NULL);
+	g_signal_connect (item, "button-press-event",
+	                  G_CALLBACK (menu_dummy_button_press_event),
+	                  NULL);
 }
 
 typedef struct {
@@ -633,10 +632,10 @@ volume_mount_cb (GObject      *source_object,
 
 	error = NULL;
 	if (!g_volume_mount_finish (G_VOLUME (source_object), res, &error)) {
-		char *primary;
-		char *name;
-
 		if (error->code != G_IO_ERROR_FAILED_HANDLED) {
+			char *primary;
+			char *name;
+
 			name = g_volume_get_name (G_VOLUME (source_object));
 			primary = g_strdup_printf (_("Unable to mount %s"),
 						   name);
@@ -714,8 +713,9 @@ panel_menu_item_append_volume (GtkWidget *menu,
 			       g_object_ref (volume),
 			       (GClosureNotify) G_CALLBACK (g_object_unref), 0);
 
-	g_signal_connect (G_OBJECT (item), "button_press_event",
-			  G_CALLBACK (menu_dummy_button_press_event), NULL);
+	g_signal_connect (item, "button-press-event",
+	                  G_CALLBACK (menu_dummy_button_press_event),
+	                  NULL);
 }
 
 static void
@@ -905,7 +905,7 @@ panel_place_menu_item_append_local_gio (PanelPlaceMenuItem *place_item,
 	} else {
 		GtkWidget  *menu_item;
 
-		menu_item = gtk_image_menu_item_new ();
+		menu_item = mate_image_menu_item_new ();
 		setup_menuitem_with_icon (menu_item, panel_menu_icon_get_size (),
 		                          NULL,
 		                          PANEL_ICON_REMOVABLE_MEDIA,
@@ -982,7 +982,6 @@ panel_place_menu_item_append_remote_gio (PanelPlaceMenuItem *place_item,
 		}
 		g_object_unref (root);
 
-
 		add_mounts = g_slist_prepend (add_mounts, mount);
 	}
 	add_mounts = g_slist_reverse (add_mounts);
@@ -1015,16 +1014,15 @@ panel_place_menu_item_append_remote_gio (PanelPlaceMenuItem *place_item,
 	g_list_free (mounts);
 }
 
-
 static GtkWidget *
 panel_place_menu_item_create_menu (PanelPlaceMenuItem *place_item)
 {
 	GtkWidget *places_menu;
-	GtkWidget *item;
 	char      *gsettings_name = NULL;
 	char      *name;
 	char      *uri;
 	GFile     *file;
+	int        recent_items_limit;
 
 	places_menu = panel_create_menu ();
 
@@ -1101,7 +1099,7 @@ panel_place_menu_item_create_menu (PanelPlaceMenuItem *place_item)
 	if (panel_is_program_in_path ("caja-connect-server") ||
 	    panel_is_program_in_path ("nautilus-connect-server") ||
 	    panel_is_program_in_path ("nemo-connect-server")) {
-		item = panel_menu_items_create_action_item (PANEL_ACTION_CONNECT_SERVER);
+		GtkWidget *item = panel_menu_items_create_action_item (PANEL_ACTION_CONNECT_SERVER);
 		if (item != NULL)
 			gtk_menu_shell_append (GTK_MENU_SHELL (places_menu),
 					       item);
@@ -1120,8 +1118,12 @@ panel_place_menu_item_create_menu (PanelPlaceMenuItem *place_item)
 						      NULL,
 						      FALSE);
 
+	recent_items_limit = g_settings_get_int (place_item->priv->menubar_settings,
+						 PANEL_MENU_BAR_MAX_RECENT_ITEMS);
+
 	panel_recent_append_documents_menu (places_menu,
-					    place_item->priv->recent_manager);
+					    place_item->priv->recent_manager,
+					    recent_items_limit);
 /* Fix any failures of compiz/other wm's to communicate with gtk for transparency */
 	GtkWidget *toplevel = gtk_widget_get_toplevel (places_menu);
 	GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(toplevel));
@@ -1260,73 +1262,31 @@ static void
 panel_place_menu_item_finalize (GObject *object)
 {
 	PanelPlaceMenuItem *menuitem = (PanelPlaceMenuItem *) object;
+	guint i;
 
-	if (menuitem->priv->caja_desktop_settings) {
-		g_object_unref (menuitem->priv->caja_desktop_settings);
-		menuitem->priv->caja_desktop_settings = NULL;
-	}
-	if (menuitem->priv->caja_prefs_settings) {
-		g_object_unref (menuitem->priv->caja_prefs_settings);
-		menuitem->priv->caja_prefs_settings = NULL;
-	}
-
-	g_object_unref (menuitem->priv->menubar_settings);
-	menuitem->priv->menubar_settings = NULL;
+	g_clear_object (&menuitem->priv->caja_desktop_settings);
+	g_clear_object (&menuitem->priv->caja_prefs_settings);
+	g_clear_object (&menuitem->priv->menubar_settings);
 
 	if (menuitem->priv->bookmarks_monitor != NULL) {
 		g_file_monitor_cancel (menuitem->priv->bookmarks_monitor);
-		g_object_unref (menuitem->priv->bookmarks_monitor);
+		g_clear_object (&menuitem->priv->bookmarks_monitor);
 	}
-	menuitem->priv->bookmarks_monitor = NULL;
 
-	if (menuitem->priv->drive_changed_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->drive_changed_id);
-	menuitem->priv->drive_changed_id = 0;
+	for (i = 0; i < N_MENU_ITEM_SIGNALS; i++) {
+#if GLIB_CHECK_VERSION(2,62,0)
+		g_clear_signal_handler (&menuitem->priv->signal_id [i],
+		                        menuitem->priv->volume_monitor);
+#else
+		if (menuitem->priv->signal_id [i] != 0) {
+			g_signal_handler_disconnect (menuitem->priv->volume_monitor,
+						     menuitem->priv->signal_id [i]);
+			menuitem->priv->signal_id [i] = 0;
+		}
+#endif
+	}
 
-	if (menuitem->priv->drive_connected_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->drive_connected_id);
-	menuitem->priv->drive_connected_id = 0;
-
-	if (menuitem->priv->drive_disconnected_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->drive_disconnected_id);
-	menuitem->priv->drive_disconnected_id = 0;
-
-	if (menuitem->priv->volume_added_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->volume_added_id);
-	menuitem->priv->volume_added_id = 0;
-
-	if (menuitem->priv->volume_changed_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->volume_changed_id);
-	menuitem->priv->volume_changed_id = 0;
-
-	if (menuitem->priv->volume_removed_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->volume_removed_id);
-	menuitem->priv->volume_removed_id = 0;
-
-	if (menuitem->priv->mount_added_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->mount_added_id);
-	menuitem->priv->mount_added_id = 0;
-
-	if (menuitem->priv->mount_changed_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->mount_changed_id);
-	menuitem->priv->mount_changed_id = 0;
-
-	if (menuitem->priv->mount_removed_id)
-		g_signal_handler_disconnect (menuitem->priv->volume_monitor,
-					     menuitem->priv->mount_removed_id);
-	menuitem->priv->mount_removed_id = 0;
-
-	if (menuitem->priv->volume_monitor != NULL)
-		g_object_unref (menuitem->priv->volume_monitor);
-	menuitem->priv->volume_monitor = NULL;
+	g_clear_object (&menuitem->priv->volume_monitor);
 
 	G_OBJECT_CLASS (panel_place_menu_item_parent_class)->finalize (object);
 }
@@ -1348,6 +1308,7 @@ panel_place_menu_item_init (PanelPlaceMenuItem *menuitem)
 	GFile *bookmark;
 	char  *bookmarks_filename;
 	GError *error;
+	guint i;
 
 	menuitem->priv = panel_place_menu_item_get_instance_private (menuitem);
 
@@ -1380,6 +1341,10 @@ panel_place_menu_item_init (PanelPlaceMenuItem *menuitem)
 			"changed::" PANEL_MENU_BAR_MAX_ITEMS_OR_SUBMENU,
 			G_CALLBACK (panel_place_menu_item_key_changed),
 			G_OBJECT (menuitem));
+	g_signal_connect (menuitem->priv->menubar_settings,
+			"changed::" PANEL_MENU_BAR_MAX_RECENT_ITEMS,
+			G_CALLBACK (panel_place_menu_item_key_changed),
+			G_OBJECT (menuitem));
 
 	menuitem->priv->recent_manager = gtk_recent_manager_get_default ();
 
@@ -1398,8 +1363,7 @@ panel_place_menu_item_init (PanelPlaceMenuItem *menuitem)
 			   bookmarks_filename, error->message);
 		g_error_free (error);
 	} else {
-		g_signal_connect (G_OBJECT (menuitem->priv->bookmarks_monitor),
-				  "changed",
+		g_signal_connect (menuitem->priv->bookmarks_monitor, "changed",
 				  (GCallback) panel_place_menu_item_gtk_bookmarks_changed,
 				  menuitem);
 	}
@@ -1409,42 +1373,45 @@ panel_place_menu_item_init (PanelPlaceMenuItem *menuitem)
 
 	menuitem->priv->volume_monitor = g_volume_monitor_get ();
 
-	menuitem->priv->drive_changed_id = g_signal_connect (menuitem->priv->volume_monitor,
-							   "drive-changed",
-							   G_CALLBACK (panel_place_menu_item_drives_changed),
-							   menuitem);
-	menuitem->priv->drive_connected_id = g_signal_connect (menuitem->priv->volume_monitor,
-							     "drive-connected",
-							     G_CALLBACK (panel_place_menu_item_drives_changed),
-							     menuitem);
-	menuitem->priv->drive_disconnected_id = g_signal_connect (menuitem->priv->volume_monitor,
-							     "drive-disconnected",
-							     G_CALLBACK (panel_place_menu_item_drives_changed),
-							     menuitem);
-	menuitem->priv->volume_added_id = g_signal_connect (menuitem->priv->volume_monitor,
-							   "volume-added",
-							   G_CALLBACK (panel_place_menu_item_volumes_changed),
-							   menuitem);
-	menuitem->priv->volume_changed_id = g_signal_connect (menuitem->priv->volume_monitor,
-							     "volume-changed",
-							     G_CALLBACK (panel_place_menu_item_volumes_changed),
-							     menuitem);
-	menuitem->priv->volume_removed_id = g_signal_connect (menuitem->priv->volume_monitor,
-							     "volume-removed",
-							     G_CALLBACK (panel_place_menu_item_volumes_changed),
-							     menuitem);
-	menuitem->priv->mount_added_id = g_signal_connect (menuitem->priv->volume_monitor,
-							   "mount-added",
-							   G_CALLBACK (panel_place_menu_item_mounts_changed),
-							   menuitem);
-	menuitem->priv->mount_changed_id = g_signal_connect (menuitem->priv->volume_monitor,
-							     "mount-changed",
-							     G_CALLBACK (panel_place_menu_item_mounts_changed),
-							     menuitem);
-	menuitem->priv->mount_removed_id = g_signal_connect (menuitem->priv->volume_monitor,
-							     "mount-removed",
-							     G_CALLBACK (panel_place_menu_item_mounts_changed),
-							     menuitem);
+	i = 0;
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "drive-changed",
+		                  G_CALLBACK (panel_place_menu_item_drives_changed),
+		                  menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "drive-connected",
+		                  G_CALLBACK (panel_place_menu_item_drives_changed),
+		                  menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "drive-disconnected",
+		                  G_CALLBACK (panel_place_menu_item_drives_changed),
+		                  menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "volume-added",
+		                  G_CALLBACK (panel_place_menu_item_volumes_changed),
+		                  menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "volume-changed",
+		                  G_CALLBACK (panel_place_menu_item_volumes_changed),
+		                  menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "volume-removed",
+		                 G_CALLBACK (panel_place_menu_item_volumes_changed),
+		                 menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "mount-added",
+		                  G_CALLBACK (panel_place_menu_item_mounts_changed),
+		                  menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "mount-changed",
+		                  G_CALLBACK (panel_place_menu_item_mounts_changed),
+		                  menuitem);
+	menuitem->priv->signal_id [i++] =
+		g_signal_connect (menuitem->priv->volume_monitor, "mount-removed",
+		                  G_CALLBACK (panel_place_menu_item_mounts_changed),
+		                  menuitem);
+
+	g_assert (i == N_MENU_ITEM_SIGNALS);
 
 }
 
@@ -1488,7 +1455,7 @@ GtkWidget* panel_place_menu_item_new(gboolean use_image)
 
 	setup_menuitem(GTK_WIDGET(menuitem), image ? panel_menu_icon_get_size() : GTK_ICON_SIZE_INVALID, image, _("Places"));
 
-	menuitem->priv->use_image = use_image;
+	menuitem->priv->use_image = (use_image != FALSE);
 
 	menuitem->priv->menu = panel_place_menu_item_create_menu(menuitem);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuitem), menuitem->priv->menu);
@@ -1516,9 +1483,9 @@ panel_desktop_menu_item_new (gboolean use_image,
 			image,
 			_("System"));
 
-	menuitem->priv->use_image = use_image;
+	menuitem->priv->use_image = (use_image != FALSE);
 
-	menuitem->priv->append_lock_logout = append_lock_logout;
+	menuitem->priv->append_lock_logout = (append_lock_logout != FALSE);
 	if (append_lock_logout)
 		panel_lockdown_notify_add (G_CALLBACK (panel_desktop_menu_item_recreate_menu),
 					   menuitem);

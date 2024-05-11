@@ -316,21 +316,31 @@ na_grid_realize (GtkWidget *widget)
 {
   NaGrid *self = NA_GRID (widget);
   GdkScreen *screen;
-  GtkOrientation orientation;
-  NaHost *tray_host;
+  GdkDisplay *display;
+  GSettings *settings;
 
   GTK_WIDGET_CLASS (na_grid_parent_class)->realize (widget);
 
+  display = gdk_display_get_default ();
   /* Instantiate the hosts now we have a screen */
   screen = gtk_widget_get_screen (GTK_WIDGET (self));
-  orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (self));
-  tray_host = na_tray_new_for_screen (screen, orientation);
-  g_object_bind_property (self, "orientation",
+  if  (GDK_IS_X11_DISPLAY (display))
+  {
+    GtkOrientation orientation;
+    NaHost *tray_host;
+
+    orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (self));
+    tray_host = na_tray_new_for_screen (screen, orientation);
+    g_object_bind_property (self, "orientation",
                           tray_host, "orientation",
                           G_BINDING_DEFAULT);
 
-  add_host (self, tray_host);
-  add_host (self, sn_host_v0_new ());
+    add_host (self, tray_host);
+  }
+  settings = g_settings_new ("org.mate.panel");
+  if (g_settings_get_boolean (settings, "enable-sni-support"))
+    add_host (self, sn_host_v0_new ());
+  g_object_unref (settings);
 }
 
 static void

@@ -2,6 +2,7 @@
  * panel-error.c: an easy-to-use error dialog
  *
  * Copyright (C) 2008 Novell, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Originally based on code from panel-util.c (there was no relevant copyright
  * header at the time).
@@ -79,9 +80,9 @@ panel_error_dialog (GtkWindow  *parent,
 	gtk_widget_show_all (dialog);
 
 	if (auto_destroy)
-		g_signal_connect_swapped (G_OBJECT (dialog), "response",
-					  G_CALLBACK (gtk_widget_destroy),
-					  G_OBJECT (dialog));
+		g_signal_connect_swapped (dialog, "response",
+		                          G_CALLBACK (gtk_widget_destroy),
+		                          dialog);
 
 	if (freeme)
 		g_free (freeme);

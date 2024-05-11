@@ -2,6 +2,7 @@
  * panel-frame.c: A frame which only draws certain edges.
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -174,7 +175,6 @@ panel_frame_draw (GtkWidget      *widget,
 	GdkRGBA           dark, light;
 	GtkBorder         padding;
 	int               x, y, width, height;
-
 
 	if (edges == PANEL_EDGE_NONE)
 		return;

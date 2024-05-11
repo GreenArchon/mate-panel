@@ -62,14 +62,14 @@ typedef struct {
 
 	TasklistGroupingType grouping;
 	gboolean move_unminimized_windows;
+	gboolean scroll_enable;
+	gboolean middle_click_close;
 
 	GtkOrientation orientation;
 	int size;
 #if !defined(WNCKLET_INPROCESS) && !GTK_CHECK_VERSION (3, 23, 0)
 	gboolean needs_hints;
 #endif
-
-	GtkIconTheme* icon_theme;
 
 	/* Properties: */
 	GtkWidget* properties_dialog;
@@ -86,6 +86,8 @@ typedef struct {
 	GtkWidget* auto_group_radio;
 	GtkWidget* always_group_radio;
 	GtkWidget* move_minimized_radio;
+	GtkWidget* mouse_scroll_check;
+	GtkWidget* middle_click_close_check;
 	GtkWidget* change_workspace_radio;
 	GtkWidget* minimized_windows_box;
 	GtkWidget* window_grouping_box;
@@ -135,6 +137,8 @@ static void tasklist_update(TasklistData* tasklist)
 		wnck_tasklist_set_grouping(WNCK_TASKLIST(tasklist->tasklist), grouping);
 		wnck_tasklist_set_include_all_workspaces(WNCK_TASKLIST(tasklist->tasklist), tasklist->include_all_workspaces);
 		wnck_tasklist_set_switch_workspace_on_unminimize(WNCK_TASKLIST(tasklist->tasklist), tasklist->move_unminimized_windows);
+		wnck_tasklist_set_scroll_enabled (WNCK_TASKLIST(tasklist->tasklist), tasklist->scroll_enable);
+		wnck_tasklist_set_middle_click_close (WNCK_TASKLIST (tasklist->tasklist), tasklist->middle_click_close);
 	}
 #endif /* HAVE_X11 */
 
@@ -199,11 +203,6 @@ static void response_cb(GtkWidget* widget, int id, TasklistData* tasklist)
 	}
 }
 
-static void applet_realized(MatePanelApplet* applet, TasklistData* tasklist)
-{
-	tasklist->icon_theme = gtk_icon_theme_get_for_screen(gtk_widget_get_screen(tasklist->applet));
-}
-
 static void applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient orient, TasklistData* tasklist)
 {
 	GtkOrientation new_orient;
@@ -252,7 +251,6 @@ preview_window_thumbnail (WnckWindow   *wnck_window,
                           int          *thumbnail_scale)
 {
 	GdkWindow *window;
-	GdkWindow *window_wrapper = NULL;
 	Window win;
 	cairo_surface_t *thumbnail;
 	cairo_t *cr;
@@ -261,20 +259,9 @@ preview_window_thumbnail (WnckWindow   *wnck_window,
 
 	win = wnck_window_get_xid (wnck_window);
 
-	if ((window = gdk_x11_window_lookup_for_display (gdk_display_get_default (), win)) == NULL)
+	if ((window = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (), win)) == NULL)
 	{
-		if ((window = gdk_x11_window_foreign_new_for_display (gdk_display_get_default (), win)) == NULL)
-		{
-			return NULL;
-		}
-		else
-		{
-			window_wrapper = window;
-		}
-	}
-	else
-	{
-		g_object_ref (window);
+		return NULL;
 	}
 
 	*thumbnail_scale = scale = gdk_window_get_scale_factor (window);
@@ -297,6 +284,8 @@ preview_window_thumbnail (WnckWindow   *wnck_window,
 		*thumbnail_width = (int) ((double) width * ratio);
 	}
 
+	gdk_x11_display_error_trap_push (gdk_window_get_display (window));
+
 	thumbnail = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
 	                                        *thumbnail_width,
 	                                        *thumbnail_height);
@@ -307,50 +296,137 @@ preview_window_thumbnail (WnckWindow   *wnck_window,
 	cairo_paint (cr);
 	cairo_destroy (cr);
 
-	if (window_wrapper)
-		g_object_unref (window_wrapper);
+	if (gdk_x11_display_error_trap_pop (gdk_window_get_display (window)))
+	{
+		cairo_surface_destroy (thumbnail);
+		thumbnail = NULL;
+	}
+
 	g_object_unref (window);
 
 	return thumbnail;
 }
 
+static int g_int_compare(gconstpointer a, gconstpointer b)
+{
+	gint a_val = GPOINTER_TO_INT(a);
+	gint b_val = GPOINTER_TO_INT(b);
+	if (a_val > b_val) return -1;
+	if (a_val == b_val) return 0;
+	return 1;
+}
+
+static int find_offset(GList *list, gdouble target)
+{
+	GList *node = list;
+	while (node != NULL) {
+		int value = GPOINTER_TO_INT(node->data);
+		if (value <= target)
+			return value;
+		node = node->next;
+	}
+	return -1;
+}
+
 #define PREVIEW_PADDING 5
 static void
-preview_window_reposition (TasklistData    *tasklist,
-                           cairo_surface_t *thumbnail,
+preview_window_reposition (WnckTasklist    *tl,
+                           TasklistData    *tasklist,
                            int              width,
                            int              height,
                            int              scale)
 {
+	/* Known issues:
+	 * - When grouping is toggled the previews won't be centered correctly until a new window is opened or one is closed.
+	 * - Previews are not shown at all for grouped windows, this function is not called when hovering over those.
+	 */
+
 	GdkMonitor *monitor;
 	GdkRectangle monitor_geom;
-	int x_pos, y_pos;
+	MatePanelAppletOrient orient;
+	gdouble x_pos, y_pos;
+	int x_offset, y_offset;
 
-	/* Set position at pointer, then re-adjust from there to just outside of the pointer */
-	gtk_window_set_position (GTK_WINDOW (tasklist->preview), GTK_WIN_POS_MOUSE);
-	gtk_window_get_position (GTK_WINDOW (tasklist->preview), &x_pos, &y_pos);
+	/* Get mouse position */
+	gdk_device_get_position_double (gdk_seat_get_pointer (gdk_display_get_default_seat (gdk_display_get_default ())), NULL, &x_pos, &y_pos);
 
 	/* Get geometry of monitor where tasklist is located to calculate correct position of preview */
 	monitor = gdk_display_get_monitor_at_point (gdk_display_get_default (), x_pos, y_pos);
 	gdk_monitor_get_geometry (monitor, &monitor_geom);
 
+	/* Get the position where the window list applet starts */
+	gdk_window_get_origin (gtk_widget_get_window (gtk_widget_get_parent (GTK_WIDGET(tl))), &x_offset, &y_offset);
+
+	/* Get panel orientation */
+	orient = mate_panel_applet_get_orient (MATE_PANEL_APPLET (tasklist->applet));
+
 	/* Add padding to clear the panel */
-	switch (mate_panel_applet_get_orient (MATE_PANEL_APPLET (tasklist->applet)))
+	switch (orient)
 	{
 		case MATE_PANEL_APPLET_ORIENT_LEFT:
-			x_pos = monitor_geom.width + monitor_geom.x - (width/scale + tasklist->size) - PREVIEW_PADDING;
+			x_pos = monitor_geom.width + monitor_geom.x - width - tasklist->size - PREVIEW_PADDING;
 			break;
 		case MATE_PANEL_APPLET_ORIENT_RIGHT:
 			x_pos = tasklist->size + PREVIEW_PADDING;
 			break;
 		case MATE_PANEL_APPLET_ORIENT_UP:
-			y_pos = monitor_geom.height + monitor_geom.y - (height/scale + tasklist->size) - PREVIEW_PADDING;
+			y_pos = monitor_geom.height + monitor_geom.y - height - tasklist->size - PREVIEW_PADDING;
 			break;
 		case MATE_PANEL_APPLET_ORIENT_DOWN:
 		default:
 			y_pos = tasklist->size + PREVIEW_PADDING;
 			break;
 	}
+
+	/* Collect the allocation.x/y values of each button into lists.
+	 * We need to iterate over all of them because grouped buttons will be the last children,
+	 * even though they are positioned at the beginning. And not all buttons will have the exact same width.
+	 * This allows us to avoid off-by-one errors that would cause the preview to be positioned over the adjacent button. */
+	GList *alloc_x_list = NULL;
+	GList *alloc_y_list = NULL;
+	GtkAllocation last_alloc;
+	GList* children = gtk_container_get_children (GTK_CONTAINER(tl));
+	while (children != NULL)
+	{
+		if (g_strcmp0 (gtk_widget_get_name (children->data), "tasklist-button") == 0) {
+			GtkAllocation alloc;
+			gtk_widget_get_allocation (children->data, &alloc);
+
+			/* Skip grouped buttons: these usually have alloc width/heigh=1, except right after grouping is toggled.
+			 * Then simply open or close a new window to get the correct offset. */
+			if (alloc.width < 2 || alloc.height < 2)
+			{
+				children = children->next;
+				continue;
+			}
+
+			/* Keep x and y offsets in sorted lists */
+			alloc_x_list = g_list_insert_sorted (alloc_x_list, GINT_TO_POINTER(alloc.x), g_int_compare);
+			alloc_y_list = g_list_insert_sorted (alloc_y_list, GINT_TO_POINTER(alloc.y), g_int_compare);
+
+			/* The width/height from the last allocation will be used for centering the preview.
+			 * It might be off by a pixel because not all buttons have the exact same width/height but this isn't critical. */
+			last_alloc = alloc;
+		}
+		children = children->next;
+	}
+
+	/* Center preview at the midpoint of the tasklist button */
+	if (orient == MATE_PANEL_APPLET_ORIENT_LEFT || orient == MATE_PANEL_APPLET_ORIENT_RIGHT)
+	{
+		/* Vertical panel */
+		y_pos = y_offset + find_offset (alloc_y_list, y_pos - y_offset) + (last_alloc.height - height) / 2;
+		y_pos = y_pos < PREVIEW_PADDING ? PREVIEW_PADDING : y_pos;
+	}
+	else if (orient == MATE_PANEL_APPLET_ORIENT_UP || orient == MATE_PANEL_APPLET_ORIENT_DOWN)
+	{
+		/* Horizontal panel */
+		x_pos = x_offset + find_offset (alloc_x_list, x_pos - x_offset) + (last_alloc.width - width) / 2;
+		x_pos = x_pos < PREVIEW_PADDING ? PREVIEW_PADDING : x_pos;
+	}
+
+	g_list_free (alloc_x_list);
+	g_list_free (alloc_y_list);
 
 	gtk_window_move (GTK_WINDOW (tasklist->preview), x_pos, y_pos);
 }
@@ -411,12 +487,14 @@ static gboolean applet_enter_notify_event (WnckTasklist *tl, GList *wnck_windows
 	gtk_widget_set_app_paintable (tasklist->preview, TRUE);
 	gtk_window_set_default_size (GTK_WINDOW (tasklist->preview), thumbnail_width/thumbnail_scale, thumbnail_height/thumbnail_scale);
 	gtk_window_set_resizable (GTK_WINDOW (tasklist->preview), TRUE);
-
-	preview_window_reposition (tasklist, thumbnail, thumbnail_width, thumbnail_height, thumbnail_scale);
+	preview_window_reposition (tl, tasklist, thumbnail_width/thumbnail_scale, thumbnail_height/thumbnail_scale, thumbnail_scale);
 
 	gtk_widget_show (tasklist->preview);
 
-	g_signal_connect_data (G_OBJECT (tasklist->preview), "draw", G_CALLBACK (preview_window_draw), thumbnail, (GClosureNotify) G_CALLBACK (cairo_surface_destroy), 0);
+	g_signal_connect_data (tasklist->preview, "draw",
+	                       G_CALLBACK (preview_window_draw), thumbnail,
+	                       (GClosureNotify) G_CALLBACK (cairo_surface_destroy),
+	                       0);
 
 	return FALSE;
 }
@@ -533,6 +611,11 @@ static void tasklist_update_thumbnail_size_spin(TasklistData* tasklist)
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(button), (gdouble)tasklist->thumbnail_size);
 }
 
+static void show_thumbnails_changed(GSettings* settings, gchar* key, TasklistData* tasklist)
+{
+    tasklist->show_window_thumbnails = g_settings_get_boolean (settings, key);
+}
+
 static void thumbnail_size_changed(GSettings *settings, gchar* key, TasklistData* tasklist)
 {
 	tasklist->thumbnail_size = g_settings_get_int(settings, key);
@@ -595,7 +678,6 @@ static void tasklist_update_unminimization_radio(TasklistData* tasklist)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), TRUE);
 }
 
-
 static void move_unminimized_windows_changed(GSettings* settings, gchar* key, TasklistData* tasklist)
 {
 	gboolean value;
@@ -606,6 +688,18 @@ static void move_unminimized_windows_changed(GSettings* settings, gchar* key, Ta
 	tasklist_update(tasklist);
 
 	tasklist_update_unminimization_radio(tasklist);
+}
+
+static void scroll_enabled_changed (GSettings* settings, gchar* key, TasklistData* tasklist)
+{
+	tasklist->scroll_enable = g_settings_get_boolean (settings, key);
+	tasklist_update(tasklist);
+}
+
+static void middle_click_close_changed (GSettings* settings, gchar* key, TasklistData* tasklist)
+{
+	tasklist->middle_click_close = g_settings_get_boolean (settings, key);
+	tasklist_update(tasklist);
 }
 
 static void setup_gsettings(TasklistData* tasklist)
@@ -621,6 +715,11 @@ static void setup_gsettings(TasklistData* tasklist)
 	tasklist->preview_settings = mate_panel_applet_settings_new (MATE_PANEL_APPLET (tasklist->applet), WINDOW_LIST_PREVIEW_SCHEMA);
 
 	g_signal_connect (tasklist->preview_settings,
+					  "changed::show-window-thumbnails",
+					  G_CALLBACK (show_thumbnails_changed),
+					  tasklist);
+
+	g_signal_connect (tasklist->preview_settings,
 					  "changed::thumbnail-window-size",
 					  G_CALLBACK (thumbnail_size_changed),
 					  tasklist);
@@ -632,6 +731,14 @@ static void setup_gsettings(TasklistData* tasklist)
 	g_signal_connect (tasklist->settings,
 					  "changed::move-unminimized-windows",
 					  G_CALLBACK (move_unminimized_windows_changed),
+					  tasklist);
+	g_signal_connect (tasklist->settings,
+					  "changed::scroll-enabled",
+					  G_CALLBACK (scroll_enabled_changed),
+					  tasklist);
+	g_signal_connect (tasklist->settings,
+					  "changed::middle-click-close",
+					  G_CALLBACK (middle_click_close_changed),
 					  tasklist);
 }
 
@@ -666,55 +773,6 @@ static void applet_size_allocate(GtkWidget *widget, GtkAllocation *allocation, T
 #endif
 		mate_panel_applet_set_size_hints(MATE_PANEL_APPLET(tasklist->applet), size_hints, len, 0);
 }
-
-#ifdef HAVE_X11
-/* Currently only used on X11, but should work on Wayland as well when needed */
-static GdkPixbuf* icon_loader_func(const char* icon, int size, unsigned int flags, void* data)
-{
-	TasklistData* tasklist;
-	GdkPixbuf* retval;
-	char* icon_no_extension;
-	char* p;
-
-	tasklist = data;
-
-	if (icon == NULL || strcmp(icon, "") == 0)
-		return NULL;
-
-	if (g_path_is_absolute(icon))
-	{
-		if (g_file_test(icon, G_FILE_TEST_EXISTS))
-		{
-			return gdk_pixbuf_new_from_file_at_size(icon, size, size, NULL);
-		}
-		else
-		{
-			char* basename;
-
-			basename = g_path_get_basename(icon);
-			retval = icon_loader_func(basename, size, flags, data);
-			g_free(basename);
-
-			return retval;
-		}
-	}
-
-	/* This is needed because some .desktop files have an icon name *and*
-	* an extension as icon */
-	icon_no_extension = g_strdup(icon);
-	p = strrchr(icon_no_extension, '.');
-
-	if (p && (strcmp(p, ".png") == 0 || strcmp(p, ".xpm") == 0 || strcmp(p, ".svg") == 0))
-	{
-		*p = 0;
-	}
-
-	retval = gtk_icon_theme_load_icon(tasklist->icon_theme, icon_no_extension, size, 0, NULL);
-	g_free(icon_no_extension);
-
-	return retval;
-}
-#endif /* HAVE_X11 */
 
 gboolean window_list_applet_fill(MatePanelApplet* applet)
 {
@@ -756,6 +814,10 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 
 	tasklist->move_unminimized_windows = g_settings_get_boolean (tasklist->settings, "move-unminimized-windows");
 
+	tasklist->scroll_enable = g_settings_get_boolean (tasklist->settings, "scroll-enabled");
+
+	tasklist->middle_click_close = g_settings_get_boolean (tasklist->settings, "middle-click-close");
+
 	tasklist->size = mate_panel_applet_get_size(applet);
 
 #if !defined(WNCKLET_INPROCESS) && !GTK_CHECK_VERSION (3, 23, 0)
@@ -780,12 +842,13 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 	{
 		tasklist->tasklist = wnck_tasklist_new();
 
-		wnck_tasklist_set_middle_click_close (WNCK_TASKLIST (tasklist->tasklist), TRUE);
-		wnck_tasklist_set_icon_loader(WNCK_TASKLIST(tasklist->tasklist), icon_loader_func, tasklist, NULL);
-
 #ifdef HAVE_WINDOW_PREVIEWS
-		g_signal_connect(G_OBJECT(tasklist->tasklist), "task_enter_notify", G_CALLBACK(applet_enter_notify_event), tasklist);
-		g_signal_connect(G_OBJECT(tasklist->tasklist), "task_leave_notify", G_CALLBACK(applet_leave_notify_event), tasklist);
+		g_signal_connect (tasklist->tasklist, "task-enter-notify",
+		                  G_CALLBACK (applet_enter_notify_event),
+		                  tasklist);
+		g_signal_connect (tasklist->tasklist, "task-leave-notify",
+		                  G_CALLBACK (applet_leave_notify_event),
+		                  tasklist);
 #endif /* HAVE_WINDOW_PREVIEWS */
 	}
 	else
@@ -805,25 +868,33 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 
 	tasklist_apply_orientation(tasklist);
 
-	g_signal_connect(G_OBJECT(tasklist->tasklist), "destroy", G_CALLBACK(destroy_tasklist), tasklist);
-	g_signal_connect(G_OBJECT(tasklist->applet), "size_allocate", G_CALLBACK(applet_size_allocate), tasklist);
+	g_signal_connect (tasklist->tasklist, "destroy",
+	                  G_CALLBACK (destroy_tasklist),
+	                  tasklist);
+	g_signal_connect (tasklist->applet, "size-allocate",
+	                  G_CALLBACK (applet_size_allocate),
+	                  tasklist);
 
 	gtk_container_add(GTK_CONTAINER(tasklist->applet), tasklist->tasklist);
 
-	g_signal_connect(G_OBJECT(tasklist->applet), "realize", G_CALLBACK(applet_realized), tasklist);
-	g_signal_connect(G_OBJECT(tasklist->applet), "change_orient", G_CALLBACK(applet_change_orient), tasklist);
-	g_signal_connect(G_OBJECT(tasklist->applet), "change_size", G_CALLBACK(applet_change_pixel_size), tasklist);
-	g_signal_connect(G_OBJECT(tasklist->applet), "change_background", G_CALLBACK(applet_change_background), tasklist);
+	g_signal_connect (tasklist->applet, "change-orient",
+	                  G_CALLBACK (applet_change_orient),
+	                  tasklist);
+	g_signal_connect (tasklist->applet, "change-size",
+	                  G_CALLBACK (applet_change_pixel_size),
+	                  tasklist);
+	g_signal_connect (tasklist->applet, "change-background",
+	                  G_CALLBACK(applet_change_background),
+	                  tasklist);
 
 	action_group = gtk_action_group_new("Tasklist Applet Actions");
 	gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
 	gtk_action_group_add_actions(action_group, tasklist_menu_actions, G_N_ELEMENTS(tasklist_menu_actions), tasklist);
 
-
 	/* disable the item of system monitor, if not exists.
 	 * example, mate-system-monitor, o gnome-system-monitor */
 	char* programpath;
-	int i;
+	gsize i;
 
 	for (i = 0; i < G_N_ELEMENTS(system_monitors); i += 1)
 	{
@@ -844,7 +915,6 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 
 	_system_monitor_found:;
 	/* end of system monitor item */
-
 
 	mate_panel_applet_setup_menu_from_resource (MATE_PANEL_APPLET (tasklist->applet),
 	                                            WNCKLET_RESOURCE_PATH "window-list-menu.xml",
@@ -869,7 +939,7 @@ gboolean window_list_applet_fill(MatePanelApplet* applet)
 
 static void call_system_monitor(GtkAction* action, TasklistData* tasklist)
 {
-	int i;
+	gsize i;
 
 	for (i = 0; i < G_N_ELEMENTS(system_monitors); i += 1)
 	{
@@ -886,7 +956,6 @@ static void call_system_monitor(GtkAction* action, TasklistData* tasklist)
 		}
 	}
 }
-
 
 static void display_help_dialog(GtkAction* action, TasklistData* tasklist)
 {
@@ -1000,9 +1069,6 @@ static void setup_dialog_wayland(TasklistData* tasklist)
 static void setup_dialog(GtkBuilder* builder, TasklistData* tasklist)
 {
 	GtkWidget* button;
-#ifdef HAVE_WINDOW_PREVIEWS
-	GtkAdjustment *adjustment;
-#endif /* HAVE_WINDOW_PREVIEWS */
 
 	tasklist->wayland_info_label = WID("wayland_info_label");
 	tasklist->show_current_radio = WID("show_current_radio");
@@ -1033,16 +1099,14 @@ static void setup_dialog(GtkBuilder* builder, TasklistData* tasklist)
 	g_object_bind_property(tasklist->show_thumbnails_check, "active", tasklist->thumbnail_size_label, "sensitive", G_BINDING_DEFAULT);
 	g_object_bind_property(tasklist->show_thumbnails_check, "active", tasklist->thumbnail_size_spin, "sensitive", G_BINDING_DEFAULT);
 
-	adjustment = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON(tasklist->thumbnail_size_spin));
-	gtk_adjustment_set_lower (adjustment, 0);
-	gtk_adjustment_set_upper (adjustment, 999);
-	gtk_adjustment_set_step_increment (adjustment, 1);
 #else
 	gtk_widget_hide(WID("window_thumbnail_box"));
 #endif
 
 	tasklist->move_minimized_radio = WID("move_minimized_radio");
 	tasklist->change_workspace_radio = WID("change_workspace_radio");
+	tasklist->mouse_scroll_check = WID("mouse_scroll_check");
+	tasklist->middle_click_close_check = WID("middle_click_close_check");
 	tasklist->minimized_windows_box = WID("minimized_windows_box");
 	tasklist->window_grouping_box = WID("window_grouping_box");
 	tasklist->window_list_content_box = WID("window_list_content_box");
@@ -1056,26 +1120,56 @@ static void setup_dialog(GtkBuilder* builder, TasklistData* tasklist)
 	g_object_set_data(G_OBJECT(tasklist->auto_group_radio), "group_value", "auto");
 	g_object_set_data(G_OBJECT(tasklist->always_group_radio), "group_value", "always");
 
-	g_signal_connect(G_OBJECT(tasklist->never_group_radio), "toggled", (GCallback) group_windows_toggled, tasklist);
-	g_signal_connect(G_OBJECT(tasklist->auto_group_radio), "toggled", (GCallback) group_windows_toggled, tasklist);
-	g_signal_connect(G_OBJECT(tasklist->always_group_radio), "toggled", (GCallback) group_windows_toggled, tasklist);
+	g_signal_connect (tasklist->never_group_radio, "toggled",
+	                  (GCallback) group_windows_toggled,
+	                  tasklist);
+	g_signal_connect (tasklist->auto_group_radio, "toggled",
+	                  (GCallback) group_windows_toggled,
+	                  tasklist);
+	g_signal_connect (tasklist->always_group_radio, "toggled",
+	                  (GCallback) group_windows_toggled,
+	                  tasklist);
+
+	/* Mouse Scroll: */
+	g_settings_bind (tasklist->settings,
+                    "scroll-enabled",
+                     tasklist->mouse_scroll_check,
+                    "active",
+                     G_SETTINGS_BIND_DEFAULT);
+
+	/* Middle mouse click to close window: */
+	g_settings_bind (tasklist->settings,
+                    "middle-click-close",
+                     tasklist->middle_click_close_check,
+                    "active",
+                     G_SETTINGS_BIND_DEFAULT);
 
 #ifdef HAVE_WINDOW_PREVIEWS
 	/* change thumbnail size: */
 	tasklist_update_thumbnail_size_spin(tasklist);
-	g_signal_connect(G_OBJECT(tasklist->thumbnail_size_spin), "value-changed", (GCallback) thumbnail_size_spin_changed, tasklist);
+	g_signal_connect (tasklist->thumbnail_size_spin, "value-changed",
+	                  (GCallback) thumbnail_size_spin_changed,
+	                  tasklist);
 #endif
 
 	/* move window when unminimizing: */
 	tasklist_update_unminimization_radio(tasklist);
-	g_signal_connect(G_OBJECT(tasklist->move_minimized_radio), "toggled", (GCallback) move_minimized_toggled, tasklist);
+	g_signal_connect (tasklist->move_minimized_radio, "toggled",
+	                  (GCallback) move_minimized_toggled,
+	                  tasklist);
 
 	/* Tasklist content: */
 	tasklist_properties_update_content_radio (tasklist);
-	g_signal_connect(G_OBJECT(tasklist->show_all_radio), "toggled", (GCallback) display_all_workspaces_toggled, tasklist);
+	g_signal_connect (tasklist->show_all_radio, "toggled",
+	                  (GCallback) display_all_workspaces_toggled,
+	                  tasklist);
 
-	g_signal_connect_swapped(WID("done_button"), "clicked", (GCallback) gtk_widget_hide, tasklist->properties_dialog);
-	g_signal_connect(tasklist->properties_dialog, "response", G_CALLBACK(response_cb), tasklist);
+	g_signal_connect_swapped (WID ("done_button"), "clicked",
+	                          (GCallback) gtk_widget_hide,
+	                          tasklist->properties_dialog);
+	g_signal_connect (tasklist->properties_dialog, "response",
+	                  G_CALLBACK (response_cb),
+	                  tasklist);
 
 #ifdef HAVE_WAYLAND
 	if (GDK_IS_WAYLAND_DISPLAY(gdk_display_get_default())) {

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2005 Vincent Untz
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,12 +21,12 @@
  *	Vincent Untz <vincent@vuntz.net>
  */
 
-
 #ifndef __PANEL_MENU_ITEMS_H__
 #define __PANEL_MENU_ITEMS_H__
 
 #include <gtk/gtk.h>
 #include "panel-widget.h"
+#include <libmate-desktop/mate-image-menu-item.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,18 +44,16 @@ typedef struct _PanelPlaceMenuItemClass   PanelPlaceMenuItemClass;
 typedef struct _PanelPlaceMenuItemPrivate PanelPlaceMenuItemPrivate;
 
 struct _PanelPlaceMenuItem {
-	GtkImageMenuItem            menuitem;
+	MateImageMenuItem            menuitem;
 
 	PanelPlaceMenuItemPrivate  *priv;
 };
 
 struct _PanelPlaceMenuItemClass {
-	GtkImageMenuItemClass       menuitem_class;
+	MateImageMenuItemClass       menuitem_class;
 };
 
 GType panel_place_menu_item_get_type (void) G_GNUC_CONST;
-
-
 
 #define PANEL_TYPE_DESKTOP_MENU_ITEM         (panel_desktop_menu_item_get_type ())
 #define PANEL_DESKTOP_MENU_ITEM(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), PANEL_TYPE_DESKTOP_MENU_ITEM, PanelDesktopMenuItem))
@@ -68,17 +67,16 @@ typedef struct _PanelDesktopMenuItemClass   PanelDesktopMenuItemClass;
 typedef struct _PanelDesktopMenuItemPrivate PanelDesktopMenuItemPrivate;
 
 struct _PanelDesktopMenuItem{
-	GtkImageMenuItem            menuitem;
+	MateImageMenuItem            menuitem;
 
 	PanelDesktopMenuItemPrivate  *priv;
 };
 
 struct _PanelDesktopMenuItemClass {
-	GtkImageMenuItemClass       menuitem_class;
+	MateImageMenuItemClass       menuitem_class;
 };
 
 GType panel_desktop_menu_item_get_type (void) G_GNUC_CONST;
-
 
 GtkWidget* panel_place_menu_item_new(gboolean use_image);
 GtkWidget* panel_desktop_menu_item_new(gboolean use_image, gboolean append_lock_logout);

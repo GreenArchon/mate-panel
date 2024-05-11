@@ -2,6 +2,7 @@
  * panel-keyfile.c: GKeyFile extensions
  *
  * Copyright (C) 2008 Novell, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Based on code from panel-util.c (there was no copyright header at the time)
  *
@@ -52,8 +53,6 @@ _panel_key_file_make_executable (const gchar *path)
 {
 	GFile     *file;
 	GFileInfo *info;
-	guint32    current_perms;
-	guint32    new_perms;
 
 	file = g_file_new_for_path (path);
 
@@ -71,6 +70,9 @@ _panel_key_file_make_executable (const gchar *path)
 	}
 
 	if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_UNIX_MODE)) {
+		guint32    current_perms;
+		guint32    new_perms;
+
 		current_perms = g_file_info_get_attribute_uint32 (info,
 								  G_FILE_ATTRIBUTE_UNIX_MODE);
 		new_perms = current_perms | S_IXGRP | S_IXUSR | S_IXOTH;
@@ -292,8 +294,7 @@ panel_key_file_remove_locale_key (GKeyFile    *keyfile,
 						locale_key, NULL))
 				break;
 
-			g_free (locale_key);
-			locale_key = NULL;
+			g_clear_pointer (&locale_key, g_free);
 		}
 	}
 

@@ -4,6 +4,7 @@
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
  * Copyright (C) 2004 Rob Adams
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -505,7 +506,7 @@ static void panel_toplevel_begin_grab_op(PanelToplevel* toplevel, PanelGrabOpTyp
 	window = gtk_widget_get_window (widget);
 
 	toplevel->priv->grab_op          = op_type;
-	toplevel->priv->grab_is_keyboard = grab_keyboard;
+	toplevel->priv->grab_is_keyboard = (grab_keyboard != FALSE);
 
 	toplevel->priv->orig_monitor     = toplevel->priv->monitor;
 	toplevel->priv->orig_x           = toplevel->priv->x;
@@ -528,7 +529,6 @@ static void panel_toplevel_begin_grab_op(PanelToplevel* toplevel, PanelGrabOpTyp
 
 	cursor_type = panel_toplevel_grab_op_cursor (
 				toplevel, toplevel->priv->grab_op);
-
 
 	cursor = gdk_cursor_new_for_display (gdk_display_get_default (),
 	                                     cursor_type);
@@ -1144,7 +1144,7 @@ static void panel_toplevel_hide_button_clicked(PanelToplevel* toplevel, GtkButto
 	arrow_type = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "arrow-type"));
 
 	if (toplevel->priv->state == PANEL_STATE_NORMAL) {
-		GtkDirectionType direction = -1;
+		GtkDirectionType direction;
 
 		switch (arrow_type) {
 		case GTK_ARROW_UP:
@@ -1164,7 +1164,7 @@ static void panel_toplevel_hide_button_clicked(PanelToplevel* toplevel, GtkButto
 			break;
 		}
 
-		panel_toplevel_hide (toplevel, FALSE, direction);
+		panel_toplevel_hide (toplevel, FALSE, (gint) direction);
 	} else
 		panel_toplevel_unhide (toplevel);
 }
@@ -1218,9 +1218,9 @@ panel_toplevel_add_hide_button (PanelToplevel *toplevel,
 
 	g_signal_connect_swapped (button, "clicked",
 				  G_CALLBACK (panel_toplevel_hide_button_clicked), toplevel);
-	g_signal_connect_swapped (button, "button_press_event",
+	g_signal_connect_swapped (button, "button-press-event",
 				  G_CALLBACK (panel_toplevel_hide_button_event), toplevel);
-	g_signal_connect_swapped (button, "button_release_event",
+	g_signal_connect_swapped (button, "button-release-event",
 				  G_CALLBACK (panel_toplevel_hide_button_event), toplevel);
 
 	gtk_grid_attach (GTK_GRID (toplevel->priv->grid), button, left, top, 1, 1);
@@ -1517,10 +1517,6 @@ static gboolean panel_toplevel_update_struts(PanelToplevel* toplevel, gboolean e
 		}
 	}
 
-	/* Adjust strut size based on scale factor */
-	if (strut > 0)
-		strut += toplevel->priv->size * (toplevel->priv->scale - 1);
-
 	if (orientation != toplevel->priv->orientation) {
 		toplevel->priv->orientation = orientation;
 		g_object_notify (G_OBJECT (toplevel), "orientation");
@@ -1540,8 +1536,7 @@ static gboolean panel_toplevel_update_struts(PanelToplevel* toplevel, gboolean e
 									orientation,
 									strut,
 									strut_start,
-									strut_end,
-									toplevel->priv->scale);
+									strut_end);
 		}
 		else {
 			panel_struts_unregister_strut (toplevel);
@@ -2514,7 +2509,7 @@ panel_toplevel_update_geometry (PanelToplevel  *toplevel,
 #ifdef HAVE_X11
 	if (GDK_IS_X11_DISPLAY (gtk_widget_get_display (GTK_WIDGET (toplevel)))) {
 		if (toplevel->priv->state == PANEL_STATE_NORMAL ||
-		toplevel->priv->state == PANEL_STATE_AUTO_HIDDEN) {
+		    toplevel->priv->state != PANEL_STATE_AUTO_HIDDEN) {
 			panel_struts_update_toplevel_geometry (toplevel,
 							&toplevel->priv->geometry.x,
 							&toplevel->priv->geometry.y,
@@ -2661,27 +2656,35 @@ panel_toplevel_reverse_arrows (PanelToplevel *toplevel)
 static void
 panel_toplevel_disconnect_attached (PanelToplevel *toplevel)
 {
-	int i;
+	guint i;
 
+#if GLIB_CHECK_VERSION(2,62,0)
 	for (i = 0; i < N_ATTACH_TOPLEVEL_SIGNALS; i++) {
-		if (!toplevel->priv->attach_toplevel_signals [i])
-			continue;
-
-		g_signal_handler_disconnect (
-			toplevel->priv->attach_toplevel,
-			toplevel->priv->attach_toplevel_signals [i]);
-		toplevel->priv->attach_toplevel_signals [i] = 0;
+		g_clear_signal_handler (&toplevel->priv->attach_toplevel_signals [i],
+		                        toplevel->priv->attach_toplevel);
 	}
 
 	for (i = 0; i < N_ATTACH_WIDGET_SIGNALS; i++) {
-		if (!toplevel->priv->attach_widget_signals [i])
-			continue;
-
-		g_signal_handler_disconnect (
-			toplevel->priv->attach_widget,
-			toplevel->priv->attach_widget_signals [i]);
-		toplevel->priv->attach_widget_signals [i] = 0;
+		g_clear_signal_handler (&toplevel->priv->attach_widget_signals [i],
+		                        toplevel->priv->attach_widget);
 	}
+#else
+	for (i = 0; i < N_ATTACH_TOPLEVEL_SIGNALS; i++) {
+		if (toplevel->priv->attach_toplevel_signals [i] != 0) {
+			g_signal_handler_disconnect (toplevel->priv->attach_toplevel,
+			                             toplevel->priv->attach_toplevel_signals [i]);
+			toplevel->priv->attach_toplevel_signals [i] = 0;
+		}
+	}
+
+	for (i = 0; i < N_ATTACH_WIDGET_SIGNALS; i++) {
+		if (toplevel->priv->attach_widget_signals [i] != 0) {
+			g_signal_handler_disconnect (toplevel->priv->attach_widget,
+			                             toplevel->priv->attach_widget_signals [i]);
+			toplevel->priv->attach_widget_signals [i] = 0;
+		}
+	}
+#endif
 }
 
 static void
@@ -2824,7 +2827,7 @@ panel_toplevel_popup_panel_menu (PanelToplevel *toplevel)
 {
 	gboolean retval = FALSE;
 
-	g_signal_emit_by_name (toplevel, "popup_menu", &retval);
+	g_signal_emit_by_name (toplevel, "popup-menu", &retval);
 
 	return retval;
 }
@@ -3061,26 +3064,18 @@ panel_toplevel_dispose (GObject *widget)
 {
 	PanelToplevel *toplevel = (PanelToplevel *) widget;
 
-	if (toplevel->priv->settings_path) {
-		g_free (toplevel->priv->settings_path);
-		toplevel->priv->settings_path = NULL;
-	}
+	g_clear_pointer (&toplevel->priv->settings_path, g_free);
 
 	if (toplevel->settings) {
 		g_signal_handlers_disconnect_by_data (toplevel->settings, toplevel);
-		g_object_unref (toplevel->settings);
-		toplevel->settings = NULL;
+		g_clear_object (&toplevel->settings);
 	}
 
-	if (toplevel->queued_settings) {
-		g_object_unref (toplevel->queued_settings);
-		toplevel->queued_settings = NULL;
-	}
+	g_clear_object (&toplevel->queued_settings);
 
 	if (toplevel->background_settings) {
 		g_signal_handlers_disconnect_by_data (toplevel->background_settings, toplevel);
-		g_object_unref (toplevel->background_settings);
-		toplevel->background_settings = NULL;
+		g_clear_object (&toplevel->background_settings);
 	}
 
 	if (toplevel->priv->gtk_settings) {
@@ -3100,15 +3095,8 @@ panel_toplevel_dispose (GObject *widget)
 		toplevel->priv->attach_widget   = NULL;
 	}
 
-	if (toplevel->priv->description) {
-		g_free (toplevel->priv->description);
-		toplevel->priv->description = NULL;
-	}
-
-	if (toplevel->priv->name) {
-		g_free (toplevel->priv->name);
-		toplevel->priv->name = NULL;
-	}
+	g_clear_pointer (&toplevel->priv->description, g_free);
+	g_clear_pointer (&toplevel->priv->name, g_free);
 
 	panel_toplevel_disconnect_timeouts (toplevel);
 
@@ -3689,7 +3677,7 @@ panel_toplevel_start_animation (PanelToplevel *toplevel)
 void
 panel_toplevel_hide (PanelToplevel    *toplevel,
 		     gboolean          auto_hide,
-		     GtkDirectionType  direction)
+		     gint              direction)
 {
 	g_return_if_fail (PANEL_IS_TOPLEVEL (toplevel));
 
@@ -3704,14 +3692,18 @@ panel_toplevel_hide (PanelToplevel    *toplevel,
 	if (auto_hide)
 		toplevel->priv->state = PANEL_STATE_AUTO_HIDDEN;
 	else {
+		GtkDirectionType hide_direction;
+
 		if (direction == -1) {
 			if (toplevel->priv->orientation & PANEL_VERTICAL_MASK)
-				direction = GTK_DIR_UP;
+				hide_direction = GTK_DIR_UP;
 			else
-				direction = GTK_DIR_LEFT;
+				hide_direction = GTK_DIR_LEFT;
+		} else {
+			hide_direction = (GtkDirectionType) direction;
 		}
 
-		switch (direction) {
+		switch (hide_direction) {
 		case GTK_DIR_UP:
 			g_return_if_fail (toplevel->priv->orientation & PANEL_VERTICAL_MASK);
 			toplevel->priv->state = PANEL_STATE_HIDDEN_UP;
@@ -4021,10 +4013,9 @@ panel_toplevel_update_gtk_settings (PanelToplevel *toplevel)
 
 	toplevel->priv->gtk_settings = gtk_widget_get_settings (GTK_WIDGET (toplevel->priv->panel_widget));
 
-	g_signal_connect_swapped (G_OBJECT (toplevel->priv->gtk_settings),
-				  "notify::gtk-dnd-drag-threshold",
-				  G_CALLBACK (panel_toplevel_drag_threshold_changed),
-				  toplevel);
+	g_signal_connect_swapped (toplevel->priv->gtk_settings, "notify::gtk-dnd-drag-threshold",
+	                          G_CALLBACK (panel_toplevel_drag_threshold_changed),
+	                          toplevel);
 
 	panel_toplevel_drag_threshold_changed (toplevel);
 }
@@ -4352,7 +4343,6 @@ panel_toplevel_class_init (PanelToplevelClass *klass)
 			G_MAXINT,
 			DEFAULT_SIZE,
 			G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-
 
 	g_object_class_install_property (
 		gobject_class,
@@ -4796,7 +4786,7 @@ panel_toplevel_init (PanelToplevel *toplevel)
 	/* Prevent the window from being deleted via Alt+F4 by accident.  This
 	 * happens with "alternative" window managers such as Sawfish or XFWM4.
 	 */
-	g_signal_connect(GTK_WIDGET(toplevel), "delete-event", G_CALLBACK(gtk_true), NULL);
+	g_signal_connect (toplevel, "delete-event", G_CALLBACK(gtk_true), NULL);
 
 	panel_background_init (&toplevel->background,
 			       (PanelBackgroundChangedNotify) background_changed,
@@ -4849,12 +4839,11 @@ panel_toplevel_set_name (PanelToplevel *toplevel,
 	    !strcmp (toplevel->priv->name, name))
 		return;
 
-	if (toplevel->priv->name)
-		g_free (toplevel->priv->name);
-	toplevel->priv->name = NULL;
-
+	g_free (toplevel->priv->name);
 	if (name && name [0])
 		toplevel->priv->name = g_strdup (name);
+	else
+		toplevel->priv->name = NULL;
 
 	panel_toplevel_update_name (toplevel);
 
@@ -5157,7 +5146,7 @@ panel_toplevel_set_x (PanelToplevel *toplevel,
 	}
 
 	if (toplevel->priv->x_centered != x_centered) {
-		toplevel->priv->x_centered = x_centered;
+		toplevel->priv->x_centered = (x_centered != FALSE);
 		changed = TRUE;
 		g_object_notify (G_OBJECT (toplevel), "x-centered");
 	}
@@ -5195,7 +5184,7 @@ panel_toplevel_set_y (PanelToplevel *toplevel,
 	}
 
 	if (toplevel->priv->y_centered != y_centered) {
-		toplevel->priv->y_centered = y_centered;
+		toplevel->priv->y_centered = (y_centered != FALSE);
 		changed = TRUE;
 		g_object_notify (G_OBJECT (toplevel), "y-centered");
 	}
@@ -5338,7 +5327,7 @@ panel_toplevel_set_auto_hide (PanelToplevel *toplevel,
 	if (toplevel->priv->auto_hide == auto_hide)
 		return;
 
-	toplevel->priv->auto_hide = auto_hide;
+	toplevel->priv->auto_hide = (auto_hide != FALSE);
 
 	if (toplevel->priv->auto_hide)
 		panel_toplevel_queue_auto_hide (toplevel);
@@ -5414,7 +5403,7 @@ panel_toplevel_set_animate (PanelToplevel *toplevel,
 	if (toplevel->priv->animate == animate)
 		return;
 
-	toplevel->priv->animate = animate;
+	toplevel->priv->animate = (animate != FALSE);
 
 	g_object_notify (G_OBJECT (toplevel), "animate");
 }
@@ -5484,7 +5473,7 @@ panel_toplevel_set_enable_arrows (PanelToplevel *toplevel,
 	if (toplevel->priv->arrows_enabled == enable_arrows)
 		return;
 
-	toplevel->priv->arrows_enabled = enable_arrows;
+	toplevel->priv->arrows_enabled = (enable_arrows != FALSE);
 
 	panel_toplevel_update_hide_buttons (toplevel);
 

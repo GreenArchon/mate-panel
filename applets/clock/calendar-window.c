@@ -93,10 +93,10 @@ static void calendar_mark_today(GtkCalendar *calendar)
 	gtk_calendar_get_date(calendar, &year, &month, &day);
 	time(&now);
 	localtime_r (&now, &tm1);
-	if ((tm1.tm_mon == month) && (tm1.tm_year + 1900 == year)) {
-		gtk_calendar_mark_day (GTK_CALENDAR (calendar), tm1.tm_mday);
+	if ((tm1.tm_mon == (int) month) && (tm1.tm_year + 1900 == (int) year)) {
+		gtk_calendar_mark_day (GTK_CALENDAR (calendar), (guint) tm1.tm_mday);
 	} else {
-		gtk_calendar_unmark_day (GTK_CALENDAR (calendar), tm1.tm_mday);
+		gtk_calendar_unmark_day (GTK_CALENDAR (calendar), (guint) tm1.tm_mday);
 	}
 }
 
@@ -131,8 +131,8 @@ calendar_window_create_calendar (CalendarWindow *calwin)
 
 	localtime_r (calwin->priv->current_time, &tm1);
 	gtk_calendar_select_month (GTK_CALENDAR (calendar),
-				   tm1.tm_mon, tm1.tm_year + 1900);
-	gtk_calendar_select_day (GTK_CALENDAR (calendar), tm1.tm_mday);
+				   (guint) tm1.tm_mon, (guint) (tm1.tm_year + 1900));
+	gtk_calendar_select_day (GTK_CALENDAR (calendar), (guint) tm1.tm_mday);
 	calendar_mark_today (GTK_CALENDAR(calendar));
 
 	g_signal_connect(calendar, "month-changed",
@@ -403,6 +403,8 @@ calendar_window_dispose (GObject *object)
 
 	calwin = CALENDAR_WINDOW (object);
 
+	g_clear_pointer (&calwin->priv->prefs_path, g_free);
+
 	if (calwin->priv->settings)
 		g_object_unref (calwin->priv->settings);
 	calwin->priv->settings = NULL;
@@ -541,8 +543,6 @@ void
 calendar_window_set_show_weeks (CalendarWindow *calwin,
 				gboolean        show_weeks)
 {
-	GtkCalendarDisplayOptions options;
-
 	g_return_if_fail (CALENDAR_IS_WINDOW (calwin));
 
 	if (show_weeks == calwin->priv->show_weeks)
@@ -551,6 +551,8 @@ calendar_window_set_show_weeks (CalendarWindow *calwin,
 	calwin->priv->show_weeks = show_weeks;
 
 	if (calwin->priv->calendar) {
+		GtkCalendarDisplayOptions options;
+
 		options = gtk_calendar_get_display_options (GTK_CALENDAR (calwin->priv->calendar));
 
 		if (show_weeks)
@@ -617,17 +619,15 @@ calendar_window_set_prefs_path (CalendarWindow *calwin,
 	    !strcmp (calwin->priv->prefs_path, prefs_path))
 		return;
 
-	if (calwin->priv->prefs_path)
-		g_free (calwin->priv->prefs_path);
-	calwin->priv->prefs_path = NULL;
-
+	g_free (calwin->priv->prefs_path);
 	if (prefs_path && prefs_path [0])
 		calwin->priv->prefs_path = g_strdup (prefs_path);
+	else
+		calwin->priv->prefs_path = NULL;
 
 	g_object_notify (G_OBJECT (calwin), "prefs-path");
 
 	if (calwin->priv->settings)
 		g_object_unref (calwin->priv->settings);
-
 	calwin->priv->settings = g_settings_new_with_path (CLOCK_SCHEMA, calwin->priv->prefs_path);
 }

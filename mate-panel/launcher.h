@@ -1,6 +1,7 @@
 /*
  * MATE panel launcher module.
  * (C) 1997 The Free Software Foundation
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Authors: Miguel de Icaza
  *          Federico Mena
@@ -25,6 +26,7 @@ typedef struct {
 	char              *location;
 	GKeyFile          *key_file;
 
+	GFileMonitor      *monitor;
 	GtkWidget         *prop_dialog;
 	GSList            *error_dialogs;
 
@@ -71,7 +73,6 @@ void            launcher_properties_destroy     (Launcher *launcher);
 
 void            panel_launcher_set_dnd_enabled  (Launcher *launcher,
 						 gboolean  dnd_enabled);
-
 
 #ifdef __cplusplus
 }

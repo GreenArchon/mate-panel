@@ -3,6 +3,7 @@
  *
  * Copyright (c) 2010 Carlos Garcia Campos <carlosgc@gnome.org>
  * Copyright (C) 2001 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -147,7 +148,8 @@ static const GtkActionEntry menu_entries[] = {
 static const GtkToggleActionEntry menu_toggle_entries[] = {
 	{ "Lock", NULL, N_("Loc_k To Panel"),
 	  NULL, NULL,
-	  G_CALLBACK (mate_panel_applet_menu_cmd_lock) }
+	  G_CALLBACK (mate_panel_applet_menu_cmd_lock),
+	  FALSE }
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (MatePanelApplet, mate_panel_applet, GTK_TYPE_EVENT_BOX)
@@ -601,7 +603,6 @@ mate_panel_applet_request_focus (MatePanelApplet	 *applet,
 			    guint32	  timestamp)
 {
 #ifdef HAVE_X11
-	MatePanelAppletPrivate *priv;
 	GdkScreen  *screen;
 	GdkWindow  *root;
 	GdkDisplay *display;
@@ -615,8 +616,7 @@ mate_panel_applet_request_focus (MatePanelApplet	 *applet,
 
 	g_return_if_fail (MATE_PANEL_IS_APPLET (applet));
 
-	priv    = mate_panel_applet_get_instance_private (applet);
-	screen  = gtk_window_get_screen (GTK_WINDOW (priv->plug));
+	screen  = gdk_screen_get_default(); /*There is only one screen since GTK 3.22*/
 	root	= gdk_screen_get_root_window (screen);
 	display = gdk_screen_get_display (screen);
 
@@ -843,36 +843,21 @@ mate_panel_applet_finalize (GObject *object)
 			g_dbus_connection_unregister_object (priv->connection,
 							     priv->object_id);
 		priv->object_id = 0;
-		g_object_unref (priv->connection);
-		priv->connection = NULL;
+		g_clear_object (&priv->connection);
 	}
 
-	if (priv->object_path) {
-		g_free (priv->object_path);
-		priv->object_path = NULL;
-	}
+	g_clear_pointer (&priv->object_path, g_free);
 
 	mate_panel_applet_set_preferences_path (applet, NULL);
 
-	if (priv->applet_action_group) {
-		g_object_unref (priv->applet_action_group);
-		priv->applet_action_group = NULL;
-	}
+	g_clear_object (&priv->applet_action_group);
+	g_clear_object (&priv->panel_action_group);
+	g_clear_object (&priv->ui_manager);
 
-	if (priv->panel_action_group) {
-		g_object_unref (priv->panel_action_group);
-		priv->panel_action_group = NULL;
-	}
-
-	if (priv->ui_manager) {
-		g_object_unref (priv->ui_manager);
-		priv->ui_manager = NULL;
-	}
-
-	g_free (priv->size_hints);
-	g_free (priv->prefs_path);
-	g_free (priv->background);
-	g_free (priv->id);
+	g_clear_pointer (&priv->size_hints, g_free);
+	g_clear_pointer (&priv->prefs_path, g_free);
+	g_clear_pointer (&priv->background, g_free);
+	g_clear_pointer (&priv->id, g_free);
 
 	/* closure is owned by the factory */
 	priv->closure = NULL;
@@ -1057,12 +1042,22 @@ mate_panel_applet_button_press (GtkWidget      *widget,
 		}
 	}
 
+#ifdef HAVE_WAYLAND
+	/*Limit the window list's applet menu to the handle area*/
+	if (!(GDK_IS_X11_DISPLAY (gdk_display_get_default ())))
+	{
+		MatePanelAppletFlags flags;
+		flags = mate_panel_applet_get_flags (applet);
+		if (flags & MATE_PANEL_APPLET_EXPAND_MAJOR)
+			return FALSE;
+    }
+#endif
+
 	if (event->button == 3) {
 		mate_panel_applet_menu_popup (applet, (GdkEvent *) event);
 
 		return TRUE;
 	}
-
 	return mate_panel_applet_button_event (applet, event);
 }
 
@@ -1560,7 +1555,6 @@ mate_panel_applet_handle_background (MatePanelApplet *applet)
 
 			       0, PANEL_PIXMAP_BACKGROUND, NULL, pattern);
 
-
 		cairo_pattern_destroy (pattern);
 
 		break;
@@ -1624,8 +1618,9 @@ mate_panel_applet_change_background(MatePanelApplet *applet,
 	switch (type) {
 		case PANEL_NO_BACKGROUND:
 			if (priv->out_of_process){
-				pattern = cairo_pattern_create_rgba (0,0,0,0);     /* Using NULL here breaks transparent */
-				gdk_window_set_background_pattern(window,pattern); /* backgrounds set by GTK theme */
+				cairo_pattern_t *transparent = cairo_pattern_create_rgba (0, 0, 0, 0);   /* Using NULL here breaks transparent */
+				gdk_window_set_background_pattern (window, transparent);                 /* backgrounds set by GTK theme */
+				cairo_pattern_destroy (transparent);
 			}
 			break;
 		case PANEL_COLOR_BACKGROUND:
@@ -1804,7 +1799,7 @@ mate_panel_applet_setup (MatePanelApplet *applet)
 	MatePanelAppletPrivate *priv;
 	GValue   value = {0, };
 	GArray  *params;
-	gint     i;
+	guint     i;
 	gboolean ret;
 
 	priv = mate_panel_applet_get_instance_private (applet);
@@ -1956,7 +1951,7 @@ mate_panel_applet_constructor (GType                  type,
 		gtk_widget_set_name (widget, "PanelPlug");
 		_mate_panel_applet_prepare_css (context);
 
-		g_signal_connect_swapped (G_OBJECT (priv->plug), "embedded",
+		g_signal_connect_swapped (priv->plug, "embedded",
 		                          G_CALLBACK (mate_panel_applet_setup),
 		                          applet);
 
@@ -2006,7 +2001,6 @@ mate_panel_applet_class_init (MatePanelAppletClass *klass)
 	widget_class->focus = mate_panel_applet_focus;
 	widget_class->realize = mate_panel_applet_realize;
 	widget_class->key_press_event = mate_panel_applet_key_press_event;
-
 
 	gobject_class->finalize = mate_panel_applet_finalize;
 
@@ -2103,7 +2097,7 @@ mate_panel_applet_class_init (MatePanelAppletClass *klass)
 							       G_PARAM_READWRITE));
 
 	mate_panel_applet_signals [CHANGE_ORIENT] =
-                g_signal_new ("change_orient",
+                g_signal_new ("change-orient",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (MatePanelAppletClass, change_orient),
@@ -2115,7 +2109,7 @@ mate_panel_applet_class_init (MatePanelAppletClass *klass)
 			      G_TYPE_UINT);
 
 	mate_panel_applet_signals [CHANGE_SIZE] =
-                g_signal_new ("change_size",
+                g_signal_new ("change-size",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (MatePanelAppletClass, change_size),
@@ -2127,7 +2121,7 @@ mate_panel_applet_class_init (MatePanelAppletClass *klass)
 			      G_TYPE_INT);
 
 	mate_panel_applet_signals [CHANGE_BACKGROUND] =
-                g_signal_new ("change_background",
+                g_signal_new ("change-background",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
                               G_STRUCT_OFFSET (MatePanelAppletClass, change_background),
@@ -2323,7 +2317,8 @@ static const gchar introspection_xml[] =
 static const GDBusInterfaceVTable interface_vtable = {
 	method_call_cb,
 	get_property_cb,
-	set_property_cb
+	set_property_cb,
+	{ 0 }
 };
 
 static GDBusNodeInfo *introspection_data = NULL;
@@ -2428,7 +2423,6 @@ _mate_panel_applet_factory_main_internal (const gchar               *factory_id,
 	g_return_val_if_fail(factory_id != NULL, 1);
 	g_return_val_if_fail(callback != NULL, 1);
 	g_assert(g_type_is_a(applet_type, PANEL_TYPE_APPLET));
-
 
 #ifdef HAVE_X11
 	if (GDK_IS_X11_DISPLAY (gdk_display_get_default ())) {

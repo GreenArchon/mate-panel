@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2010 Carlos Garcia Campos <carlosgc@gnome.org>
  * Copyright (C) 2010 Vincent Untz <vuntz@gnome.org>
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -158,10 +159,9 @@ mate_panel_applets_manager_get_applet_factory_info_from_file (const gchar *filen
 {
 	MatePanelAppletFactoryInfo *info;
 	GKeyFile               *applet_file;
-	const char             *lib_prefix;
 	gchar                 **groups;
 	gsize                   n_groups;
-	gint                    i;
+	gsize                   i;
 	GError                 *error = NULL;
 
 	applet_file = g_key_file_new ();
@@ -188,6 +188,8 @@ mate_panel_applets_manager_get_applet_factory_info_from_file (const gchar *filen
 	info->in_process = g_key_file_get_boolean (applet_file, MATE_PANEL_APPLET_FACTORY_GROUP,
 						   "InProcess", NULL);
 	if (info->in_process) {
+		const char *lib_prefix;
+
 		info->location = g_key_file_get_string (applet_file, MATE_PANEL_APPLET_FACTORY_GROUP,
 							"Location", NULL);
 		if (!info->location) {
@@ -334,15 +336,15 @@ applets_directory_changed (GFileMonitor     *monitor,
 static void
 mate_panel_applets_manager_dbus_load_applet_infos (MatePanelAppletsManagerDBus *manager)
 {
-	GSList      *dirs, *d;
-	GDir        *dir;
-	const gchar *dirent;
-	GError      *error = NULL;
+	GSList *dirs;
 
 	dirs = mate_panel_applets_manager_get_applets_dirs ();
-	for (d = dirs; d; d = g_slist_next (d)) {
+	for (GSList *d = dirs; d; d = g_slist_next (d)) {
+		GDir         *dir;
+		const gchar  *dirent;
 		GFileMonitor *monitor;
 		GFile        *dir_file;
+		GError       *error = NULL;
 		gchar        *path = (gchar *) d->data;
 
 		dir = g_dir_open (path, 0, &error);

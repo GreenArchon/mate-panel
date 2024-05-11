@@ -2,6 +2,7 @@
  * panel-recent.h
  *
  * Copyright (C) 2002 James Willcox <jwillcox@gnome.org>
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -32,7 +33,8 @@ extern "C" {
 #endif
 
 void panel_recent_append_documents_menu (GtkWidget        *menu,
-					 GtkRecentManager *manager);
+					 GtkRecentManager *manager,
+					 int               recent_items_limit);
 
 #ifdef __cplusplus
 }

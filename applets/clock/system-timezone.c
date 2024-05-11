@@ -213,8 +213,7 @@ system_timezone_constructor (GType                  type,
                 g_object_unref (file);
 
                 if (priv->monitors[i])
-                        g_signal_connect (G_OBJECT (priv->monitors[i]),
-                                          "changed",
+                        g_signal_connect (priv->monitors [i], "changed",
                                           G_CALLBACK (system_timezone_monitor_changed),
                                           obj);
         }
@@ -234,13 +233,11 @@ system_timezone_finalize (GObject *obj)
         systz = SYSTEM_TIMEZONE (obj);
         priv = system_timezone_get_instance_private (systz);
 
-        g_free (priv->tz);
-        g_free (priv->env_tz);
+        g_clear_pointer (&priv->tz, g_free);
+        g_clear_pointer (&priv->env_tz, g_free);
 
         for (i = 0; i < CHECK_NB; i++) {
-                if (priv->monitors[i])
-                        g_object_unref (priv->monitors[i]);
-                priv->monitors[i] = NULL;
+                g_clear_object (&priv->monitors[i]);
         }
 
         G_OBJECT_CLASS (system_timezone_parent_class)->finalize (obj);
@@ -282,7 +279,6 @@ system_timezone_monitor_changed (GFileMonitor *handle,
         }
         g_free (new_tz);
 }
-
 
 /*
  * Code to deal with the system timezone on all distros.
@@ -371,7 +367,6 @@ system_timezone_write_etc_timezone (const char  *tz,
 
         return retval;
 }
-
 
 /* Read a file that looks like a key-file (but there's no need for groups)
  * and get the last value for a specific key */
@@ -710,7 +705,6 @@ recursive_compare (struct stat  *localtime_stat,
         return NULL;
 }
 
-
 static gboolean
 files_are_identical_inode (struct stat *a_stat,
                            struct stat *b_stat,
@@ -720,7 +714,6 @@ files_are_identical_inode (struct stat *a_stat,
 {
         return (a_stat->st_ino == b_stat->st_ino);
 }
-
 
 /* Determine if /etc/localtime is a hard link to some file, by looking at
  * the inodes */

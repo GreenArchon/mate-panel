@@ -7,6 +7,7 @@
  *
  * Copyright 2002 Sun Microsystems, Inc.
  *           2012 Stefano Karapetsas
+ * Copyright (C) 2012-2021 MATE Developers
  */
 
 #include <config.h>
@@ -40,7 +41,7 @@ static const GOptionEntry options [] = {
 	{ "prefs-path", 0, 0, G_OPTION_ARG_STRING, &cli_prefs_path, N_("Specify a gsettings path in which the applet preferences should be stored"), NULL},
 	{ "size", 0, 0, G_OPTION_ARG_STRING, &cli_size, N_("Specify the initial size of the applet (xx-small, medium, large etc.)"), NULL},
 	{ "orient", 0, 0, G_OPTION_ARG_STRING, &cli_orient, N_("Specify the initial orientation of the applet (top, bottom, left or right)"), NULL},
-	{ NULL}
+	{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
 };
 
 enum {
@@ -60,7 +61,6 @@ static ComboItem orient_items [] = {
 	{ NC_("Orientation", "Left"),   PANEL_ORIENTATION_LEFT   },
 	{ NC_("Orientation", "Right"),  PANEL_ORIENTATION_RIGHT  }
 };
-
 
 static ComboItem size_items [] = {
 	{ NC_("Size", "XX Small"), 12  },
@@ -178,13 +178,12 @@ static void
 load_applet_from_command_line (void)
 {
 	guint size = 24, orient = PANEL_ORIENTATION_TOP;
-	gint i;
 
 	g_assert (cli_iid != NULL);
 
 	if (cli_size || cli_orient) {
 		if (cli_size) {
-			for (i = 0; i < G_N_ELEMENTS (size_items); i++) {
+			for (gsize i = 0; i < G_N_ELEMENTS (size_items); i++) {
 				if (strcmp (g_dpgettext2 (NULL, "Size", size_items[i].name), cli_size) == 0) {
 					size = size_items[i].value;
 					break;
@@ -193,7 +192,7 @@ load_applet_from_command_line (void)
 		}
 
 		if (cli_orient) {
-			for (i = 0; i < G_N_ELEMENTS (orient_items); i++) {
+			for (gsize i = 0; i < G_N_ELEMENTS (orient_items); i++) {
 				if (strcmp (g_dpgettext2 (NULL, "Orientation", orient_items[i].name), cli_orient) == 0) {
 					orient = orient_items[i].value;
 					break;
@@ -240,7 +239,6 @@ setup_combo (GtkWidget  *combo_box,
 	gtk_combo_box_set_model (GTK_COMBO_BOX (combo_box),
 				 GTK_TREE_MODEL (model));
 
-
 	for (i = 0; i < nb_items; i++) {
 		gtk_list_store_append (model, &iter);
 		gtk_list_store_set (model, &iter,
@@ -286,8 +284,8 @@ setup_options (void)
 
 		gtk_list_store_append (model, &iter);
 		gtk_list_store_set (model, &iter,
-				    COLUMN_TEXT, g_strdup (mate_panel_applet_info_get_name (info)),
-				    COLUMN_ITEM, g_strdup (mate_panel_applet_info_get_iid (info)),
+				    COLUMN_TEXT, mate_panel_applet_info_get_name (info),
+				    COLUMN_ITEM, mate_panel_applet_info_get_iid (info),
 				    -1);
 	}
 	g_list_free (applet_list);

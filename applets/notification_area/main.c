@@ -73,7 +73,6 @@ static void (*parent_class_style_updated) (GtkWidget *widget);
 static void (*parent_class_change_background)(MatePanelApplet* panel_applet, MatePanelAppletBackgroundType type, GdkRGBA* color, cairo_pattern_t* pattern);
 static void (*parent_class_change_orient)(MatePanelApplet       *panel_applet, MatePanelAppletOrient  orient);
 
-
 #ifdef PROVIDE_WATCHER_SERVICE
 /* Quite dirty way of providing the org.kde.StatusNotifierWatcher service
  * ourselves, in case the session doesn't already */
@@ -102,7 +101,6 @@ sn_watcher_service_ref (void)
   return sn_watcher_service;
 }
 #endif
-
 
 static GtkOrientation
 get_gtk_orientation_from_applet_orient (MatePanelAppletOrient orient)
@@ -141,7 +139,7 @@ static void
 setup_gsettings (NaTrayApplet *applet)
 {
   applet->priv->settings = mate_panel_applet_settings_new (MATE_PANEL_APPLET (applet), NA_TRAY_SCHEMA);
-  g_signal_connect (applet->priv->settings, "changed::" KEY_MIN_ICON_SIZE, G_CALLBACK (gsettings_changed_min_icon_size), applet);
+  g_signal_connect_object (G_OBJECT(applet->priv->settings), "changed::" KEY_MIN_ICON_SIZE, G_CALLBACK (gsettings_changed_min_icon_size), applet, 0);
 }
 
 static void
@@ -201,7 +199,7 @@ ensure_prefs_window_is_created (NaTrayApplet *applet)
   g_signal_connect_swapped (applet->priv->dialog->preferences_dialog, "response",
                             G_CALLBACK (na_preferences_dialog_response), applet);
 
-  g_signal_connect (G_OBJECT (applet->priv->dialog->preferences_dialog), "delete_event",
+  g_signal_connect (applet->priv->dialog->preferences_dialog, "delete-event",
                     G_CALLBACK (na_preferences_dialog_hide_event), applet);
 }
 
@@ -299,7 +297,6 @@ static const GtkActionEntry menu_actions [] = {
 	  NULL, NULL,
 	  G_CALLBACK (about_cb) }
 };
-
 
 static void
 na_tray_applet_realize (GtkWidget *widget)
@@ -496,11 +493,6 @@ applet_factory (MatePanelApplet *applet,
   if (!(strcmp (iid, "NotificationArea") == 0 ||
         strcmp (iid, "SystemTrayApplet") == 0))
     return FALSE;
-
-  if (!GDK_IS_X11_DISPLAY (gtk_widget_get_display (GTK_WIDGET (applet)))) {
-    g_warning ("Notification area only works on X");
-    return FALSE;
-  }
 
 #ifndef NOTIFICATION_AREA_INPROCESS
   gtk_window_set_default_icon_name (NOTIFICATION_AREA_ICON);

@@ -2,6 +2,7 @@
  * panel-addto.c:
  *
  * Copyright (C) 2004 Vincent Untz
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -228,8 +229,9 @@ panel_addto_applet_info_sort_func (PanelAddtoItemInfo *a,
 static GSList *
 panel_addto_prepend_internal_applets (GSList *list)
 {
-	static gboolean translated = FALSE;
-	int             i;
+	static gboolean       translated = FALSE;
+	gsize                 i;
+	PanelActionButtonType p;
 
 	for (i = 0; i < G_N_ELEMENTS (internal_addto_items); i++) {
 		if (!translated) {
@@ -242,19 +244,19 @@ panel_addto_prepend_internal_applets (GSList *list)
 
 	translated = TRUE;
 
-	for (i = PANEL_ACTION_LOCK; i < PANEL_ACTION_LAST; i++) {
+	for (p = PANEL_ACTION_LOCK; p < PANEL_ACTION_LAST; p++) {
 		PanelAddtoItemInfo *info;
 
-		if (panel_action_get_is_disabled (i))
+		if (panel_action_get_is_disabled (p))
 			continue;
 
 		info              = g_new0 (PanelAddtoItemInfo, 1);
 		info->type        = PANEL_ADDTO_ACTION;
-		info->action_type = i;
-		info->name        = g_strdup (panel_action_get_text (i));
-		info->description = g_strdup (panel_action_get_tooltip (i));
-		info->icon        = g_strdup (panel_action_get_icon_name (i));
-		info->iid         = g_strdup (panel_action_get_drag_id (i));
+		info->action_type = p;
+		info->name        = g_strdup (panel_action_get_text (p));
+		info->description = g_strdup (panel_action_get_tooltip (p));
+		info->icon        = g_strdup (panel_action_get_icon_name (p));
+		info->iid         = g_strdup (panel_action_get_drag_id (p));
 		info->enabled     = TRUE;
 		info->static_data = FALSE;
 
@@ -338,12 +340,12 @@ panel_addto_setup_drag (GtkTreeView          *tree_view,
 						GDK_BUTTON1_MASK|GDK_BUTTON2_MASK,
 						target, 1, GDK_ACTION_COPY);
 
-	g_signal_connect_data (G_OBJECT (tree_view), "drag_data_get",
+	g_signal_connect_data (tree_view, "drag-data-get",
 			       G_CALLBACK (panel_addto_drag_data_get_cb),
 			       g_strdup (text),
 			       (GClosureNotify) G_CALLBACK (g_free),
 			       0 /* connect_flags */);
-	g_signal_connect_after (G_OBJECT (tree_view), "drag-begin",
+	g_signal_connect_after (tree_view, "drag-begin",
 	                        G_CALLBACK (panel_addto_drag_begin_cb),
 	                        NULL);
 }
@@ -483,7 +485,7 @@ panel_addto_append_special_applets (PanelAddtoDialog *dialog,
 				    GtkListStore *model)
 {
 	static gboolean translated = FALSE;
-	int i;
+	gsize i;
 
 	for (i = 0; i < G_N_ELEMENTS (special_addto_items); i++) {
 		if (!translated) {
@@ -892,9 +894,7 @@ panel_addto_present_applications (PanelAddtoDialog *dialog)
 			      dialog->search_entry);
 	gtk_widget_set_sensitive (dialog->back_button, TRUE);
 
-	if (dialog->applet_search_text)
-		g_free (dialog->applet_search_text);
-
+	g_free (dialog->applet_search_text);
 	dialog->applet_search_text = g_strdup (gtk_entry_get_text (GTK_ENTRY (dialog->search_entry)));
 	/* show everything */
 	gtk_entry_set_text (GTK_ENTRY (dialog->search_entry), "");
@@ -914,11 +914,8 @@ panel_addto_present_applets (PanelAddtoDialog *dialog)
 	if (dialog->applet_search_text) {
 		gtk_entry_set_text (GTK_ENTRY (dialog->search_entry),
 				    dialog->applet_search_text);
-		gtk_editable_set_position (GTK_EDITABLE (dialog->search_entry),
-					   -1);
-
-		g_free (dialog->applet_search_text);
-		dialog->applet_search_text = NULL;
+		gtk_editable_set_position (GTK_EDITABLE (dialog->search_entry), -1);
+		g_clear_pointer (&dialog->applet_search_text, g_free);
 	}
 }
 
@@ -928,33 +925,13 @@ panel_addto_dialog_free_item_info (PanelAddtoItemInfo *item_info)
 	if (item_info == NULL || item_info->static_data)
 		return;
 
-	if (item_info->name != NULL)
-		g_free (item_info->name);
-	item_info->name = NULL;
-
-	if (item_info->description != NULL)
-		g_free (item_info->description);
-	item_info->description = NULL;
-
-	if (item_info->icon != NULL)
-		g_free (item_info->icon);
-	item_info->icon = NULL;
-
-	if (item_info->iid != NULL)
-		g_free (item_info->iid);
-	item_info->iid = NULL;
-
-	if (item_info->launcher_path != NULL)
-		g_free (item_info->launcher_path);
-	item_info->launcher_path = NULL;
-
-	if (item_info->menu_filename != NULL)
-		g_free (item_info->menu_filename);
-	item_info->menu_filename = NULL;
-
-	if (item_info->menu_path != NULL)
-		g_free (item_info->menu_path);
-	item_info->menu_path = NULL;
+	g_clear_pointer (&item_info->name, g_free);
+	g_clear_pointer (&item_info->description, g_free);
+	g_clear_pointer (&item_info->icon, g_free);
+	g_clear_pointer (&item_info->iid, g_free);
+	g_clear_pointer (&item_info->launcher_path, g_free);
+	g_clear_pointer (&item_info->menu_filename, g_free);
+	g_clear_pointer (&item_info->menu_path, g_free);
 }
 
 static void
@@ -991,13 +968,8 @@ panel_addto_dialog_free (PanelAddtoDialog *dialog)
 					     G_CALLBACK (panel_addto_name_notify),
 					     dialog);
 
-	if (dialog->search_text)
-		g_free (dialog->search_text);
-	dialog->search_text = NULL;
-
-	if (dialog->applet_search_text)
-		g_free (dialog->applet_search_text);
-	dialog->applet_search_text = NULL;
+	g_free (dialog->search_text);
+	g_free (dialog->applet_search_text);
 
 	if (dialog->addto_dialog)
 		gtk_widget_destroy (dialog->addto_dialog);
@@ -1017,22 +989,10 @@ panel_addto_dialog_free (PanelAddtoDialog *dialog)
 	panel_addto_dialog_free_application_list (dialog->application_list);
 	panel_addto_dialog_free_application_list (dialog->settings_list);
 
-	if (dialog->filter_applet_model)
-		g_object_unref (dialog->filter_applet_model);
-	dialog->filter_applet_model = NULL;
-
-	if (dialog->applet_model)
-		g_object_unref (dialog->applet_model);
-	dialog->applet_model = NULL;
-
-	if (dialog->filter_application_model)
-		g_object_unref (dialog->filter_application_model);
-	dialog->filter_application_model = NULL;
-
-	if (dialog->application_model)
-		g_object_unref (dialog->application_model);
-	dialog->application_model = NULL;
-
+	g_clear_object (&dialog->filter_applet_model);
+	g_clear_object (&dialog->applet_model);
+	g_clear_object (&dialog->filter_application_model);
+	g_clear_object (&dialog->application_model);
 	g_clear_object (&dialog->menu_tree);
 
 	g_free (dialog);
@@ -1126,8 +1086,7 @@ panel_addto_search_entry_changed (GtkWidget        *entry,
 		return;
 	}
 
-	if (dialog->search_text)
-		g_free (dialog->search_text);
+	g_free (dialog->search_text);
 	dialog->search_text = new_text;
 
 	model = gtk_tree_view_get_model (GTK_TREE_VIEW (dialog->tree_view));
@@ -1330,10 +1289,12 @@ panel_addto_dialog_new (PanelWidget *panel_widget)
 	gtk_box_set_spacing (GTK_BOX (dialog_vbox), 12);
 	gtk_container_set_border_width (GTK_CONTAINER (dialog_vbox), 5);
 
-	g_signal_connect (G_OBJECT (dialog->addto_dialog), "response",
-			  G_CALLBACK (panel_addto_dialog_response), dialog);
+	g_signal_connect (dialog->addto_dialog, "response",
+	                  G_CALLBACK (panel_addto_dialog_response),
+	                  dialog);
 	g_signal_connect (dialog->addto_dialog, "destroy",
-			  G_CALLBACK (panel_addto_dialog_destroy), dialog);
+	                  G_CALLBACK (panel_addto_dialog_destroy),
+	                  dialog);
 
 	inner_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 	gtk_box_pack_start (GTK_BOX (dialog_vbox), inner_vbox, TRUE, TRUE, 0);
@@ -1350,10 +1311,12 @@ panel_addto_dialog_new (PanelWidget *panel_widget)
 			    FALSE, FALSE, 0);
 
 	dialog->search_entry = gtk_entry_new ();
-	g_signal_connect (G_OBJECT (dialog->search_entry), "changed",
-			  G_CALLBACK (panel_addto_search_entry_changed), dialog);
-	g_signal_connect (G_OBJECT (dialog->search_entry), "activate",
-			  G_CALLBACK (panel_addto_search_entry_activated), dialog);
+	g_signal_connect (dialog->search_entry, "changed",
+	                  G_CALLBACK (panel_addto_search_entry_changed),
+	                  dialog);
+	g_signal_connect (dialog->search_entry, "activate",
+			  G_CALLBACK (panel_addto_search_entry_activated),
+	                  dialog);
 
 	gtk_box_pack_end (GTK_BOX (find_hbox), dialog->search_entry,
 			  TRUE, TRUE, 0);
@@ -1403,7 +1366,6 @@ panel_addto_dialog_new (PanelWidget *panel_widget)
 					      panel_addto_separator_func,
 					      GINT_TO_POINTER (COLUMN_TEXT),
 					      NULL);
-
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (dialog->tree_view));
 	gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);

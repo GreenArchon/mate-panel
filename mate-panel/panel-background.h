@@ -2,6 +2,7 @@
  * panel-background.h: panel background rendering
  *
  * Copyright (C) 2002, 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -94,7 +95,7 @@ void  panel_background_set_stretch       (PanelBackground     *background,
 void  panel_background_set_rotate        (PanelBackground     *background,
 					  gboolean             rotate_image);
 void  panel_background_set_default_style (PanelBackground     *background,
-					  GdkRGBA             *color,
+					  const GdkRGBA       *color,
 					  cairo_pattern_t     *pattern);
 void  panel_background_realized          (PanelBackground     *background,
 					  GdkWindow           *window);

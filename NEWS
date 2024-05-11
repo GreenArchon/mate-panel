@@ -1,3 +1,172 @@
+### mate-panel 1.29.0
+
+### mate-panel 1.28.1
+
+  * Build: require mate-desktop 1.28.2
+  * [ci]  use mate-desktop 1.28.2 upon which this depends
+  * Use MateImageMenuItem properly
+
+### mate-panel 1.28.0
+
+  * update translations
+
+### mate-panel 1.27.3
+
+  * update translations
+  * Revert "Add "center-stick" capability applets on the panel"
+  * Revert "Fix center- and right-sticking of expanding applets"
+  * wayland: keep window list menu off space not used for buttons
+  * run-dialog: Don't needlessly override DISPLAY environment variable
+  * Update opacity when changed gsettings color value
+  * wnck-pager: Fix workspace switcher aspect ratio
+  * Constify some pointer references in locals
+  * Reduce scope of more code
+  * Remove a redundant NULL check
+  * Avoid a redundant NULL check
+  * Constify a parameter
+  * Return a value even after an assertion failure
+  * Remove redundant shadowing variable
+  * Remove unused-but-set variable
+  * wncklet: Remove double assignment
+  * Reduce scope of variables
+  * Remove unused member PanelAction::type
+  * Optimize mate_panel_applet_settings_get_g*list()
+  * clock: Simplify sort_locations_by_time()
+  * Do not perform useless incoherent NULL check
+  * Reorder array index limit check
+  * status-notifier: Show AttentionIcon when Status is NeedsAttention
+  * status-notifier: fix typo
+  * Main menus: fix missing Places, System icons
+  * replace deprecated gtk-image-menu-item*
+  * Wayland: Fix force-quit unsupported message dialog
+  * Wayland: Make panel shutdown button work under wayland
+  * Force-quit/x11: Fix misalignment of popup with multimonitors
+  * Hidpi x11: center panel force-quit popup window
+
+### mate-panel 1.27.2
+
+  * update translations
+  * libmate-panel-applet: don't use panel plug to find the screen
+  * wayland-tasklist: really set maximum label width
+  * wayland tasklist:  fit buttons to tasklist, limit button size, hide contents as necessary
+  * notification-area: stop warning on removal
+  * Update org.mate.panel.object schema descriptions
+  * button-widget.c: replace tabs with 4 spaces
+  * Wayland: Fix blurry rendering of panel launcher icons
+  * Wayland: ensure tasklist buttons get widget name
+  * wayland: stop tasklist overflowing over other applets
+  * Clock applet/wayland: position calendar window same as in x11
+  * libmate-panel-applet/Makefile.am: Fix build with gettext 0.22
+  * Fix distribution of applet service files
+  * Wayland, Tray applet: allow in-process applet to load, using SNI only (#1372)
+  * Wayland, hidpi: do not scale buttons in wayland (#1370)
+  * tell dconf-edit about relocatable schemas (#1355)
+  * applets/wncklet/wayland-backend: Add basic icon support (#1275)
+  * applets/wncklet/wayland-backend: Add basic context menu (#1276)
+  * panel-run-dialog: Add accelerator keys for "list of known applications" (#1359)
+
+### mate-panel 1.27.1
+
+  * update translations
+  * Clock Applet: Update date/time and weather after resume from sleep mode
+  * Update window-list.c
+  * Update window-list.ui
+  * Update org.mate.panel.applet.window-list.gschema.xml.in
+  * wncklet: center previews when scaling is enabled
+  * wncklet: fix incorrect preview positions for multiple monitors
+  * wncklet: disable preview centering when scaling is enabled
+  * wncklet: center preview windows when grouping is enabled
+  * wncklet: center preview windows
+  * panel-menu-button: comment out wayland debugging message
+  * windows-list.ui: lower gtk3 required version
+  * configure.ac: The macro 'AC_HELP_STRING' is obsolete
+  * Fix center- and right-sticking of expanding applets
+  * panel-applet: Fix leak in no-background code path
+  * clock: Fix memory leak
+  * applet: SMALL_ICON_SIZE macro is not used [-Wunused-macros]
+  * notification_area: Reduce lifetime of the settings local variable (#1309)
+  * build warning: AC_OUTPUT should be used without arguments
+  * Add "center-stick" capability applets on the panel
+  * wncklet: Fix crash thumbnailing dying or otherwise inaccessible windows
+  * Register SNI host only if SNI is enabled
+  * fix undefined reference to g_clear_signal_handler (glib < 2.62)
+  * wncklet: Condition 'sdd->wnck_screen!=NULL' is always false
+  * panel-multimonitor: Condition '*monitors_ret>0' is always false
+  * clock: cast from function call of type 'gdouble' to non-matching type
+  * wncklet: do not exceed workspace number when setting n_rows
+
+### mate-panel 1.27.0
+
+  * update translations
+  * wncklet: The values stored in the wrapper hash table are incorrect
+  * notification_area: fix build warning -Wbad-function-cast
+  * panel-run-dialog: address of array 'dent->d_name' will always evaluate to 'true'
+  * clock: fix memory leak
+  * panel-toplevel.h: fix indent
+  * Fix some -Wsign-compare warnings
+  * Use dashes for applet-[added|removed|move], back-change, size-change
+  * Remove unnecessary cast in g_signal_connect* call
+  * Upscale in panel_xutils_set_strut
+  * panel-toplevel: fix the computed dimension for (non) auto hidden panels
+  * struts: add support for _GNOME_WM_STRUT_AREA
+  * Use dashes instead of underscores in signal names
+  * clock: gtk_entry_set_alignment in clock.ui
+  * clock: gtk_entry_set_width_chars in clock.ui
+  * clock: Upgrade clock.ui
+  * clock: Define _clock_get_widget instead of using one sentence method
+  * clock: simplify temperature_unit_changed and speed_unit_changed
+  * clock: fix temperature_unit_changed and -Wsign-compare warnings
+  * Use GLib's new g_clear_signal_handler() function to simplify code
+  * Use g_clear_pointer() and g_clear_object()
+  * panel-test-applets: fix memory leak
+  * Fix build warnings about missing field initializer
+  * Use a blank line at most
+  * sn-dbus-menu-item: fix include guard
+  * panel-applet-private: fix include guard
+  * fix show window thumbnails check button
+  * adapt ui file to reverted window-list.c
+  * Updated installation instructions ; added missing build dependency
+  * fix mate-desktop-item-edit executable
+
+### mate-panel 1.26.0
+
+  * update translations
+  * Use absolute path g_get_home_dir replaces "~/"
+  * Fix clock applet add location crash
+  * Add the function of monitor panel launcher files
+
+### mate-panel 1.25.3
+
+  * update translations
+  * update copyright to 2021
+  * workspace-switcher: support xmonad WM
+  * window-list.c: use g_settings_* functions directly instead of using stored values
+  * window-list.ui: use GtkNotebook
+  * Replace deprecated GCompletion with GtkEntryCompletion
+  * struts: add panel_xutils_unset_strut
+  * panel-xutils: tab to spaces
+  * panel-struts: tab to spaces
+  * Make Recent Documents list in Places menu of configurable length (#1216)
+  * Add window list disable mouse scrolling function
+  * Add panel-ditem-editor-dialog.ui
+  * notification_area: Add XAyatanaLabel and XAyatanaNewLabel to interface description
+  * notification_area: move XAyatana(New)Label case at the bottom
+  * notification_area: fix memory leak
+  * Add text label display function for notification area
+  * Redundant NULL check before freeing a variable
+  * build: Use PACKAGE_URL variable
+  * Update copyright to 2021
+  * panel-toplevel: declaration of 'allocation' shadows a parameter
+  * panel-menu-items: declaration of 'item' shadows a previous local
+  * Local variable shadows outer variable warning reported by cppcheck
+  * Variable is reassigned a value before the old one has been used
+  * wncklet: remove extra ref on gdk_x11_window_foreign_new_for_display
+  * panel-properties-dialog: show dialog on _present instead of _new
+  * wncklet: search the window before creating a new one
+  * wncklet: Condition ~wm_name is always true
+  * wncklet: variable is assigned a value that is never used
+  * wncklet: missing breaks on switch cases
+
 ### mate-panel 1.25.2
 
   * update translations

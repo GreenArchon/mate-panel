@@ -2,6 +2,7 @@
  * panel-keyfile.h: GKeyFile extensions
  *
  * Copyright (C) 2008 Novell, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Based on code from panel-util.h (there was no copyright header at the time)
  *
@@ -32,7 +33,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 GKeyFile *panel_key_file_new_desktop  (void);
 gboolean  panel_key_file_to_file      (GKeyFile       *keyfile,

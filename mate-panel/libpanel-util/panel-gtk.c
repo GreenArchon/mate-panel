@@ -2,6 +2,7 @@
  * panel-gtk.c: various small extensions to gtk+
  *
  * Copyright (C) 2010 Novell, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -118,7 +119,6 @@ panel_file_chooser_dialog_new_valist (const gchar          *title,
 {
 	GtkWidget *result;
 	const char *button_text = first_button_text;
-	gint response_id;
 
 	result = g_object_new (GTK_TYPE_FILE_CHOOSER_DIALOG,
 			       "title", title,
@@ -130,7 +130,7 @@ panel_file_chooser_dialog_new_valist (const gchar          *title,
 
 	while (button_text)
 		{
-			response_id = va_arg (varargs, gint);
+			gint response_id = va_arg (varargs, gint);
 
 			if (g_strcmp0 (button_text, "process-stop") == 0)
 				panel_dialog_add_button (GTK_DIALOG (result), _("_Cancel"), button_text, response_id);
@@ -165,7 +165,6 @@ panel_file_chooser_dialog_new (const gchar          *title,
 
 	return result;
 }
-
 
 static void
 ensure_icon_settings (void)

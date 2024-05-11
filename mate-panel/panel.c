@@ -1,6 +1,7 @@
 /* Mate panel: Initialization routines
  * (C) 1997,1998,1999,2000 the Free Software Foundation
  * (C) 2000 Eazel, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Authors: Federico Mena
  *          Miguel de Icaza
@@ -115,7 +116,6 @@ orient_change_foreach(GtkWidget *w, gpointer data)
 	orientation_change(info,panel);
 }
 
-
 static void
 panel_orient_change (GtkWidget *widget, gpointer data)
 {
@@ -144,7 +144,6 @@ size_change_foreach(GtkWidget *w, gpointer data)
 
 	size_change(info,panel);
 }
-
 
 static void
 panel_size_change (GtkWidget *widget, gpointer data)
@@ -893,8 +892,7 @@ move_applet (PanelWidget *panel, int pos, int applet_index)
 
 	parent = gtk_widget_get_parent (info->widget);
 
-	if (info != NULL &&
-	    info->widget != NULL &&
+	if (info->widget != NULL &&
 	    parent != NULL &&
 	    PANEL_IS_WIDGET (parent)) {
 		GSList *forb;
@@ -1322,24 +1320,19 @@ drag_data_recieved_cb (GtkWidget	*widget,
 static void
 panel_widget_setup(PanelWidget *panel)
 {
-	g_signal_connect (G_OBJECT(panel),
-			  "applet_added",
+	g_signal_connect (panel, "applet-added",
 			  G_CALLBACK(mate_panel_applet_added),
 			  NULL);
-	g_signal_connect (G_OBJECT(panel),
-			  "applet_removed",
+	g_signal_connect (panel, "applet-removed",
 			  G_CALLBACK(mate_panel_applet_removed),
 			  NULL);
-	g_signal_connect (G_OBJECT(panel),
-			  "applet_move",
+	g_signal_connect (panel, "applet-move",
 			  G_CALLBACK(mate_panel_applet_move),
 			  NULL);
-	g_signal_connect (G_OBJECT (panel),
-			  "back_change",
+	g_signal_connect (panel, "back-change",
 			  G_CALLBACK (panel_back_change),
 			  NULL);
-	g_signal_connect (G_OBJECT (panel),
-			  "size_change",
+	g_signal_connect (panel, "size-change",
 			  G_CALLBACK (panel_size_change),
 			  NULL);
 }
@@ -1369,13 +1362,13 @@ panel_setup (PanelToplevel *toplevel)
 
 	panel_widget_setup (panel_widget);
 
-	g_signal_connect (toplevel, "drag_data_received",
+	g_signal_connect (toplevel, "drag-data-received",
 			  G_CALLBACK (drag_data_recieved_cb), NULL);
-	g_signal_connect (toplevel, "drag_motion",
+	g_signal_connect (toplevel, "drag-motion",
 			  G_CALLBACK (drag_motion_cb), NULL);
-	g_signal_connect (toplevel, "drag_leave",
+	g_signal_connect (toplevel, "drag-leave",
 			  G_CALLBACK (drag_leave_cb), NULL);
-	g_signal_connect (toplevel, "drag_drop",
+	g_signal_connect (toplevel, "drag-drop",
 			  G_CALLBACK (drag_drop_cb), NULL);
 
 	gtk_drag_dest_set (GTK_WIDGET (toplevel), 0, NULL, 0, 0);
@@ -1508,9 +1501,9 @@ panel_deletion_dialog (PanelToplevel *toplevel)
 
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
 
-	 g_signal_connect (dialog, "destroy",
-                           G_CALLBACK (panel_deletion_destroy_dialog),
-                           toplevel);
+	g_signal_connect (dialog, "destroy",
+	                  G_CALLBACK (panel_deletion_destroy_dialog),
+	                  toplevel);
 
 	g_object_set_data (G_OBJECT (toplevel), "panel-delete-dialog", dialog);
 	panel_toplevel_push_autohide_disabler (toplevel);

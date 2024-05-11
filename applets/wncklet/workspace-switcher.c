@@ -53,17 +53,166 @@
 
 #define WORKSPACE_SWITCHER_ICON "mate-panel-workspace-switcher"
 
+/* Container for the WnckPager to work around the sizing issues we have in the
+ * panel.  See
+ * https://github.com/mate-desktop/mate-panel/issues/1230#issuecomment-1046235088 */
+
+typedef struct _PagerContainer PagerContainer;
+typedef GtkBinClass PagerContainerClass;
+
+static GType pager_container_get_type (void);
+
+#define PAGER_CONTAINER_TYPE (pager_container_get_type ())
+#define PAGER_CONTAINER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), PAGER_CONTAINER_TYPE, PagerContainer))
+
+struct _PagerContainer
+{
+	GtkBin          parent;
+	GtkOrientation  orientation;
+	int             size;
+};
+
+G_DEFINE_TYPE (PagerContainer, pager_container, GTK_TYPE_BIN)
+
+static gboolean
+queue_resize_idle_cb (gpointer user_data)
+{
+	gtk_widget_queue_resize (GTK_WIDGET (user_data));
+	return G_SOURCE_REMOVE;
+}
+
+static void
+pager_container_get_preferred_width (GtkWidget *widget,
+                                     int       *minimum_width,
+                                     int       *natural_width)
+{
+	PagerContainer *self;
+
+	self = PAGER_CONTAINER (widget);
+
+	if (self->orientation == GTK_ORIENTATION_VERTICAL)
+	{
+		/* self->size is panel width */
+		*minimum_width = *natural_width = self->size;
+	}
+	else
+	{
+		/* self->size is panel size/height, that will get allocated to pager, request width for this size */
+		gtk_widget_get_preferred_width_for_height (gtk_bin_get_child (GTK_BIN (self)),
+		                                           self->size,
+		                                           minimum_width,
+		                                           natural_width);
+	}
+}
+
+static void
+pager_container_get_preferred_height (GtkWidget *widget,
+                                      int       *minimum_height,
+                                      int       *natural_height)
+{
+	PagerContainer *self;
+
+	self = PAGER_CONTAINER (widget);
+
+	if (self->orientation == GTK_ORIENTATION_VERTICAL)
+	{
+		/* self->size is panel size/width that will get allocated to pager, request height for this size */
+		gtk_widget_get_preferred_height_for_width (gtk_bin_get_child (GTK_BIN (self)),
+		                                           self->size,
+		                                           minimum_height,
+		                                           natural_height);
+	}
+	else
+	{
+		/* self->size is panel height */
+		*minimum_height = *natural_height = self->size;
+	}
+}
+
+static void
+pager_container_size_allocate (GtkWidget     *widget,
+                               GtkAllocation *allocation)
+{
+	PagerContainer *self;
+	int size;
+
+	self = PAGER_CONTAINER (widget);
+
+	if (self->orientation == GTK_ORIENTATION_VERTICAL)
+		size = allocation->width;
+	else
+		size = allocation->height;
+
+	size = MAX (size, 1);
+
+	if (self->size != size)
+	{
+		self->size = size;
+		g_idle_add (queue_resize_idle_cb, self);
+		return;
+	}
+
+	GTK_WIDGET_CLASS (pager_container_parent_class)->size_allocate (widget,
+	                                                                allocation);
+}
+
+static void
+pager_container_class_init (PagerContainerClass *self_class)
+{
+	GtkWidgetClass *widget_class;
+
+	widget_class = GTK_WIDGET_CLASS (self_class);
+
+	widget_class->get_preferred_width = pager_container_get_preferred_width;
+	widget_class->get_preferred_height = pager_container_get_preferred_height;
+	widget_class->size_allocate = pager_container_size_allocate;
+}
+
+static void
+pager_container_init (PagerContainer *self)
+{
+}
+
+static GtkWidget *
+pager_container_new (GtkWidget     *child,
+                     GtkOrientation orientation)
+{
+	PagerContainer *self;
+
+	self = g_object_new (PAGER_CONTAINER_TYPE, "child", child, NULL);
+
+	self->orientation = orientation;
+
+	return GTK_WIDGET (self);
+}
+
+static void
+pager_container_set_orientation (PagerContainer *self,
+                                 GtkOrientation  orientation)
+{
+	if (self->orientation == orientation)
+		return;
+
+	self->orientation = orientation;
+
+	gtk_widget_queue_resize (GTK_WIDGET (self));
+}
+
+/* Pager applet itself */
+
 typedef enum {
 	PAGER_WM_MARCO,
 	PAGER_WM_METACITY,
 	PAGER_WM_COMPIZ,
 	PAGER_WM_I3,
+	PAGER_WM_XMONAD,
 	PAGER_WM_UNKNOWN
 } PagerWM;
 
 typedef struct {
 	GtkWidget* applet;
 
+	GtkWidget* pager_container;
 	GtkWidget* pager;
 
 	WnckScreen* screen;
@@ -107,7 +256,8 @@ static void pager_update_wnck(PagerData* pager, WnckPager* wnck_pager)
 	if (pager->display_names && (
 		pager->wm == PAGER_WM_MARCO ||
 		pager->wm == PAGER_WM_METACITY ||
-		pager->wm == PAGER_WM_I3))
+		pager->wm == PAGER_WM_I3 ||
+		pager->wm == PAGER_WM_XMONAD))
 	{
 		display_mode = WNCK_PAGER_DISPLAY_NAME;
 	}
@@ -171,6 +321,20 @@ static void update_properties_for_wm(PagerData* pager)
 			if (pager->cell)
 				g_object_set (pager->cell, "editable", FALSE, NULL);
 			break;
+		case PAGER_WM_XMONAD:
+			if (pager->workspaces_frame)
+				gtk_widget_show(pager->workspaces_frame);
+			if (pager->num_workspaces_spin)
+				gtk_widget_set_sensitive(pager->num_workspaces_spin, FALSE);
+			if (pager->workspace_names_label)
+				gtk_widget_hide(pager->workspace_names_label);
+			if (pager->workspace_names_scroll)
+				gtk_widget_hide(pager->workspace_names_scroll);
+			if (pager->display_workspaces_toggle)
+				gtk_widget_show(pager->display_workspaces_toggle);
+			if (pager->cell)
+				g_object_set (pager->cell, "editable", FALSE, NULL);
+			break;
 		case PAGER_WM_COMPIZ:
 			if (pager->workspaces_frame)
 				gtk_widget_show(pager->workspaces_frame);
@@ -216,6 +380,8 @@ static void window_manager_changed(WnckScreen* screen, PagerData* pager)
 		pager->wm = PAGER_WM_METACITY;
 	else if (strcmp(wm_name, "i3") == 0)
 		pager->wm = PAGER_WM_I3;
+	else if (strcmp(wm_name, "xmonad") == 0)
+		pager->wm = PAGER_WM_XMONAD;
 	else if (strcmp(wm_name, "Compiz") == 0)
 		pager->wm = PAGER_WM_COMPIZ;
 	else
@@ -271,6 +437,8 @@ static void applet_change_orient(MatePanelApplet* applet, MatePanelAppletOrient 
 
 	pager->orientation = new_orient;
 	pager_update(pager);
+
+	pager_container_set_orientation(PAGER_CONTAINER(pager->pager_container), pager->orientation);
 
 	if (pager->label_row_col)
 		gtk_label_set_text(GTK_LABEL(pager->label_row_col), pager->orientation == GTK_ORIENTATION_HORIZONTAL ? _("rows") : _("columns"));
@@ -472,11 +640,12 @@ static const GtkActionEntry pager_menu_actions[] = {
 
 static void num_rows_changed(GSettings* settings, gchar* key, PagerData* pager)
 {
-	int n_rows = DEFAULT_ROWS;
+	int n_rows;
 
-	n_rows = g_settings_get_int (settings, key);
-
-	n_rows = CLAMP(n_rows, 1, MAX_REASONABLE_ROWS);
+	n_rows = CLAMP (g_settings_get_int (settings, key),
+	                1,
+	                MIN (wnck_screen_get_workspace_count (pager->screen),
+	                     MAX_REASONABLE_ROWS));
 
 	pager->n_rows = n_rows;
 	pager_update(pager);
@@ -501,12 +670,9 @@ static void display_workspace_names_changed(GSettings* settings, gchar* key, Pag
 	}
 }
 
-
 static void all_workspaces_changed(GSettings* settings, gchar* key, PagerData* pager)
 {
-	gboolean value = TRUE; /* Default value */
-
-	value = g_settings_get_boolean (settings, key);
+	gboolean value = g_settings_get_boolean (settings, key);
 
 	pager->display_all = value;
 	pager_update(pager);
@@ -632,21 +798,37 @@ gboolean workspace_switcher_applet_fill(MatePanelApplet* applet)
 	context = gtk_widget_get_style_context (pager->pager);
 	gtk_style_context_add_class (context, "wnck-pager");
 
-	g_signal_connect(G_OBJECT(pager->pager), "destroy", G_CALLBACK(destroy_pager), pager);
+	g_signal_connect (pager->pager, "destroy",
+	                  G_CALLBACK (destroy_pager),
+	                  pager);
 
 	/* overwrite default WnckPager widget scroll-event */
-	g_signal_connect(G_OBJECT(pager->pager), "scroll-event", G_CALLBACK(applet_scroll), pager);
+	g_signal_connect (pager->pager, "scroll-event",
+	                  G_CALLBACK (applet_scroll),
+	                  pager);
 
-	gtk_container_add(GTK_CONTAINER(pager->applet), pager->pager);
+	pager->pager_container = pager_container_new(pager->pager, pager->orientation);
+	gtk_container_add(GTK_CONTAINER(pager->applet), pager->pager_container);
 
-	g_signal_connect(G_OBJECT(pager->applet), "realize", G_CALLBACK(applet_realized), pager);
-	g_signal_connect(G_OBJECT(pager->applet), "unrealize", G_CALLBACK(applet_unrealized), pager);
-	g_signal_connect(G_OBJECT(pager->applet), "change_orient", G_CALLBACK(applet_change_orient), pager);
-	g_signal_connect(G_OBJECT(pager->applet), "change_background", G_CALLBACK(applet_change_background), pager);
-	g_signal_connect(G_OBJECT(pager->applet), "style-updated", G_CALLBACK(applet_style_updated), context);
+	g_signal_connect (pager->applet, "realize",
+	                  G_CALLBACK (applet_realized),
+	                  pager);
+	g_signal_connect (pager->applet, "unrealize",
+	                  G_CALLBACK (applet_unrealized),
+	                  pager);
+	g_signal_connect (pager->applet, "change-orient",
+	                  G_CALLBACK (applet_change_orient),
+	                  pager);
+	g_signal_connect (pager->applet, "change-background",
+	                  G_CALLBACK (applet_change_background),
+	                  pager);
+	g_signal_connect (pager->applet, "style-updated",
+	                  G_CALLBACK (applet_style_updated),
+	                  context);
 
-	gtk_widget_show(pager->pager);
-	gtk_widget_show(pager->applet);
+	gtk_widget_show (pager->pager);
+	gtk_widget_show (pager->pager_container);
+	gtk_widget_show (pager->applet);
 
 	action_group = gtk_action_group_new("WorkspaceSwitcher Applet Actions");
 	gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
@@ -667,7 +849,6 @@ gboolean workspace_switcher_applet_fill(MatePanelApplet* applet)
 
 	return TRUE;
 }
-
 
 static void display_help_dialog(GtkAction* action, PagerData* pager)
 {
@@ -805,6 +986,8 @@ on_num_workspaces_value_changed (GtkSpinButton *button,
 	{
 		int workspace_count = gtk_spin_button_get_value_as_int (button);
 		wnck_screen_change_workspace_count(pager->screen, workspace_count);
+		if (workspace_count < pager->n_rows)
+			g_settings_set_int (pager->settings, "num-rows", workspace_count);
 	}
 #endif /* HAVE_X11 */
 }
@@ -980,7 +1163,6 @@ static void setup_dialog(GtkBuilder* builder, PagerData* pager)
 	if (marco_workspaces_settings != NULL)
 		g_object_unref (marco_workspaces_settings);
 
-
 	/* Wrap workspaces: */
 	if (pager->wrap_workspaces_toggle)
 	{
@@ -988,18 +1170,24 @@ static void setup_dialog(GtkBuilder* builder, PagerData* pager)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(pager->wrap_workspaces_toggle), pager->wrap_workspaces);
 	}
 
-	g_signal_connect(G_OBJECT(pager->wrap_workspaces_toggle), "toggled", (GCallback) wrap_workspaces_toggled, pager);
+	g_signal_connect (pager->wrap_workspaces_toggle, "toggled",
+	                  (GCallback) wrap_workspaces_toggled,
+	                  pager);
 
 	/* Display workspace names: */
 
-	g_signal_connect(G_OBJECT(pager->display_workspaces_toggle), "toggled", (GCallback) display_workspace_names_toggled, pager);
+	g_signal_connect (pager->display_workspaces_toggle, "toggled",
+	                  (GCallback) display_workspace_names_toggled,
+	                  pager);
 
 	value = pager->display_names;
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(pager->display_workspaces_toggle), value);
 
 	/* Display all workspaces: */
-	g_signal_connect(G_OBJECT(pager->all_workspaces_radio), "toggled", (GCallback) all_workspaces_toggled, pager);
+	g_signal_connect (pager->all_workspaces_radio, "toggled",
+	                  (GCallback) all_workspaces_toggled,
+	                  pager);
 
 	if (pager->display_all)
 	{
@@ -1023,7 +1211,7 @@ static void setup_dialog(GtkBuilder* builder, PagerData* pager)
 	gtk_label_set_text(GTK_LABEL(pager->label_row_col), pager->orientation == GTK_ORIENTATION_HORIZONTAL ? _("rows") : _("columns"));
 
 	g_signal_connect(pager->properties_dialog, "destroy", G_CALLBACK(properties_dialog_destroyed), pager);
-	g_signal_connect(pager->properties_dialog, "delete_event", G_CALLBACK(delete_event), pager);
+	g_signal_connect(pager->properties_dialog, "delete-event", G_CALLBACK(delete_event), pager);
 	g_signal_connect(pager->properties_dialog, "response", G_CALLBACK(response_cb), pager);
 
 	g_signal_connect(WID("done_button"), "clicked", (GCallback) close_dialog, pager);
@@ -1045,9 +1233,13 @@ static void setup_dialog(GtkBuilder* builder, PagerData* pager)
 	}
 #endif /* HAVE_X11 */
 
-	g_signal_connect (pager->num_workspaces_spin, "value-changed", G_CALLBACK (on_num_workspaces_value_changed), pager);
+	g_signal_connect (pager->num_workspaces_spin, "value-changed",
+	                  G_CALLBACK (on_num_workspaces_value_changed),
+	                  pager);
 
-	g_signal_connect(G_OBJECT(pager->workspaces_tree), "focus_out_event", (GCallback) workspaces_tree_focused_out, pager);
+	g_signal_connect (pager->workspaces_tree, "focus-out-event",
+	                  (GCallback) workspaces_tree_focused_out,
+	                  pager);
 
 	pager->workspaces_store = gtk_list_store_new(1, G_TYPE_STRING, NULL);
 	update_workspaces_model(pager);

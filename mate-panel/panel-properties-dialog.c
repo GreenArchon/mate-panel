@@ -2,6 +2,7 @@
  * panel-properties-dialog.c:
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -170,7 +171,7 @@ panel_properties_dialog_setup_orientation_combo (PanelPropertiesDialog *dialog,
 	GtkListStore     *model;
 	GtkTreeIter       iter;
 	GtkCellRenderer  *renderer;
-	int               i;
+	gsize             i;
 
 	dialog->orientation_combo = PANEL_GTK_BUILDER_GET (gui, "orientation_combo");
 	g_return_if_fail (dialog->orientation_combo != NULL);
@@ -355,7 +356,7 @@ panel_properties_dialog_setup_color_button (PanelPropertiesDialog *dialog,
 	gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (dialog->color_button),
 	                            &color);
 
-	g_signal_connect_swapped (dialog->color_button, "color_set",
+	g_signal_connect_swapped (dialog->color_button, "color-set",
 				  G_CALLBACK (panel_properties_dialog_color_changed),
 				  dialog);
 
@@ -736,6 +737,21 @@ panel_properties_dialog_update_background_image (PanelPropertiesDialog *dialog,
 }
 
 static void
+panel_properties_dialog_update_opacity (PanelPropertiesDialog *dialog,
+                                        gdouble                percentage)
+{
+	gboolean slider_active;
+
+	slider_active = gdk_screen_is_composited (gdk_screen_get_default ());
+
+	if (!slider_active) {
+		percentage = 100.0;
+	}
+
+	gtk_range_set_value (GTK_RANGE (dialog->opacity_scale), percentage);
+}
+
+static void
 panel_properties_dialog_background_notify (GSettings             *settings,
 					   gchar                 *key,
 					   PanelPropertiesDialog *dialog)
@@ -749,6 +765,8 @@ panel_properties_dialog_background_notify (GSettings             *settings,
 	{
 		char *color = g_settings_get_string (settings, key);
 		panel_properties_dialog_update_background_color (dialog, color);
+		gdouble percentage = panel_profile_get_background_opacity (dialog->toplevel);
+		panel_properties_dialog_update_opacity (dialog, percentage);
 		g_free (color);
 	}
 	else if (!strcmp (key, "image"))

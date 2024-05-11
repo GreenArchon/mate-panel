@@ -2,6 +2,7 @@
  * panel-background.c: panel background rendering
  *
  * Copyright (C) 2002, 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -37,7 +38,6 @@
 #endif
 
 #include "panel-util.h"
-
 
 static gboolean panel_background_composite (PanelBackground *background);
 static void load_background_file (PanelBackground *background);
@@ -243,7 +243,6 @@ panel_background_composite (PanelBackground *background)
 
 	background->composited = TRUE;
 
-
 	panel_background_prepare (background);
 
 	return TRUE;
@@ -418,7 +417,7 @@ panel_background_update_has_alpha (PanelBackground *background)
 		 background->loaded_image)
 		has_alpha = gdk_pixbuf_get_has_alpha (background->loaded_image);
 
-	background->has_alpha = has_alpha;
+	background->has_alpha = (has_alpha != FALSE);
 }
 
 static void
@@ -491,16 +490,13 @@ static void
 panel_background_set_image_no_update (PanelBackground *background,
 				      const char      *image)
 {
-	if (background->loaded_image)
-		g_object_unref (background->loaded_image);
-	background->loaded_image = NULL;
-
-	if (background->image)
-		g_free (background->image);
-	background->image = NULL;
+	g_clear_object (&background->loaded_image);
+	g_free (background->image);
 
 	if (image && image [0])
 		background->image = g_strdup (image);
+	else
+		background->image = NULL;
 
 	panel_background_update_has_alpha (background);
 }
@@ -602,7 +598,7 @@ panel_background_set (PanelBackground     *background,
 
 void
 panel_background_set_default_style (PanelBackground *background,
-				    GdkRGBA         *color,
+				    const GdkRGBA   *color,
 				    cairo_pattern_t *pattern)
 {
 	g_return_if_fail (color != NULL);
@@ -619,7 +615,6 @@ panel_background_set_default_style (PanelBackground *background,
 	if (background->type == PANEL_BACK_NONE)
 		panel_background_prepare (background);
 }
-
 
 void
 panel_background_realized (PanelBackground *background,
@@ -758,17 +753,10 @@ panel_background_free (PanelBackground *background)
 {
 	free_transformed_resources (background);
 
-	if (background->image)
-		g_free (background->image);
-	background->image = NULL;
+	g_clear_pointer (&background->image, g_free);
 
-	if (background->loaded_image)
-		g_object_unref (background->loaded_image);
-	background->loaded_image = NULL;
-
-	if (background->window)
-		g_object_unref (background->window);
-	background->window = NULL;
+	g_clear_object (&background->loaded_image);
+	g_clear_object (&background->window);
 
 	if (background->default_pattern)
 		cairo_pattern_destroy (background->default_pattern);

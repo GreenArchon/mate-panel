@@ -26,7 +26,7 @@ static char **desktops = NULL;
 static GOptionEntry options[] = {
 	{ "create-new", 0, 0, G_OPTION_ARG_NONE, &create_new, N_("Create new file in the given directory"), NULL },
 	{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &desktops, NULL, N_("[FILE...]") },
-	{ NULL }
+	{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
 };
 
 static void
@@ -123,7 +123,6 @@ main (int argc, char * argv[])
 	for (i = 0; desktops[i] != NULL; i++) {
 		GFile     *file;
 		GFileInfo *info;
-		GFileType  type;
 		char      *uri;
 		char      *path;
 		GtkWidget *dlg = NULL;
@@ -136,7 +135,7 @@ main (int argc, char * argv[])
 		g_object_unref (file);
 
 		if (info) {
-			type = g_file_info_get_file_type (info);
+			GFileType type = g_file_info_get_file_type (info);
 
 			if (type == G_FILE_TYPE_DIRECTORY && create_new) {
 
@@ -205,10 +204,12 @@ main (int argc, char * argv[])
 
 		if (dlg != NULL) {
 			dialogs ++;
-			g_signal_connect (G_OBJECT (dlg), "destroy",
-					  G_CALLBACK (dialog_destroyed), NULL);
-			g_signal_connect (G_OBJECT (dlg), "error_reported",
-					  G_CALLBACK (error_reported), NULL);
+			g_signal_connect (dlg, "destroy",
+			                  G_CALLBACK (dialog_destroyed),
+			                  NULL);
+			g_signal_connect (dlg, "error-reported",
+			                  G_CALLBACK (error_reported),
+			                  NULL);
 			gtk_widget_show (dlg);
 		}
 

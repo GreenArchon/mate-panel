@@ -4,28 +4,28 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# sidro <slacky2005@gmail.com>, 2018
 # 54fe8adf15118d4933fd984b443faf69_2c58d9d <5559450f29f617d4a2e3698d44575f32_462992>, 2018
-# corneliu.e <corneliueva@yahoo.com>, 2018
+# 3d5ab56b1b83fefceeab671c39a98a6d_999ae54, 2018
 # Martin Wimpress <code@flexion.org>, 2018
-# Daniel <danny3@tutanota.com>, 2018
-# Stefano Karapetsas <stefano@karapetsas.com>, 2018
+# Stefano Karapetsas <stefano@karapetsas.com>, 2021
+# Daniel <danny3@tutanota.com>, 2021
+# sidro <slacky2005@gmail.com>, 2021
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mate-panel 1.25.0\n"
+"Project-Id-Version: mate-panel 1.27.2\n"
 "Report-Msgid-Bugs-To: https://github.com/mate-desktop/mate-panel/issues\n"
-"POT-Creation-Date: 2020-08-08 12:56+0200\n"
+"POT-Creation-Date: 2023-09-02 19:26+0200\n"
 "PO-Revision-Date: 2018-03-11 19:58+0000\n"
-"Last-Translator: Stefano Karapetsas <stefano@karapetsas.com>, 2018\n"
-"Language-Team: Romanian (https://www.transifex.com/mate/teams/13566/ro/)\n"
+"Last-Translator: sidro <slacky2005@gmail.com>, 2021\n"
+"Language-Team: Romanian (https://app.transifex.com/mate/teams/13566/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
-#: applets/clock/calendar-window.c:257 applets/clock/clock.ui:689
+#: applets/clock/calendar-window.c:257 applets/clock/clock.ui:708
 msgid "Locations"
 msgstr "Locuri"
 
@@ -33,21 +33,21 @@ msgstr "Locuri"
 msgid "Edit"
 msgstr "Editare"
 
-#: applets/clock/calendar-window.c:482
+#: applets/clock/calendar-window.c:484
 msgid "Calendar"
 msgstr "Calendar"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format (eg, like
 #. * in the US: 8:10 am). The %p expands to am/pm.
-#: applets/clock/clock.c:449
+#: applets/clock/clock.c:461
 msgid "%l:%M:%S %p"
 msgstr "%l:%M:%S %p"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 12-hours format (eg, like
 #. * in the US: 8:10 am). The %p expands to am/pm.
-#: applets/clock/clock.c:449 applets/clock/clock-location-tile.c:502
+#: applets/clock/clock.c:461 applets/clock/clock-location-tile.c:500
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
 
@@ -58,7 +58,7 @@ msgstr "%l:%M %p"
 #. * string.
 #. * It is used to display the time in 24-hours
 #. * format (eg, like in France: 20:10).
-#: applets/clock/clock.c:454 applets/clock/clock.c:1624
+#: applets/clock/clock.c:466 applets/clock/clock.c:1736
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
@@ -72,9 +72,9 @@ msgstr "%H:%M:%S"
 #. Translators: This is a strftime format string.
 #. * It is used to display the time in 24-hours format (eg, like
 #. * in France: 20:10).
-#: applets/clock/clock.c:454 applets/clock/clock.c:1630
-#: applets/clock/clock-location-tile.c:462
-#: applets/clock/clock-location-tile.c:509
+#: applets/clock/clock.c:466 applets/clock/clock.c:1742
+#: applets/clock/clock-location-tile.c:460
+#: applets/clock/clock-location-tile.c:507
 msgid "%H:%M"
 msgstr "%H:%M"
 
@@ -83,11 +83,11 @@ msgstr "%H:%M"
 #. * the day of the month as a decimal number is a single digit,
 #. * it should begin with a 0 in your locale (e.g. "May 01"
 #. * instead of "May  1").
-#: applets/clock/clock.c:465
+#: applets/clock/clock.c:477
 msgid "%a %b %e"
 msgstr "%a %e %b"
 
-#: applets/clock/clock.c:472
+#: applets/clock/clock.c:484
 #, c-format
 msgid ""
 "%1$s\n"
@@ -96,7 +96,7 @@ msgstr ""
 "%2$s\n"
 "%1$s"
 
-#: applets/clock/clock.c:480
+#: applets/clock/clock.c:492
 #, c-format
 msgid "%1$s, %2$s"
 msgstr "%2$s, %1$s"
@@ -104,19 +104,19 @@ msgstr "%2$s, %1$s"
 #. Translators: This is a strftime format string.
 #. * It is used to display a date. Please leave "%%s" as it is:
 #. * it will be used to insert the timezone name later.
-#: applets/clock/clock.c:663
+#: applets/clock/clock.c:674
 msgid "%A %B %d (%%s)"
 msgstr "%A, %e %B (%%s)"
 
-#: applets/clock/clock.c:689
+#: applets/clock/clock.c:700
 msgid "Click to hide month calendar"
 msgstr "Clic pentru a ascunde calendar lunar"
 
-#: applets/clock/clock.c:691
+#: applets/clock/clock.c:702
 msgid "Click to view month calendar"
 msgstr "Clic pentru a vizualiza calendarul lunar"
 
-#: applets/clock/clock.c:1462
+#: applets/clock/clock.c:1574
 msgid "Computer Clock"
 msgstr "Ceas calculator"
 
@@ -126,7 +126,7 @@ msgstr "Ceas calculator"
 #. * format with a leading 0 if needed (eg, like
 #. * in the US: 08:10 am). The %p expands to
 #. * am/pm.
-#: applets/clock/clock.c:1609
+#: applets/clock/clock.c:1721
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
 
@@ -136,108 +136,108 @@ msgstr "%I:%M:%S %p"
 #. * format with a leading 0 if needed (eg, like
 #. * in the US: 08:10 am). The %p expands to
 #. * am/pm.
-#: applets/clock/clock.c:1617
+#: applets/clock/clock.c:1729
 msgid "%I:%M %p"
 msgstr "%I:%M %p"
 
 #. Translators: This is a strftime format string.
 #. * It is used to display a date in the full format (so that people can
 #. * copy and paste it elsewhere).
-#: applets/clock/clock.c:1663
+#: applets/clock/clock.c:1775
 msgid "%A, %B %d %Y"
 msgstr "%A, %d %B %Y"
 
-#: applets/clock/clock.c:1694
+#: applets/clock/clock.c:1806
 msgid "Set System Time..."
 msgstr "Definește ora sistemului..."
 
-#: applets/clock/clock.c:1695
+#: applets/clock/clock.c:1807
 msgid "Set System Time"
 msgstr "Definește ora sistemului"
 
-#: applets/clock/clock.c:1710
+#: applets/clock/clock.c:1821
 msgid "Failed to set the system time"
 msgstr "Nu s-a putut schimba ora sistemului"
 
-#: applets/clock/clock.c:1906 applets/fish/fish.c:1694
-#: applets/notification_area/main.c:292 applets/wncklet/window-list.c:362
-#: applets/wncklet/workspace-switcher.c:393
+#: applets/clock/clock.c:2011 applets/fish/fish.c:1690
+#: applets/notification_area/main.c:290 applets/wncklet/window-list.c:551
+#: applets/wncklet/workspace-switcher.c:468
 msgid "_Preferences"
 msgstr "_Preferințe"
 
-#: applets/clock/clock.c:1909 applets/clock/clock.ui:293
-#: applets/fish/fish.c:1697 applets/fish/fish.ui:46
-#: applets/notification_area/main.c:295 applets/wncklet/showdesktop.c:242
-#: applets/wncklet/window-list.c:370 applets/wncklet/window-list.ui:32
-#: applets/wncklet/window-menu.c:98 applets/wncklet/workspace-switcher.c:401
-#: applets/wncklet/workspace-switcher.ui:46 mate-panel/drawer.c:562
-#: mate-panel/panel-action-button.c:731 mate-panel/panel-addto.c:1310
-#: mate-panel/panel-context-menu.c:318 mate-panel/panel-ditem-editor.c:648
-#: mate-panel/panel-menu-bar.c:351 mate-panel/panel-menu-button.c:704
-#: mate-panel/panel-properties-dialog.ui:78
+#: applets/clock/clock.c:2014 applets/clock/clock.ui:312
+#: applets/fish/fish.c:1693 applets/fish/fish.ui:46
+#: applets/notification_area/main.c:293 applets/wncklet/showdesktop.c:239
+#: applets/wncklet/window-list.c:559 applets/wncklet/window-list.ui:37
+#: applets/wncklet/window-menu.c:105 applets/wncklet/workspace-switcher.c:476
+#: applets/wncklet/workspace-switcher.ui:46 mate-panel/drawer.c:558
+#: mate-panel/panel-action-button.c:730 mate-panel/panel-addto.c:1267
+#: mate-panel/panel-context-menu.c:320
+#: mate-panel/panel-ditem-editor-dialog.ui:45 mate-panel/panel-menu-bar.c:355
+#: mate-panel/panel-menu-button.c:699 mate-panel/panel-properties-dialog.ui:78
 #: mate-panel/panel-properties-dialog.ui:724 mate-panel/panel-run-dialog.ui:39
 msgid "_Help"
 msgstr "_Ajutor"
 
-#: applets/clock/clock.c:1912 applets/fish/fish.c:1700
-#: applets/notification_area/main.c:298 applets/wncklet/showdesktop.c:250
-#: applets/wncklet/window-list.c:378 applets/wncklet/window-menu.c:106
-#: applets/wncklet/workspace-switcher.c:409
+#: applets/clock/clock.c:2017 applets/fish/fish.c:1696
+#: applets/notification_area/main.c:296 applets/wncklet/showdesktop.c:247
+#: applets/wncklet/window-list.c:567 applets/wncklet/window-menu.c:113
+#: applets/wncklet/workspace-switcher.c:484
 msgid "_About"
 msgstr "_Despre"
 
-#: applets/clock/clock.c:1915
+#: applets/clock/clock.c:2020
 msgid "Copy _Time"
 msgstr "Copiază _ora"
 
-#: applets/clock/clock.c:1918
+#: applets/clock/clock.c:2023
 msgid "Copy _Date"
 msgstr "Copiază _data"
 
-#: applets/clock/clock.c:1921
+#: applets/clock/clock.c:2026
 msgid "Ad_just Date & Time"
 msgstr "_Schimbă data și ora"
 
-#: applets/clock/clock.c:2919
+#: applets/clock/clock.c:3099
 msgid "Choose Location"
 msgstr "Alege locația"
 
-#: applets/clock/clock.c:2998
+#: applets/clock/clock.c:3178
 msgid "Edit Location"
 msgstr "Editează locația"
 
-#: applets/clock/clock.c:3125
+#: applets/clock/clock.c:3304
 msgid "City Name"
 msgstr "Nume oraș"
 
-#: applets/clock/clock.c:3129
+#: applets/clock/clock.c:3308
 msgid "City Time Zone"
 msgstr "Fus orar oraș"
 
-#: applets/clock/clock.c:3404
+#: applets/clock/clock.c:3581
 #: applets/clock/org.mate.panel.ClockApplet.mate-panel-applet.desktop.in.in:10
 msgid "Clock"
 msgstr "Ceas"
 
-#: applets/clock/clock.c:3405
+#: applets/clock/clock.c:3582
 msgid "About Clock"
 msgstr ""
 
-#: applets/clock/clock.c:3407
+#: applets/clock/clock.c:3584
 msgid "The Clock displays the current time and date"
 msgstr "Ceasul arată timpul și data actuală"
 
-#: applets/clock/clock.c:3408
+#: applets/clock/clock.c:3585
 msgid ""
 "Copyright © 1998-2004 Free Software Foundation, Inc.\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 
-#: applets/clock/clock.c:3412 applets/fish/fish.c:567
-#: applets/notification_area/main.c:286 applets/wncklet/showdesktop.c:509
-#: applets/wncklet/window-list.c:801 applets/wncklet/window-menu.c:88
-#: applets/wncklet/workspace-switcher.c:648
-#: mate-panel/panel-context-menu.c:124
+#: applets/clock/clock.c:3589 applets/fish/fish.c:562
+#: applets/notification_area/main.c:284 applets/wncklet/showdesktop.c:531
+#: applets/wncklet/window-list.c:1052 applets/wncklet/window-menu.c:95
+#: applets/wncklet/workspace-switcher.c:735
+#: mate-panel/panel-context-menu.c:125
 msgid "translator-credits"
 msgstr "Daniel Alămiță <danny3@tutanota.com>"
 
@@ -245,12 +245,13 @@ msgstr "Daniel Alămiță <danny3@tutanota.com>"
 msgid "Time & Date"
 msgstr "Oră și dată"
 
-#: applets/clock/clock.ui:46 applets/clock/clock.ui:923
-#: mate-panel/libpanel-util/panel-gtk.c:136
-#: mate-panel/panel-context-menu.c:213 mate-panel/panel-ditem-editor.c:664
-#: mate-panel/panel-force-quit.c:240 mate-panel/panel-recent.c:154
-#: mate-panel/panel-run-dialog.ui:55 mate-panel/panel.c:689
-#: mate-panel/panel.c:1497
+#: applets/clock/clock.ui:46 applets/clock/clock.ui:952
+#: mate-panel/libpanel-util/panel-gtk.c:137
+#: mate-panel/panel-context-menu.c:214
+#: mate-panel/panel-ditem-editor-dialog.ui:92
+#: mate-panel/panel-force-quit.c:241 mate-panel/panel-recent.c:154
+#: mate-panel/panel-run-dialog.ui:55 mate-panel/panel.c:688
+#: mate-panel/panel.c:1491
 msgid "_Cancel"
 msgstr "_Renunță"
 
@@ -258,133 +259,133 @@ msgstr "_Renunță"
 msgid "_Set System Time"
 msgstr "Definește ora _sistemului"
 
-#: applets/clock/clock.ui:191
+#: applets/clock/clock.ui:198
 msgid "_Time:"
 msgstr "_Oră:"
 
-#: applets/clock/clock.ui:205
+#: applets/clock/clock.ui:212
 msgid "Current Time:"
 msgstr "Oră actuală:"
 
-#: applets/clock/clock.ui:277
+#: applets/clock/clock.ui:296
 msgid "Clock Preferences"
 msgstr "Preferințe ceas"
 
-#: applets/clock/clock.ui:309
+#: applets/clock/clock.ui:328
 msgid "Time _Settings"
 msgstr "_Configurări oră"
 
-#: applets/clock/clock.ui:324 applets/fish/fish.c:853 applets/fish/fish.ui:62
+#: applets/clock/clock.ui:343 applets/fish/fish.c:849 applets/fish/fish.ui:62
 #: applets/notification_area/notification-area-preferences-dialog.ui:65
-#: applets/wncklet/window-list.ui:48 applets/wncklet/workspace-switcher.ui:62
-#: mate-panel/panel-addto.c:1321 mate-panel/panel-ditem-editor.c:660
+#: applets/wncklet/window-list.ui:53 applets/wncklet/workspace-switcher.ui:62
+#: mate-panel/panel-addto.c:1278 mate-panel/panel-ditem-editor-dialog.ui:76
 #: mate-panel/panel-properties-dialog.ui:94
 #: mate-panel/panel-properties-dialog.ui:740
 #: mate-panel/panel-test-applets.ui:52
 msgid "_Close"
 msgstr "În_chide"
 
-#: applets/clock/clock.ui:369
+#: applets/clock/clock.ui:388
 msgid "Clock Format"
 msgstr "Format ceas"
 
-#: applets/clock/clock.ui:393
+#: applets/clock/clock.ui:412
 msgid "_12 hour format"
 msgstr "Format _12 ore"
 
-#: applets/clock/clock.ui:408
+#: applets/clock/clock.ui:427
 msgid "_24 hour format"
 msgstr "Format _24 ore"
 
-#: applets/clock/clock.ui:448
+#: applets/clock/clock.ui:467
 msgid "Panel Display"
 msgstr "Afișare panou"
 
-#: applets/clock/clock.ui:473
+#: applets/clock/clock.ui:492
 msgid "Show the _date"
 msgstr "Afișează _data"
 
-#: applets/clock/clock.ui:488
+#: applets/clock/clock.ui:507
 msgid "Show seco_nds"
 msgstr "Afișează secu_nde"
 
-#: applets/clock/clock.ui:503
+#: applets/clock/clock.ui:522
 msgid "Show wee_k numbers in calendar"
 msgstr "Arată numerele _săptămânilor în calendar"
 
-#: applets/clock/clock.ui:518
+#: applets/clock/clock.ui:537
 msgid "Show _weather"
 msgstr "Afișează _vremea"
 
-#: applets/clock/clock.ui:533
+#: applets/clock/clock.ui:552
 msgid "Show _temperature"
 msgstr "Afișează _temperatura"
 
-#: applets/clock/clock.ui:568 applets/fish/fish.ui:102
+#: applets/clock/clock.ui:587 applets/fish/fish.ui:102
 #: mate-panel/panel-properties-dialog.ui:384
 msgid "General"
 msgstr "General"
 
-#: applets/clock/clock.ui:620 mate-panel/panel-addto.c:1317
+#: applets/clock/clock.ui:639 mate-panel/panel-addto.c:1274
 msgid "_Add"
 msgstr "_Adaugă"
 
-#: applets/clock/clock.ui:636
+#: applets/clock/clock.ui:655
 msgid "_Edit"
 msgstr "_Editeaza"
 
-#: applets/clock/clock.ui:652
+#: applets/clock/clock.ui:671
 msgid "_Remove"
 msgstr "Ște_rge"
 
-#: applets/clock/clock.ui:713
+#: applets/clock/clock.ui:732
 msgid "Display"
 msgstr "Ecran"
 
-#: applets/clock/clock.ui:749
+#: applets/clock/clock.ui:769
 msgid "_Visibility unit:"
 msgstr "Unitate pentru _vizibilitate:"
 
-#: applets/clock/clock.ui:771
+#: applets/clock/clock.ui:791
 msgid "_Pressure unit:"
 msgstr "Unitate pentru _presiune:"
 
-#: applets/clock/clock.ui:805
+#: applets/clock/clock.ui:825
 msgid "_Wind speed unit:"
 msgstr "Unitate pentru viteza _vântului:"
 
-#: applets/clock/clock.ui:819
+#: applets/clock/clock.ui:839
 msgid "_Temperature unit:"
 msgstr "Unitate pentru _temperatură:"
 
-#: applets/clock/clock.ui:854
+#: applets/clock/clock.ui:886
 msgid "Weather"
 msgstr "Vreme"
 
-#: applets/clock/clock.ui:886
+#: applets/clock/clock.ui:915
 msgid "East"
 msgstr "Est"
 
-#: applets/clock/clock.ui:889
+#: applets/clock/clock.ui:918
 msgid "West"
 msgstr "Vest"
 
-#: applets/clock/clock.ui:900
+#: applets/clock/clock.ui:929
 msgid "North"
 msgstr "Nord"
 
-#: applets/clock/clock.ui:903
+#: applets/clock/clock.ui:932
 msgid "South"
 msgstr "Sud"
 
-#: applets/clock/clock.ui:939 mate-panel/libpanel-util/panel-gtk.c:140
-#: mate-panel/panel-applet-frame.c:962 mate-panel/panel-ditem-editor.c:668
+#: applets/clock/clock.ui:968 mate-panel/libpanel-util/panel-gtk.c:141
+#: mate-panel/panel-applet-frame.c:959
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #. Languages that have a single word that translates as either "state" or
 #. "province" should use that instead of "region".
-#: applets/clock/clock.ui:1012
+#: applets/clock/clock.ui:1043
 msgid ""
 "<small><i>Type a city, region, or country name and then select a match from "
 "the pop-up.</i></small>"
@@ -392,39 +393,39 @@ msgstr ""
 "<small><i>Tastați numele unui oraș, unui județ sau a unei țări și apoi "
 "alegeți intrarea potrivită din meniul contextual.</i></small>"
 
-#: applets/clock/clock.ui:1057
+#: applets/clock/clock.ui:1088
 msgid "_Timezone:"
 msgstr "_Fus orar:"
 
-#: applets/clock/clock.ui:1070
+#: applets/clock/clock.ui:1101
 msgid "_Location Name:"
 msgstr "Nume _locație:"
 
-#: applets/clock/clock.ui:1114 applets/clock/clock.ui:1128
+#: applets/clock/clock.ui:1145 applets/clock/clock.ui:1159
 msgid "<i>(optional)</i>"
 msgstr "<i>(opțional)</i>"
 
-#: applets/clock/clock.ui:1171
+#: applets/clock/clock.ui:1202
 msgid "L_ongitude:"
 msgstr "L_ongitudine:"
 
-#: applets/clock/clock.ui:1192
+#: applets/clock/clock.ui:1223
 msgid "L_atitude:"
 msgstr "L_atitudine:"
 
-#: applets/clock/clock-location-tile.c:183
+#: applets/clock/clock-location-tile.c:181
 msgid "Failed to set the system timezone"
 msgstr "Nu s-a putut defini fusul orar al sistemului"
 
-#: applets/clock/clock-location-tile.c:229
+#: applets/clock/clock-location-tile.c:227
 msgid "<small>Set...</small>"
 msgstr "<small>Schimbă...</small>"
 
-#: applets/clock/clock-location-tile.c:230
+#: applets/clock/clock-location-tile.c:228
 msgid "<small>Set</small>"
 msgstr "<small>Schimbă</small>"
 
-#: applets/clock/clock-location-tile.c:306
+#: applets/clock/clock-location-tile.c:304
 msgid ""
 "Set location as current location and use its timezone for this computer"
 msgstr ""
@@ -437,7 +438,7 @@ msgstr ""
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday). The %p expands to
 #. * am/pm.
-#: applets/clock/clock-location-tile.c:439
+#: applets/clock/clock-location-tile.c:437
 msgid "%l:%M <small>%p (%A)</small>"
 msgstr "%l:%M <small>%p (%A)</small>"
 
@@ -446,7 +447,7 @@ msgstr "%l:%M <small>%p (%A)</small>"
 #. * (eg, like in France: 20:10), when the local
 #. * weekday differs from the weekday at the location
 #. * (the %A expands to the weekday).
-#: applets/clock/clock-location-tile.c:447
+#: applets/clock/clock-location-tile.c:445
 msgid "%H:%M <small>(%A)</small>"
 msgstr "%H:%M <small>(%A)</small>"
 
@@ -454,40 +455,40 @@ msgstr "%H:%M <small>(%A)</small>"
 #. * It is used to display the time in 12-hours format
 #. * (eg, like in the US: 8:10 am). The %p expands to
 #. * am/pm.
-#: applets/clock/clock-location-tile.c:456
+#: applets/clock/clock-location-tile.c:454
 msgid "%l:%M <small>%p</small>"
 msgstr "%l:%M <small>%p</small>"
 
-#: applets/clock/clock-location-tile.c:598
+#: applets/clock/clock-location-tile.c:596
 #, c-format
 msgid "%s, %s"
 msgstr "%s, %s"
 
-#: applets/clock/clock-location-tile.c:610
-#: applets/clock/clock-location-tile.c:619
+#: applets/clock/clock-location-tile.c:608
+#: applets/clock/clock-location-tile.c:617
 msgid "Unknown"
 msgstr "Necunoscut"
 
 #. Translators: The two strings are temperatures.
-#: applets/clock/clock-location-tile.c:612
+#: applets/clock/clock-location-tile.c:610
 #, c-format
 msgid "%s, feels like %s"
 msgstr "%s, se simte ca %s"
 
-#: applets/clock/clock-location-tile.c:635
+#: applets/clock/clock-location-tile.c:633
 #, c-format
 msgid "Sunrise: %s / Sunset: %s"
 msgstr "Răsărit: %s / Apus: %s"
 
-#: applets/clock/clock-utils.c:92 applets/fish/fish.c:170
-#: applets/notification_area/main.c:238 applets/wncklet/wncklet.c:75
-#: mate-panel/libpanel-util/panel-show.c:234
+#: applets/clock/clock-utils.c:92 applets/fish/fish.c:168
+#: applets/notification_area/main.c:236 applets/wncklet/wncklet.c:74
+#: mate-panel/libpanel-util/panel-show.c:235
 #, c-format
 msgid "Could not display help document '%s'"
 msgstr "Nu s-a putut afișa documentul ajutor „%s”"
 
-#: applets/clock/clock-utils.c:121 applets/fish/fish.c:196
-#: applets/notification_area/main.c:252 applets/wncklet/wncklet.c:92
+#: applets/clock/clock-utils.c:121 applets/fish/fish.c:194
+#: applets/notification_area/main.c:250 applets/wncklet/wncklet.c:91
 msgid "Error displaying help document"
 msgstr "Eroare la afișarea documentului ajutor"
 
@@ -625,7 +626,7 @@ msgstr ""
 msgid "Get the current time and date"
 msgstr "Obține ora și data actuală"
 
-#: applets/fish/fish.c:266
+#: applets/fish/fish.c:264
 #, c-format
 msgid ""
 "Warning:  The command appears to be something actually useful.\n"
@@ -638,16 +639,16 @@ msgstr ""
 "Vă sfătuim insistent să nu încercați utilizarea %s pentru orice\n"
 "scop ce ar putea face aceată mini-aplicație practică sau utilă."
 
-#: applets/fish/fish.c:428
+#: applets/fish/fish.c:423
 msgid "Images"
 msgstr "Imagini"
 
-#: applets/fish/fish.c:534 applets/fish/fish.c:578 applets/fish/fish.c:684
+#: applets/fish/fish.c:529 applets/fish/fish.c:573 applets/fish/fish.c:679
 #, no-c-format
 msgid "%s the Fish"
 msgstr "Peștele %s"
 
-#: applets/fish/fish.c:535
+#: applets/fish/fish.c:530
 #, c-format
 msgid ""
 "%s has no use what-so-ever. It only takes up disk space and compilation "
@@ -659,41 +660,41 @@ msgstr ""
 "memorie. Dacă cineva este prins folosind acest progrămel, ar trebui "
 "trimis(ă) de urgență pentru o evaluare psihologică completă."
 
-#: applets/fish/fish.c:552
+#: applets/fish/fish.c:547
 msgid "(with minor help from George)"
 msgstr "(cu puțin ajutor de la George)"
 
-#: applets/fish/fish.c:558
+#: applets/fish/fish.c:553
 #: applets/fish/org.mate.panel.FishApplet.mate-panel-applet.desktop.in.in:10
 msgid "Fish"
 msgstr "Pește"
 
-#: applets/fish/fish.c:559
+#: applets/fish/fish.c:554
 msgid "About Fish"
 msgstr ""
 
-#: applets/fish/fish.c:562
+#: applets/fish/fish.c:557
 msgid ""
 "Copyright © 1998-2002 Free Software Foundation, Inc.\n"
 "Copyright © 2002-2005 Vincent Untz\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 
-#: applets/fish/fish.c:579
+#: applets/fish/fish.c:574
 #, c-format
 msgid "%s the Fish, a contemporary oracle"
 msgstr "Peștele %s, un oracol contemporan"
 
-#: applets/fish/fish.c:645
+#: applets/fish/fish.c:640
 msgid "Unable to locate the command to execute"
 msgstr "Nu se poate localiza comanda de executat"
 
-#: applets/fish/fish.c:689
+#: applets/fish/fish.c:684
 #, no-c-format
 msgid "%s the Fish Says:"
 msgstr "Peștele %s spune:"
 
-#: applets/fish/fish.c:752
+#: applets/fish/fish.c:746
 #, c-format
 msgid ""
 "Unable to read output from command\n"
@@ -704,16 +705,16 @@ msgstr ""
 "\n"
 "Detalii: %s"
 
-#: applets/fish/fish.c:849
+#: applets/fish/fish.c:845
 msgid "_Speak again"
 msgstr "_Vorbește din nou"
 
-#: applets/fish/fish.c:930
+#: applets/fish/fish.c:926
 #, c-format
 msgid "The configured command is not working and has been replaced by: %s"
 msgstr "Comanda configurată nu funcționează și a fost înlocuită de: %s"
 
-#: applets/fish/fish.c:963
+#: applets/fish/fish.c:959
 #, c-format
 msgid ""
 "Unable to execute '%s'\n"
@@ -724,7 +725,7 @@ msgstr ""
 "\n"
 "Detalii: %s"
 
-#: applets/fish/fish.c:979
+#: applets/fish/fish.c:975
 #, c-format
 msgid ""
 "Unable to read from '%s'\n"
@@ -735,15 +736,15 @@ msgstr ""
 "\n"
 "Detalii: %s"
 
-#: applets/fish/fish.c:1551
+#: applets/fish/fish.c:1547
 msgid "The water needs changing"
 msgstr "Trebuie schimbată apa"
 
-#: applets/fish/fish.c:1553
+#: applets/fish/fish.c:1549
 msgid "Look at today's date!"
 msgstr "Uitați-vă la data de azi!"
 
-#: applets/fish/fish.c:1635
+#: applets/fish/fish.c:1631
 #, c-format
 msgid "%s the Fish, the fortune teller"
 msgstr "Peștele %s, povestitorul de zicători"
@@ -873,24 +874,24 @@ msgstr ""
 msgid "Display a swimming fish or another animated creature"
 msgstr "Afișează un pește care înoată sau altă creatură animată"
 
-#: applets/notification_area/main.c:276
+#: applets/notification_area/main.c:274
 #: applets/notification_area/org.mate.panel.NotificationAreaApplet.mate-panel-applet.desktop.in.in:10
 msgid "Notification Area"
 msgstr "Zona de notificare"
 
-#: applets/notification_area/main.c:277
+#: applets/notification_area/main.c:275
 msgid "About Notification Area"
 msgstr ""
 
-#: applets/notification_area/main.c:280
+#: applets/notification_area/main.c:278
 msgid ""
 "Copyright © 2002 Red Hat, Inc.\n"
 "Copyright © 2003-2006 Vincent Untz\n"
 "Copyright © 2011 Perberos\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 
-#: applets/notification_area/main.c:485
+#: applets/notification_area/main.c:482
 msgid "Panel Notification Area"
 msgstr "Zonă de notificare în panou"
 
@@ -967,6 +968,26 @@ msgstr ""
 "La activare ferestrele minimizate vor fi restaurate în spațiul de lucru "
 "actual. Altfel va schimba în spațiul de lucru inițial al ferestrei."
 
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:25
+msgid "Whether to enable mouse scrolling in the switch window list"
+msgstr ""
+
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:26
+msgid ""
+"If true, enable mouse scrolling in window list, otherwise disable mouse "
+"scrolling in window list."
+msgstr ""
+
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:30
+msgid "Close window on middle mouse click"
+msgstr ""
+
+#: applets/wncklet/org.mate.panel.applet.window-list.gschema.xml.in:31
+msgid ""
+"If true, then clicking the middle mouse button over a taskbar item will "
+"close the window."
+msgstr ""
+
 #: applets/wncklet/org.mate.panel.applet.workspace-switcher.gschema.xml.in:5
 msgid "Display workspace names"
 msgstr "Arată numele spațiilor de lucru"
@@ -1026,7 +1047,7 @@ msgid "Factory for the window navigation related applets"
 msgstr ""
 
 #: applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.desktop.in.in:10
-#: applets/wncklet/window-menu.c:76 applets/wncklet/window-menu.c:227
+#: applets/wncklet/window-menu.c:83 applets/wncklet/window-menu.c:235
 msgid "Window Selector"
 msgstr "Selector ferestre"
 
@@ -1035,7 +1056,7 @@ msgid "Switch between open windows using a menu"
 msgstr "Comutare între ferestrele deschise folosind un meniu"
 
 #: applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.desktop.in.in:23
-#: applets/wncklet/workspace-switcher.c:638
+#: applets/wncklet/workspace-switcher.c:725
 msgid "Workspace Switcher"
 msgstr "Comutare spații de lucru"
 
@@ -1044,7 +1065,7 @@ msgid "Switch between workspaces"
 msgstr "Comutații între spațile de lucru"
 
 #: applets/wncklet/org.mate.panel.Wncklet.mate-panel-applet.desktop.in.in:36
-#: applets/wncklet/window-list.c:791
+#: applets/wncklet/window-list.c:1042
 msgid "Window List"
 msgstr "Listă ferestre"
 
@@ -1060,46 +1081,46 @@ msgstr "Arată desktop"
 msgid "Hide application windows and show the desktop"
 msgstr "Ascunde ferestrele aplicaților și arată desktopul"
 
-#: applets/wncklet/showdesktop.c:184
+#: applets/wncklet/showdesktop.c:181
 #, c-format
 msgid "Failed to load %s: %s\n"
 msgstr "Nu s-a reușit încărcarea imaginii %s: %s\n"
 
-#: applets/wncklet/showdesktop.c:184
+#: applets/wncklet/showdesktop.c:181
 msgid "Icon not found"
 msgstr "Pictograma nu a fost găsită"
 
-#: applets/wncklet/showdesktop.c:266
+#: applets/wncklet/showdesktop.c:263
 msgid "Click here to restore hidden windows."
 msgstr "Clic aici pentru a restaura ferestrele ascunse."
 
-#: applets/wncklet/showdesktop.c:270
+#: applets/wncklet/showdesktop.c:267
 msgid "Click here to hide all windows and show the desktop."
 msgstr "Clic aici pentru a ascunde ferestrele și a arăta desktopul."
 
-#: applets/wncklet/showdesktop.c:440 applets/wncklet/showdesktop.c:499
+#: applets/wncklet/showdesktop.c:450 applets/wncklet/showdesktop.c:521
 msgid "Show Desktop Button"
 msgstr "Butonul „Arată desktop”"
 
-#: applets/wncklet/showdesktop.c:500
+#: applets/wncklet/showdesktop.c:522
 msgid "About Show Desktop Button"
 msgstr ""
 
-#: applets/wncklet/showdesktop.c:502
+#: applets/wncklet/showdesktop.c:524
 msgid "This button lets you hide all windows and show the desktop."
 msgstr ""
 "Acest buton vă permite să ascundeți toate ferestrele și să afișați "
 "desktopul."
 
-#: applets/wncklet/showdesktop.c:503 applets/wncklet/window-list.c:795
-#: applets/wncklet/workspace-switcher.c:642
+#: applets/wncklet/showdesktop.c:525 applets/wncklet/window-list.c:1046
+#: applets/wncklet/workspace-switcher.c:729
 msgid ""
 "Copyright © 2002 Red Hat, Inc.\n"
 "Copyright © 2011 Perberos\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 
-#: applets/wncklet/showdesktop.c:530
+#: applets/wncklet/showdesktop.c:571
 msgid ""
 "Your window manager does not support the show desktop button, or you are not"
 " running a window manager."
@@ -1107,15 +1128,15 @@ msgstr ""
 "Administratorul de ferestre actual nu suportă butonul „Desktop” sau nici un "
 "administrator de ferestre nu e pornit."
 
-#: applets/wncklet/window-list.c:354
+#: applets/wncklet/window-list.c:543
 msgid "_System Monitor"
 msgstr "Monitor sistem"
 
-#: applets/wncklet/window-list.c:792
+#: applets/wncklet/window-list.c:1043
 msgid "About Window List"
 msgstr ""
 
-#: applets/wncklet/window-list.c:794
+#: applets/wncklet/window-list.c:1045
 msgid ""
 "The Window List shows a list of all windows in a set of buttons and lets you"
 " browse them."
@@ -1123,75 +1144,104 @@ msgstr ""
 "Miniaplicația „Listă ferestre” afișează o listă cu toate ferestrele și vă "
 "permite să navigați în ele."
 
-#: applets/wncklet/window-list.ui:18
+#: applets/wncklet/window-list.ui:23
 msgid "Window List Preferences"
 msgstr "Preferințe listă ferestre"
 
-#: applets/wncklet/window-list.ui:89
-msgid "Window List Content"
-msgstr "Conținut listă ferestre"
-
-#: applets/wncklet/window-list.ui:115
-msgid "Sh_ow windows from current workspace"
-msgstr "Arată d_oar ferestrele din spațiul de lucru actual"
-
-#: applets/wncklet/window-list.ui:130
-msgid "Show windows from a_ll workspaces"
-msgstr "Arată ferestre_le din toate spațiile de lucru"
-
-#: applets/wncklet/window-list.ui:170
+#: applets/wncklet/window-list.ui:97
 msgid "Window Thumbnails"
 msgstr ""
 
-#: applets/wncklet/window-list.ui:196
+#: applets/wncklet/window-list.ui:118
 msgid "Show _thumbnails on hover"
 msgstr ""
 
-#: applets/wncklet/window-list.ui:233
+#: applets/wncklet/window-list.ui:140
 msgid "Thumbnail width in pixels. Window aspect ratio will be maintained."
 msgstr ""
 
-#: applets/wncklet/window-list.ui:234
+#: applets/wncklet/window-list.ui:141
 msgid "Thumbnail width:"
 msgstr ""
 
-#: applets/wncklet/window-list.ui:248
+#: applets/wncklet/window-list.ui:154
+msgid "0"
+msgstr "0"
+
+#: applets/wncklet/window-list.ui:156
 msgid "px"
 msgstr ""
 
-#: applets/wncklet/window-list.ui:286
+#: applets/wncklet/window-list.ui:199
 msgid "Window Grouping"
 msgstr "Grupare ferestre"
 
-#: applets/wncklet/window-list.ui:312
+#: applets/wncklet/window-list.ui:220
 msgid "_Never group windows"
 msgstr "_Niciodată nu grupa ferestrele"
 
-#: applets/wncklet/window-list.ui:327
+#: applets/wncklet/window-list.ui:236
 msgid "Group windows when _space is limited"
 msgstr "Grupează ferestrele când _spațiul este limitat"
 
-#: applets/wncklet/window-list.ui:343
+#: applets/wncklet/window-list.ui:252
 msgid "_Always group windows"
 msgstr "Grupează întotde_auna ferestrele"
 
-#: applets/wncklet/window-list.ui:383
+#: applets/wncklet/window-list.ui:290
+msgid "Middle mouse button"
+msgstr ""
+
+#: applets/wncklet/window-list.ui:311
+msgid "_Click to close window"
+msgstr ""
+
+#: applets/wncklet/window-list.ui:348
+msgid "Mouse Scrolling"
+msgstr ""
+
+#: applets/wncklet/window-list.ui:369
+msgid "_Enable mouse scrolling"
+msgstr ""
+
+#: applets/wncklet/window-list.ui:402
+msgid "Behaviour"
+msgstr "Comportament"
+
+#: applets/wncklet/window-list.ui:425
+msgid "Window List Content"
+msgstr "Conținut listă ferestre"
+
+#: applets/wncklet/window-list.ui:446
+msgid "Sh_ow windows from current workspace"
+msgstr "Arată d_oar ferestrele din spațiul de lucru actual"
+
+#: applets/wncklet/window-list.ui:462
+msgid "Show windows from a_ll workspaces"
+msgstr "Arată ferestre_le din toate spațiile de lucru"
+
+#: applets/wncklet/window-list.ui:500
 msgid "Restoring Minimized Windows"
 msgstr "Restaurare ferestrele minimizate"
 
-#: applets/wncklet/window-list.ui:409
+#: applets/wncklet/window-list.ui:521
 msgid "Restore to current _workspace"
 msgstr "Restaurează în spațiul de lucru ac_tual"
 
-#: applets/wncklet/window-list.ui:424
+#: applets/wncklet/window-list.ui:537
 msgid "Restore to na_tive workspace"
 msgstr "Restaurează în spațiul de lucru na_tiv"
 
-#: applets/wncklet/window-menu.c:77
+#: applets/wncklet/window-list.ui:574
+#: applets/wncklet/workspace-switcher.ui:356
+msgid "Workspaces"
+msgstr "Spații de lucru"
+
+#: applets/wncklet/window-menu.c:84
 msgid "About Window Selector"
 msgstr ""
 
-#: applets/wncklet/window-menu.c:79
+#: applets/wncklet/window-menu.c:86
 msgid ""
 "The Window Selector shows a list of all windows in a menu and lets you "
 "browse them."
@@ -1199,31 +1249,31 @@ msgstr ""
 "Miniaplicația „Selector ferestre” arată o listă cu toate ferestrele și vă "
 "permite să navigați în ele."
 
-#: applets/wncklet/window-menu.c:80
+#: applets/wncklet/window-menu.c:87
 msgid ""
 "Copyright © 2000 Helix Code, Inc.\n"
 "Copyright © 2001 Free Software Foundation, Inc.\n"
 "Copyright © 2003 Sun Microsystems, Inc.\n"
 "Copyright © 2011 Perberos\n"
-"Copyright © 2012-2020 MATE developers"
+"Copyright © 2012-2021 MATE developers"
 msgstr ""
 
-#: applets/wncklet/workspace-switcher.c:240
-#: applets/wncklet/workspace-switcher.c:943
+#: applets/wncklet/workspace-switcher.c:294
+#: applets/wncklet/workspace-switcher.c:1061
 #: applets/wncklet/workspace-switcher.ui:170
 msgid "rows"
 msgstr "rânduri"
 
-#: applets/wncklet/workspace-switcher.c:240
-#: applets/wncklet/workspace-switcher.c:943
+#: applets/wncklet/workspace-switcher.c:294
+#: applets/wncklet/workspace-switcher.c:1061
 msgid "columns"
 msgstr "coloane"
 
-#: applets/wncklet/workspace-switcher.c:639
+#: applets/wncklet/workspace-switcher.c:726
 msgid "About Workspace Switcher"
 msgstr ""
 
-#: applets/wncklet/workspace-switcher.c:641
+#: applets/wncklet/workspace-switcher.c:728
 msgid ""
 "The Workspace Switcher shows you a small version of your workspaces that "
 "lets you manage your windows."
@@ -1266,10 +1316,6 @@ msgstr "Arată _numele spațiilor de lucru în comutator"
 #: applets/wncklet/workspace-switcher.ui:334
 msgid "Allow workspace _wrap around in switcher"
 msgstr ""
-
-#: applets/wncklet/workspace-switcher.ui:356
-msgid "Workspaces"
-msgstr "Spații de lucru"
 
 #: data/org.mate.panel.gschema.xml.in:5
 msgid "Default panel layout"
@@ -1547,6 +1593,16 @@ msgid ""
 "being put in a submenu."
 msgstr ""
 
+#: data/org.mate.panel.menubar.gschema.xml.in:56
+msgid "Maximum number of recent documents displayed in the Places menu"
+msgstr ""
+
+#: data/org.mate.panel.menubar.gschema.xml.in:57
+msgid ""
+"Maximum number of recent documents that are displayed in the Places menu at "
+"a time. If this is set to -1, all known recent documents will be displayed."
+msgstr ""
+
 #: data/org.mate.panel.object.gschema.xml.in:5
 msgid "Panel object type"
 msgstr "Tip obiect panou"
@@ -1578,22 +1634,36 @@ msgstr ""
 "marginea stângă a panoului (sau de sus pentru un panou vertical)"
 
 #: data/org.mate.panel.object.gschema.xml.in:20
-msgid "Interpret position relative to bottom/right edge"
-msgstr "Interpretează poziția relativ la marginea din dreapta jos"
+msgid "Interpret position relative to bottom/right edge (DEPRECATED)"
+msgstr ""
 
 #: data/org.mate.panel.object.gschema.xml.in:21
 msgid ""
 "If true, the position of the object is interpreted relative to the right (or"
-" bottom if vertical) edge of the panel."
+" bottom if vertical) edge of the panel. This key is provided only for "
+"backward compatibility with old panel layouts; please set the \"relative-to-"
+"edge\" property instead."
 msgstr ""
-"La activare poziția obiectului este interpretată relativ la marginea dreaptă"
-" (sau de jos dacă e vertical) a panoului."
 
 #: data/org.mate.panel.object.gschema.xml.in:25
+msgid ""
+"Whether to interpret the value of the \"position\" key relative to the "
+"start, center or end of the panel"
+msgstr ""
+
+#: data/org.mate.panel.object.gschema.xml.in:26
+msgid ""
+"The position of the object is interpreted relative to one edge of the panel."
+" The value of this key determines whether the object is positioned relative "
+"to the start (left/top edge), center, or end (right/bottom edge) of the "
+"panel. Valid values for this key are 'start', 'center', and 'end'."
+msgstr ""
+
+#: data/org.mate.panel.object.gschema.xml.in:30
 msgid "Lock the object to the panel"
 msgstr "Fixează obiectul în panou"
 
-#: data/org.mate.panel.object.gschema.xml.in:26
+#: data/org.mate.panel.object.gschema.xml.in:31
 msgid ""
 "If true, the user may not move the applet without first unlocking the object"
 " using the \"Unlock\" menuitem."
@@ -1601,136 +1671,110 @@ msgstr ""
 "La activare utilizatorul nu poate muta mini-aplicația fără să deblocheze "
 "întâi obiectul utilizând elementul „Deblochează” din meniu."
 
-#: data/org.mate.panel.object.gschema.xml.in:30
+#: data/org.mate.panel.object.gschema.xml.in:35
 msgid "Applet IID"
 msgstr "IID miniaplicație"
 
-#: data/org.mate.panel.object.gschema.xml.in:31
+#: data/org.mate.panel.object.gschema.xml.in:36
 msgid ""
 "The implementation ID of the applet - e.g. "
 "\"ClockAppletFactory::ClockApplet\". This key is only relevant if the "
-"object_type key is \"external-applet\" (or the deprecated \"matecomponent-"
-"applet\")."
+"object-type key is 'applet'."
 msgstr ""
 
-#: data/org.mate.panel.object.gschema.xml.in:35
+#: data/org.mate.panel.object.gschema.xml.in:40
 msgid "Panel attached to drawer"
 msgstr "Panou atașat unui sertar"
 
-#: data/org.mate.panel.object.gschema.xml.in:36
+#: data/org.mate.panel.object.gschema.xml.in:41
 msgid ""
 "The identifier of the panel attached to this drawer. This key is only "
-"relevant if the object_type key is \"drawer-object\"."
+"relevant if the object-type key is 'drawer'."
 msgstr ""
-"Identificatorul panoului atașat acestui sertar. Această cheie este relevantă"
-" doar dacă cheia „object_type” este „drawer-object”."
 
-#: data/org.mate.panel.object.gschema.xml.in:40
+#: data/org.mate.panel.object.gschema.xml.in:45
 msgid "Tooltip displayed for drawer or menu"
 msgstr "Sugestie afișata pentru sertar sau meniu"
 
-#: data/org.mate.panel.object.gschema.xml.in:41
+#: data/org.mate.panel.object.gschema.xml.in:46
 msgid ""
 "The text to display in a tooltip for this drawer or this menu. This key is "
-"only relevant if the object_type key is \"drawer-object\" or \"menu-"
-"object\"."
+"only relevant if the object-type key is 'drawer' or 'menu'."
 msgstr ""
-"Text de afișat într-o sugestie pentru acest sertar. Această cheie este "
-"relevantă doar dacă cheia „object_type” este „drawer-object”."
 
-#: data/org.mate.panel.object.gschema.xml.in:45
+#: data/org.mate.panel.object.gschema.xml.in:50
 msgid "Use custom icon for object's button"
 msgstr "Utilizează o pictogramă personalizată pentru obiectul butonului"
 
-#: data/org.mate.panel.object.gschema.xml.in:46
+#: data/org.mate.panel.object.gschema.xml.in:51
 msgid ""
 "If true, the custom_icon key is used as a custom icon for the button. If "
-"false, the custom_icon key is ignored. This key is only relevant if the "
-"object_type key is \"menu-object\" or \"drawer-object\"."
+"false, the custom-icon key is ignored. This key is only relevant if the "
+"object-type key is 'menu' or 'drawer-object'."
 msgstr ""
-"La activare, cheia „custom_icon” este utilizată ca o pictogramă "
-"personalizată pentru buton. Dacă nu, cheia „custom_icon” este ignorată. "
-"Această cheie este relevantă doar dacă cheia „object-type” este „menu-"
-"object” sau „drawer-object”."
 
-#: data/org.mate.panel.object.gschema.xml.in:50
+#: data/org.mate.panel.object.gschema.xml.in:55
 msgid "Icon used for object's button"
 msgstr "Pictogramă utilizată pentru butonul obiectului"
 
-#: data/org.mate.panel.object.gschema.xml.in:51
+#: data/org.mate.panel.object.gschema.xml.in:56
 msgid ""
 "The location of the image file used as the icon for the object's button. "
-"This key is only relevant if the object_type key is \"drawer-object\" or "
-"\"menu-object\" and the use_custom_icon key is true."
+"This key is only relevant if the object-type key is 'drawer' or 'menu' and "
+"the use-custom-icon key is true."
 msgstr ""
-"Locația fișierului imagine utilizat ca pictogramă pentru butonul obictului. "
-"Această cheie este relevantă doar dacă cheia „object-type” este „drawer-"
-"object” sau „menu-object” și cheia „use-custom_icon” este setată."
 
-#: data/org.mate.panel.object.gschema.xml.in:55
+#: data/org.mate.panel.object.gschema.xml.in:60
 msgid "Use custom path for menu contents"
 msgstr "Utilizează o cale personalizată pentru conținutul meniului"
 
-#: data/org.mate.panel.object.gschema.xml.in:56
+#: data/org.mate.panel.object.gschema.xml.in:61
 msgid ""
 "If true, the menu_path key is used as the path from which the menu contents "
-"should be constructed. If false, the menu_path key is ignored. This key is "
-"only relevant if the object_type key is \"menu-object\"."
+"should be constructed. If false, the menu-path key is ignored. This key is "
+"only relevant if the object-type key is 'menu'."
 msgstr ""
-"La activare, cheia „menu-path” este utilizată ca o cale din care se "
-"construiește conținutul meniului. Dacă nu, cheia „menu_path” este ignorată. "
-"Această cheie este relevantă doar dacă cheia „object-type” este „menu-"
-"object”."
 
-#: data/org.mate.panel.object.gschema.xml.in:60
+#: data/org.mate.panel.object.gschema.xml.in:65
 msgid "Menu content path"
 msgstr "Cale conținut meniu"
 
-#: data/org.mate.panel.object.gschema.xml.in:61
+#: data/org.mate.panel.object.gschema.xml.in:66
 msgid ""
 "The path from which the menu contents is contructed. This key is only "
-"relevant if the use_menu_path key is true and the object_type key is \"menu-"
-"object\"."
+"relevant if the use-menu-path key is true and the object-type key is 'menu'."
 msgstr ""
-"Calea din care se construiește conținutul meniului. Această cheie este "
-"relevantă doar dacă cheia „use-menu_path” este setată și cheia „object_type”"
-" este „menu-object”."
 
-#: data/org.mate.panel.object.gschema.xml.in:65
+#: data/org.mate.panel.object.gschema.xml.in:70
 msgid "Draw arrow in menu button"
 msgstr ""
 
-#: data/org.mate.panel.object.gschema.xml.in:66
+#: data/org.mate.panel.object.gschema.xml.in:71
 msgid ""
 "If true, an arrow is drawn over the menu button icon. If false, menu button "
 "has only the icon."
 msgstr ""
 
-#: data/org.mate.panel.object.gschema.xml.in:70
+#: data/org.mate.panel.object.gschema.xml.in:75
 msgid "Launcher location"
 msgstr "Amplasare lansator"
 
-#: data/org.mate.panel.object.gschema.xml.in:71
+#: data/org.mate.panel.object.gschema.xml.in:76
 msgid ""
 "The location of the .desktop file describing the launcher. This key is only "
-"relevant if the object_type key is \"launcher-object\"."
+"relevant if the object-type key is 'launcher'."
 msgstr ""
-"Amplasarea fișierului .desktop ce descrie acest lansator. Această cheie este"
-" relevantă doar dacă cheia „object_type” este „launcher-object”."
 
-#: data/org.mate.panel.object.gschema.xml.in:75
+#: data/org.mate.panel.object.gschema.xml.in:80
 msgid "Action button type"
 msgstr "Tip buton acțiune"
 
-#: data/org.mate.panel.object.gschema.xml.in:76
+#: data/org.mate.panel.object.gschema.xml.in:81
 msgid ""
-"The action type this button represents. Possible values are \"lock\", "
-"\"logout\", \"run\", \"search\" and \"screenshot\". This key is only "
-"relevant if the object_type key is \"action-applet\"."
+"The action type this button represents. Possible values are 'none', 'lock', "
+"'logout', 'run', 'search', 'force-quit', 'connect-server' and 'shutdown'. "
+"This key is only relevant if the object-type key is 'action'."
 msgstr ""
-"Tipul de acțiune reprezentat de acest buton. Valorile posibile sunt: „lock”,"
-" „logout”, „run”, „search” și „screenshot”. Această cheie este relevantă "
-"doar dacă cheia „object_type” este „action-applets”."
 
 #: data/org.mate.panel.toplevel.gschema.xml.in:5
 msgid "Name to identify panel"
@@ -2112,127 +2156,127 @@ msgstr ""
 "La activare, fundalul imaginii va fi rotit când panoul este orientat "
 "vertical."
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:168
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:169
 msgid "File is not a valid .desktop file"
 msgstr "Fișierul nu este un fișier .desktop valid"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:193
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:194
 #, c-format
 msgid "Unrecognized desktop file Version '%s'"
 msgstr "Versiune fișier desktop nerecunoscută „%s”"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:975
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:984
 #, c-format
 msgid "Starting %s"
 msgstr "Se pornește %s"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1117
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1126
 msgid "Application does not accept documents on command line"
 msgstr "Aplicația nu acceptă documente în linia de comandă"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1185
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1194
 #, c-format
 msgid "Unrecognized launch option: %d"
 msgstr "Opțiune de lansare nerecunoscută: %d"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1401
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1410
 msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
 msgstr "Nu se pot pasa URI-uri document către o intrare desktop de tip link"
 
-#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1422
+#: mate-panel/mate-submodules/libegg/eggdesktopfile.c:1431
 msgid "Not a launchable item"
 msgstr "Nu este un element lansabil"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:233
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:234
 msgid "Disable connection to session manager"
 msgstr "Dezactivează conexiunea la administratorul de sesiune"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:238
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:239
 msgid "Specify file containing saved configuration"
 msgstr "Specifică fișierul ce conține configurația salvată"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:238
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:239
 msgid "FILE"
 msgstr "FIȘIER"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:243
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:244
 msgid "Specify session management ID"
 msgstr "Specifică ID-ul administratorului de sesiune"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:243
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:244
 msgid "ID"
 msgstr "ID"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:269
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:270
 msgid "Session management options:"
 msgstr "Opțiuni administrator de sesiune:"
 
-#: mate-panel/mate-submodules/libegg/eggsmclient.c:270
+#: mate-panel/mate-submodules/libegg/eggsmclient.c:271
 msgid "Show session management options"
 msgstr "Afișează opțiunile administratorului de sesiune"
 
-#: mate-panel/libpanel-util/panel-gtk.c:138
+#: mate-panel/libpanel-util/panel-gtk.c:139
 msgid "_Open"
 msgstr "_Deschide"
 
-#: mate-panel/libpanel-util/panel-error.c:76
-#: mate-panel/panel-applet-frame.c:800 mate-panel/panel-applet-frame.c:988
+#: mate-panel/libpanel-util/panel-error.c:77
+#: mate-panel/panel-applet-frame.c:797 mate-panel/panel-applet-frame.c:985
 msgid "Error"
 msgstr "Eroare"
 
-#: mate-panel/libpanel-util/panel-icon-chooser.c:374
+#: mate-panel/libpanel-util/panel-icon-chooser.c:366
 msgid "Choose an icon"
 msgstr "Alege o pictogramă"
 
-#: mate-panel/libpanel-util/panel-launch.c:45
+#: mate-panel/libpanel-util/panel-launch.c:46
 #, c-format
 msgid "Could not launch '%s'"
 msgstr "Nu s-a putut lansa „%s”"
 
-#: mate-panel/libpanel-util/panel-launch.c:48 mate-panel/launcher.c:162
+#: mate-panel/libpanel-util/panel-launch.c:49 mate-panel/launcher.c:163
 msgid "Could not launch application"
 msgstr "Nu s-a putut lansa aplicația"
 
-#: mate-panel/libpanel-util/panel-show.c:44
+#: mate-panel/libpanel-util/panel-show.c:45
 #, c-format
 msgid "Could not open location '%s'"
 msgstr "Nu s-a putut deschide locația „%s”"
 
-#: mate-panel/libpanel-util/panel-show.c:158
+#: mate-panel/libpanel-util/panel-show.c:159
 msgid "No application to handle search folders is installed."
 msgstr "Nu este instalată nicio aplicație care să opereze căutări de dosare."
 
-#: mate-panel/applet.c:468
+#: mate-panel/applet.c:466
 msgid "???"
 msgstr "???"
 
-#: mate-panel/applet.c:548 libmate-panel-applet/mate-panel-applet.c:139
+#: mate-panel/applet.c:546 libmate-panel-applet/mate-panel-applet.c:140
 msgid "_Remove From Panel"
 msgstr "_Elimină din panou"
 
-#: mate-panel/applet.c:556 libmate-panel-applet/mate-panel-applet.c:142
+#: mate-panel/applet.c:554 libmate-panel-applet/mate-panel-applet.c:143
 msgid "_Move"
 msgstr "_Mută"
 
-#: mate-panel/applet.c:574 libmate-panel-applet/mate-panel-applet.c:148
+#: mate-panel/applet.c:572 libmate-panel-applet/mate-panel-applet.c:149
 msgid "Loc_k To Panel"
 msgstr "_Fixează în panou"
 
-#: mate-panel/applet.c:1313
+#: mate-panel/applet.c:1321
 msgid "Cannot find an empty spot"
 msgstr "Nu se poate găsi un loc liber"
 
-#: mate-panel/drawer.c:443 mate-panel/panel-addto.c:189
-#: mate-panel/panel-toplevel.c:1643
+#: mate-panel/drawer.c:441 mate-panel/panel-addto.c:190
+#: mate-panel/panel-toplevel.c:1640
 msgid "Drawer"
 msgstr "Sertar"
 
-#: mate-panel/drawer.c:550
+#: mate-panel/drawer.c:546
 msgid "_Add to Drawer..."
 msgstr "_Adaugă la sertar..."
 
-#: mate-panel/drawer.c:556 mate-panel/launcher.c:602
-#: mate-panel/panel-action-button.c:172 mate-panel/panel-context-menu.c:246
+#: mate-panel/drawer.c:552 mate-panel/launcher.c:607
+#: mate-panel/panel-action-button.c:173 mate-panel/panel-context-menu.c:248
 msgid "_Properties"
 msgstr "_Proprietăți"
 
@@ -2249,7 +2293,7 @@ msgid "- Edit .desktop files"
 msgstr "- Modificare fișierele .desktop"
 
 #: mate-panel/mate-desktop-item-edit.c:144
-#: mate-panel/mate-desktop-item-edit.c:198 mate-panel/launcher.c:974
+#: mate-panel/mate-desktop-item-edit.c:198 mate-panel/launcher.c:1001
 msgid "Create Launcher"
 msgstr "Creează un lansator"
 
@@ -2258,11 +2302,11 @@ msgstr "Creează un lansator"
 msgid "Directory Properties"
 msgstr "Proprietăți dosar"
 
-#: mate-panel/mate-desktop-item-edit.c:175 mate-panel/launcher.c:817
+#: mate-panel/mate-desktop-item-edit.c:175 mate-panel/launcher.c:811
 msgid "Launcher Properties"
 msgstr "Proprietăți lansator"
 
-#: mate-panel/mate-panel.desktop.in:4 mate-panel/main.c:158
+#: mate-panel/mate-panel.desktop.in:4 mate-panel/main.c:167
 msgid "Panel"
 msgstr "Panou"
 
@@ -2274,15 +2318,15 @@ msgstr ""
 "Lansează alte aplicații și furnizează diverse utilitare pentru administrarea"
 " ferestrelor, afișarea orei, etc."
 
-#: mate-panel/launcher.c:120
+#: mate-panel/launcher.c:121
 msgid "Could not show this URL"
 msgstr "Nu se poate afișa acest URL"
 
-#: mate-panel/launcher.c:121
+#: mate-panel/launcher.c:122
 msgid "No URL was specified."
 msgstr "Nu a fost specificat niciun URL"
 
-#: mate-panel/launcher.c:217
+#: mate-panel/launcher.c:218
 msgid "Could not use dropped item"
 msgstr "Nu se poate utiliza elementul lăsat"
 
@@ -2296,217 +2340,217 @@ msgid "Unable to open desktop file %s for panel launcher%s%s\n"
 msgstr ""
 "Nu se poate deschide fișierul desktop %s pentru lansatorul din panou%s%s\n"
 
-#: mate-panel/launcher.c:594
+#: mate-panel/launcher.c:599
 msgid "_Launch"
 msgstr "_Lansează"
 
-#: mate-panel/launcher.c:910
+#: mate-panel/launcher.c:937
 #, c-format
 msgid "Key %s is not set, cannot load launcher\n"
 msgstr "Cheia %s nu este definită, nu se poate deschide aplicația de pornire\n"
 
-#: mate-panel/launcher.c:1043 mate-panel/panel-ditem-editor.c:1326
-#: mate-panel/panel-ditem-editor.c:1360 mate-panel/panel-ditem-editor.c:1391
+#: mate-panel/launcher.c:1072 mate-panel/panel-ditem-editor.c:1177
+#: mate-panel/panel-ditem-editor.c:1211 mate-panel/panel-ditem-editor.c:1241
 msgid "Could not save launcher"
 msgstr "Nu s-a putut salva aplicația de start"
 
-#: mate-panel/main.c:54
+#: mate-panel/main.c:55
 msgid "Replace a currently running panel"
 msgstr "Înlocuiește un panou ce rulează momentan"
 
-#: mate-panel/main.c:56
+#: mate-panel/main.c:57
 msgid "Reset the panel configuration to default"
 msgstr "Restabilește configurația panoului la cea implicită"
 
-#: mate-panel/main.c:58
+#: mate-panel/main.c:59
 msgid "Execute the run dialog"
 msgstr "Executare dialog de rulare"
 
-#: mate-panel/main.c:60
+#: mate-panel/main.c:61
 msgid "Set the default panel layout"
 msgstr "Definire aranjament implicit pentru panou"
 
-#: mate-panel/menu.c:502
+#: mate-panel/menu.c:500
 msgid "Add this launcher to _panel"
 msgstr "Adaugă acest lansator la _panou"
 
-#: mate-panel/menu.c:509
+#: mate-panel/menu.c:507
 msgid "Add this launcher to _desktop"
 msgstr "Adaugă acest lansator pe _desktop"
 
-#: mate-panel/menu.c:521
+#: mate-panel/menu.c:518
 msgid "_Entire menu"
 msgstr "Într_eg meniul"
 
-#: mate-panel/menu.c:526
+#: mate-panel/menu.c:523
 msgid "Add this as _drawer to panel"
 msgstr "Adaugă ca _sertar la panou"
 
-#: mate-panel/menu.c:533
+#: mate-panel/menu.c:530
 msgid "Add this as _menu to panel"
 msgstr "Adaugă ca _meniu la panou"
 
-#: mate-panel/panel-action-button.c:160
+#: mate-panel/panel-action-button.c:161
 msgid "_Activate Screensaver"
 msgstr "_Activare protector ecran"
 
-#: mate-panel/panel-action-button.c:166
+#: mate-panel/panel-action-button.c:167
 msgid "_Lock Screen"
 msgstr "B_locare ecran"
 
-#: mate-panel/panel-action-button.c:310
+#: mate-panel/panel-action-button.c:311
 msgid "Could not connect to server"
 msgstr "Nu se poate face conexiunea cu servitorul"
 
-#: mate-panel/panel-action-button.c:341
+#: mate-panel/panel-action-button.c:342
 msgid "Lock Screen"
 msgstr "Blochează ecranul"
 
-#: mate-panel/panel-action-button.c:342
+#: mate-panel/panel-action-button.c:343
 msgid "Protect your computer from unauthorized use"
 msgstr "Protejați-vă calculatorul de utilizatori neautorizați"
 
-#: mate-panel/panel-action-button.c:356
+#: mate-panel/panel-action-button.c:357
 msgid "Log Out..."
 msgstr "Deconectare..."
 
-#: mate-panel/panel-action-button.c:357
+#: mate-panel/panel-action-button.c:358
 msgid "Log out of this session to log in as a different user"
 msgstr ""
 "Ieșiți din această sesiune pentru a vă autentifica ca un utilizator diferit"
 
-#: mate-panel/panel-action-button.c:366
+#: mate-panel/panel-action-button.c:367
 msgid "Run Application..."
 msgstr "Pornire aplicații..."
 
-#: mate-panel/panel-action-button.c:367
+#: mate-panel/panel-action-button.c:368
 msgid "Run an application by typing a command or choosing from a list"
 msgstr ""
 "Rulează o aplicație prin scrierea unei comenzi sau alegerea dintr-o listă"
 
-#: mate-panel/panel-action-button.c:376
+#: mate-panel/panel-action-button.c:377
 msgid "Search for Files..."
 msgstr "Caută fișiere..."
 
-#: mate-panel/panel-action-button.c:377
+#: mate-panel/panel-action-button.c:378
 msgid "Locate documents and folders on this computer by name or content"
 msgstr "Găsiți documente și dosare pe acest calculator după nume sau conținut"
 
-#: mate-panel/panel-action-button.c:385 mate-panel/panel-force-quit.c:250
+#: mate-panel/panel-action-button.c:386 mate-panel/panel-force-quit.c:251
 msgid "Force Quit"
 msgstr "Închide forțat"
 
-#: mate-panel/panel-action-button.c:386
+#: mate-panel/panel-action-button.c:387
 msgid "Force a misbehaving application to quit"
 msgstr "Forțează închiderea unei aplicații ce nu mai răspunde"
 
-#: mate-panel/panel-action-button.c:395
+#: mate-panel/panel-action-button.c:396
 msgid "Connect to Server..."
 msgstr "Conectare la servitor..."
 
-#: mate-panel/panel-action-button.c:396
+#: mate-panel/panel-action-button.c:397
 msgid "Connect to a remote computer or shared disk"
 msgstr "Conectează-te la un calculator de la distanță sau un disc partajat"
 
-#: mate-panel/panel-action-button.c:404
+#: mate-panel/panel-action-button.c:405
 msgid "Shut Down..."
 msgstr "Oprire..."
 
-#: mate-panel/panel-action-button.c:405
+#: mate-panel/panel-action-button.c:406
 msgid "Shut down the computer"
 msgstr "Oprire calculator"
 
-#: mate-panel/panel-addto.c:125
+#: mate-panel/panel-addto.c:126
 msgid "Custom Application Launcher"
 msgstr "Lansator de aplicații personalizat"
 
-#: mate-panel/panel-addto.c:126
+#: mate-panel/panel-addto.c:127
 msgid "Create a new launcher"
 msgstr "Creează un nou lansator"
 
-#: mate-panel/panel-addto.c:137
+#: mate-panel/panel-addto.c:138
 msgid "Application Launcher..."
 msgstr "Lansator aplicații..."
 
-#: mate-panel/panel-addto.c:138
+#: mate-panel/panel-addto.c:139
 msgid "Copy a launcher from the applications menu"
 msgstr "Copiază un lansator din meniul de aplicații"
 
-#: mate-panel/panel-addto.c:153
+#: mate-panel/panel-addto.c:154
 msgid "Compact Menu"
 msgstr ""
 
-#: mate-panel/panel-addto.c:154
+#: mate-panel/panel-addto.c:155
 msgid "A compact menu"
 msgstr ""
 
-#: mate-panel/panel-addto.c:165
+#: mate-panel/panel-addto.c:166
 msgid "Classic Menu"
 msgstr ""
 
-#: mate-panel/panel-addto.c:166
+#: mate-panel/panel-addto.c:167
 msgid "The classic Applications, Places and System menu bar"
 msgstr ""
 
-#: mate-panel/panel-addto.c:177
+#: mate-panel/panel-addto.c:178
 msgid "Separator"
 msgstr "Separator"
 
-#: mate-panel/panel-addto.c:178
+#: mate-panel/panel-addto.c:179
 msgid "A separator to organize the panel items"
 msgstr "Un separator pentru organizarea elementelor din panou"
 
-#: mate-panel/panel-addto.c:190
+#: mate-panel/panel-addto.c:191
 msgid "A pop out drawer to store other items in"
 msgstr "Un sertar pentru stocarea altor elemente"
 
-#: mate-panel/panel-addto.c:274
+#: mate-panel/panel-addto.c:276
 msgid "(empty)"
 msgstr "(gol)"
 
-#: mate-panel/panel-addto.c:419
+#: mate-panel/panel-addto.c:421
 msgid "Not compatible with X11"
 msgstr ""
 
-#: mate-panel/panel-addto.c:426
+#: mate-panel/panel-addto.c:428
 msgid "Not compatible with Wayland"
 msgstr ""
 
-#: mate-panel/panel-addto.c:1055
+#: mate-panel/panel-addto.c:1011
 #, c-format
 msgid "Find an _item to add to \"%s\":"
 msgstr "Căută un _element de adăugat în „%s”:"
 
-#: mate-panel/panel-addto.c:1059
+#: mate-panel/panel-addto.c:1015
 msgid "Add to Drawer"
 msgstr "Adaugă la sertar"
 
-#: mate-panel/panel-addto.c:1061
+#: mate-panel/panel-addto.c:1017
 msgid "Find an _item to add to the drawer:"
 msgstr "Căută un _element de adăugat în sertar:"
 
-#: mate-panel/panel-addto.c:1063
+#: mate-panel/panel-addto.c:1019
 msgid "Add to Panel"
 msgstr "Adaugă la panou"
 
-#: mate-panel/panel-addto.c:1065
+#: mate-panel/panel-addto.c:1021
 msgid "Find an _item to add to the panel:"
 msgstr "Căută un _element de adăugat în panou:"
 
-#: mate-panel/panel-addto.c:1313
+#: mate-panel/panel-addto.c:1270
 msgid "_Back"
 msgstr "_Înapoi"
 
-#: mate-panel/panel-applet-frame.c:761
+#: mate-panel/panel-applet-frame.c:758
 #, c-format
 msgid "\"%s\" has quit unexpectedly"
 msgstr "„%s” a ieșit în mod neașteptat"
 
-#: mate-panel/panel-applet-frame.c:763
+#: mate-panel/panel-applet-frame.c:760
 msgid "Panel object has quit unexpectedly"
 msgstr "Obiectul panou a ieșit în mod neașteptat"
 
-#: mate-panel/panel-applet-frame.c:770
+#: mate-panel/panel-applet-frame.c:767
 msgid ""
 "If you reload a panel object, it will automatically be added back to the "
 "panel."
@@ -2514,47 +2558,47 @@ msgstr ""
 "Dacă reîncărcați un obiect din panou, acesta va fi automat adăugat înapoi în"
 " panou."
 
-#: mate-panel/panel-applet-frame.c:777
+#: mate-panel/panel-applet-frame.c:774
 msgid "D_elete"
 msgstr "Șt_erge"
 
-#: mate-panel/panel-applet-frame.c:778 mate-panel/panel-applet-frame.c:783
+#: mate-panel/panel-applet-frame.c:775 mate-panel/panel-applet-frame.c:780
 msgid "_Don't Reload"
 msgstr "_Nu reîncărca"
 
-#: mate-panel/panel-applet-frame.c:779 mate-panel/panel-applet-frame.c:784
+#: mate-panel/panel-applet-frame.c:776 mate-panel/panel-applet-frame.c:781
 msgid "_Reload"
 msgstr "_Reîncarcă"
 
-#: mate-panel/panel-applet-frame.c:950
+#: mate-panel/panel-applet-frame.c:947
 #, c-format
 msgid "The panel encountered a problem while loading \"%s\"."
 msgstr "Panoul a întâlnit o problemă la încărcarea „%s”"
 
-#: mate-panel/panel-applet-frame.c:965
+#: mate-panel/panel-applet-frame.c:962
 msgid "Do you want to delete the applet from your configuration?"
 msgstr "Doriți să ștergeți miniaplicația din configurația dumneavoastră?"
 
-#: mate-panel/panel-applet-frame.c:972 mate-panel/panel.c:1501
+#: mate-panel/panel-applet-frame.c:969 mate-panel/panel.c:1495
 msgid "_Delete"
 msgstr "Șter_ge"
 
-#: mate-panel/panel-context-menu.c:91
+#: mate-panel/panel-context-menu.c:92
 msgid "And many, many others…"
 msgstr ""
 
-#: mate-panel/panel-context-menu.c:114
+#: mate-panel/panel-context-menu.c:115
 msgid "The MATE Panel"
 msgstr "Panoul MATE"
 
-#: mate-panel/panel-context-menu.c:116
+#: mate-panel/panel-context-menu.c:117
 msgid ""
 "Copyright © 1997-2003 Free Software Foundation, Inc.\n"
 "Copyright © 2004 Vincent Untz\n"
-"Copyright © 2011-2020 MATE developers"
+"Copyright © 2011-2021 MATE developers"
 msgstr ""
 
-#: mate-panel/panel-context-menu.c:119
+#: mate-panel/panel-context-menu.c:120
 msgid ""
 "This program is responsible for launching other applications and provides "
 "useful utilities."
@@ -2562,136 +2606,141 @@ msgstr ""
 "Acest program este responsabil de pornirea altor aplicații și oferă diverse "
 "utilitare."
 
-#: mate-panel/panel-context-menu.c:123
+#: mate-panel/panel-context-menu.c:124
 msgid "About the MATE Panel"
 msgstr "Despre panoul MATE"
 
-#: mate-panel/panel-context-menu.c:154
+#: mate-panel/panel-context-menu.c:155
 msgid "Cannot delete this panel"
 msgstr "Nu se poate șterge acest panou"
 
-#: mate-panel/panel-context-menu.c:155
+#: mate-panel/panel-context-menu.c:156
 msgid "You must always have at least one panel."
 msgstr "Trebuie să aveți cel puțin un panou."
 
-#: mate-panel/panel-context-menu.c:199
+#: mate-panel/panel-context-menu.c:200
 msgid "Reset all panels?"
 msgstr ""
 
-#: mate-panel/panel-context-menu.c:200
+#: mate-panel/panel-context-menu.c:201
 msgid ""
 "When the panels are reset, all \n"
 "custom settings are lost."
 msgstr ""
 
-#: mate-panel/panel-context-menu.c:214
+#: mate-panel/panel-context-menu.c:215
 msgid "_Reset Panels"
 msgstr ""
 
-#: mate-panel/panel-context-menu.c:236
+#: mate-panel/panel-context-menu.c:237
 msgid "_Add to Panel…"
 msgstr ""
 
-#: mate-panel/panel-context-menu.c:256
+#: mate-panel/panel-context-menu.c:258
 msgid "_Reset All Panels"
 msgstr ""
 
-#: mate-panel/panel-context-menu.c:263
+#: mate-panel/panel-context-menu.c:265
 msgid "_Delete This Panel"
 msgstr "Șt_erge acest panou"
 
-#: mate-panel/panel-context-menu.c:276
+#: mate-panel/panel-context-menu.c:278
 msgid "_New Panel"
 msgstr "Panou _nou"
 
-#: mate-panel/panel-context-menu.c:325
+#: mate-panel/panel-context-menu.c:327
 msgid "A_bout Panels"
 msgstr "De_spre panouri"
 
-#: mate-panel/panel-ditem-editor.c:115
+#: mate-panel/panel-ditem-editor.c:117
 msgid "Application"
 msgstr "Aplicație"
 
-#: mate-panel/panel-ditem-editor.c:117
+#: mate-panel/panel-ditem-editor.c:119
 msgid "Application in Terminal"
 msgstr "Aplicație in terminal"
 
-#: mate-panel/panel-ditem-editor.c:119
+#: mate-panel/panel-ditem-editor.c:121
 msgid "Location"
 msgstr "Locație"
 
-#: mate-panel/panel-ditem-editor.c:602
-msgid "_Type:"
-msgstr "_Tip:"
-
-#: mate-panel/panel-ditem-editor.c:609
-msgid "_Name:"
-msgstr "_Nume:"
-
-#: mate-panel/panel-ditem-editor.c:634
-msgid "_Browse..."
-msgstr "_Răsfoire..."
-
-#: mate-panel/panel-ditem-editor.c:641
-msgid "Co_mment:"
-msgstr "Co_mentariu:"
-
-#: mate-panel/panel-ditem-editor.c:652
-msgid "_Revert"
-msgstr "Restaurea_ză"
-
-#: mate-panel/panel-ditem-editor.c:978
+#: mate-panel/panel-ditem-editor.c:847
 msgid "Choose an application..."
 msgstr "Alege o aplicație..."
 
-#: mate-panel/panel-ditem-editor.c:982
+#: mate-panel/panel-ditem-editor.c:851
 msgid "Choose a file..."
 msgstr "Alege un fișier..."
 
-#: mate-panel/panel-ditem-editor.c:1146 mate-panel/panel-ditem-editor.c:1155
+#: mate-panel/panel-ditem-editor.c:1003 mate-panel/panel-ditem-editor.c:1012
+#: mate-panel/panel-ditem-editor-dialog.ui:197
 msgid "Comm_and:"
 msgstr "Com_andă:"
 
-#: mate-panel/panel-ditem-editor.c:1164
+#: mate-panel/panel-ditem-editor.c:1021
 msgid "_Location:"
 msgstr "_Locație:"
 
-#: mate-panel/panel-ditem-editor.c:1327
+#: mate-panel/panel-ditem-editor.c:1178
 msgid "The name of the launcher is not set."
 msgstr "Numele aplicației de start nu este stabilit."
 
-#: mate-panel/panel-ditem-editor.c:1331
+#: mate-panel/panel-ditem-editor.c:1182
 msgid "Could not save directory properties"
 msgstr "Nu s-au putut salva proprietățile dosarului"
 
-#: mate-panel/panel-ditem-editor.c:1332
+#: mate-panel/panel-ditem-editor.c:1183
 msgid "The name of the directory is not set."
 msgstr "Numele dosarului nu este definit"
 
-#: mate-panel/panel-ditem-editor.c:1348
+#: mate-panel/panel-ditem-editor.c:1199
 msgid "The command of the launcher is not set."
 msgstr "Comanda aplicației de start nu este stabilită."
 
-#: mate-panel/panel-ditem-editor.c:1351
+#: mate-panel/panel-ditem-editor.c:1202
 msgid "The location of the launcher is not set."
 msgstr "Locația aplicației de start nu este stabilită"
 
-#: mate-panel/panel-ditem-editor.c:1428
+#: mate-panel/panel-ditem-editor.c:1278
 msgid "Could not display help document"
 msgstr "Nu se poate afișa documentul de ajutor"
 
-#: mate-panel/panel-force-quit.c:86
+#: mate-panel/panel-ditem-editor-dialog.ui:60
+msgid "_Revert"
+msgstr "Restaurea_ză"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:108
+msgid "_Ok"
+msgstr ""
+
+#: mate-panel/panel-ditem-editor-dialog.ui:163
+msgid "_Type:"
+msgstr "_Tip:"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:180
+msgid "_Name:"
+msgstr "_Nume:"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:214
+msgid "Co_mment:"
+msgstr "Co_mentariu:"
+
+#: mate-panel/panel-ditem-editor-dialog.ui:269
+msgid "_Browse..."
+msgstr "_Răsfoire..."
+
+#: mate-panel/panel-force-quit.c:87
 msgid ""
 "Click on a window to force the application to quit. To cancel press <ESC>."
 msgstr ""
 "Clic pe o fereastră pentru a forța închiderea aplicației. Pentru anulare "
 "apăsați <ESC>."
 
-#: mate-panel/panel-force-quit.c:232
+#: mate-panel/panel-force-quit.c:233
 msgid "Force this application to exit?"
 msgstr "Forțați închiderea acestei aplicații?"
 
-#: mate-panel/panel-force-quit.c:235
+#: mate-panel/panel-force-quit.c:236
 msgid ""
 "If you choose to force an application to exit, unsaved changes in any open "
 "documents in it might get lost."
@@ -2699,58 +2748,58 @@ msgstr ""
 "Dacă alegeți să forțați închiderea unei aplicații, orice documente deschise "
 "în ea pot fi pierdute."
 
-#: mate-panel/panel-menu-bar.c:97
+#: mate-panel/panel-menu-bar.c:98
 msgid "Browse and run installed applications"
 msgstr "Descoperiți și porniți aplicațiile instalate"
 
-#: mate-panel/panel-menu-bar.c:98
+#: mate-panel/panel-menu-bar.c:99
 msgid "Access documents, folders and network places"
 msgstr "Accesați documente, dosare și locuri din rețea"
 
-#: mate-panel/panel-menu-bar.c:99
+#: mate-panel/panel-menu-bar.c:100
 msgid "Change desktop appearance and behavior, get help, or log out"
 msgstr ""
 "Modificați aspectul și comportamentul desktopului, obțineți ajutor sau vă "
 "deconectați"
 
-#: mate-panel/panel-menu-bar.c:166
+#: mate-panel/panel-menu-bar.c:170
 msgid "Applications"
 msgstr "Aplicații"
 
-#: mate-panel/panel-menu-bar.c:356 mate-panel/panel-menu-button.c:710
+#: mate-panel/panel-menu-bar.c:360 mate-panel/panel-menu-button.c:705
 msgid "_Edit Menus"
 msgstr "_Editare meniuri"
 
-#: mate-panel/panel-menu-button.c:1133
+#: mate-panel/panel-menu-button.c:1123
 msgid "Main Menu"
 msgstr "Meniu principal"
 
-#: mate-panel/panel-menu-items.c:466
+#: mate-panel/panel-menu-items.c:464
 msgid "Bookmarks"
 msgstr "Semne de carte"
 
 #. Translators: %s is a URI
-#: mate-panel/panel-menu-items.c:489 mate-panel/panel.c:572
+#: mate-panel/panel-menu-items.c:487 mate-panel/panel.c:571
 #, c-format
 msgid "Open '%s'"
 msgstr "Deschide „%s”"
 
-#: mate-panel/panel-menu-items.c:560
+#: mate-panel/panel-menu-items.c:558
 #, c-format
 msgid "Unable to scan %s for media changes"
 msgstr "Nu s-a putut analiza %s pentru schimbări"
 
-#: mate-panel/panel-menu-items.c:604
+#: mate-panel/panel-menu-items.c:602
 #, c-format
 msgid "Rescan %s"
 msgstr "Reanalizare %s"
 
-#: mate-panel/panel-menu-items.c:641
+#: mate-panel/panel-menu-items.c:640
 #, c-format
 msgid "Unable to mount %s"
 msgstr "Nu s-a putut monta %s"
 
-#: mate-panel/panel-menu-items.c:704
+#: mate-panel/panel-menu-items.c:703
 #, c-format
 msgid "Mount %s"
 msgstr "Montează %s"
@@ -2759,98 +2808,98 @@ msgstr "Montează %s"
 msgid "Removable Media"
 msgstr "Medii amovibile"
 
-#: mate-panel/panel-menu-items.c:999
+#: mate-panel/panel-menu-items.c:998
 msgid "Network Places"
 msgstr "Locuri din rețea"
 
-#: mate-panel/panel-menu-items.c:1038
+#: mate-panel/panel-menu-items.c:1037
 msgid "Open your personal folder"
 msgstr "Deschide dosarul personal"
 
 #. Translators: Desktop is used here as in
 #. * "Desktop Folder" (this is not the Desktop
 #. * environment).
-#: mate-panel/panel-menu-items.c:1057
+#: mate-panel/panel-menu-items.c:1056
 msgctxt "Desktop Folder"
 msgid "Desktop"
 msgstr "Desktop"
 
-#: mate-panel/panel-menu-items.c:1058
+#: mate-panel/panel-menu-items.c:1057
 msgid "Open the contents of your desktop in a folder"
 msgstr "Deschide conținutul desktopului într-un dosar"
 
-#: mate-panel/panel-menu-items.c:1075
+#: mate-panel/panel-menu-items.c:1074
 msgid "Computer"
 msgstr "Calculator"
 
-#: mate-panel/panel-menu-items.c:1081
+#: mate-panel/panel-menu-items.c:1080
 msgid ""
 "Browse all local and remote disks and folders accessible from this computer"
 msgstr ""
 "Navighează toate discurile locale și la distanță și dosarele accesibile de "
 "pe acest calculator"
 
-#: mate-panel/panel-menu-items.c:1094
+#: mate-panel/panel-menu-items.c:1093
 msgid "Network"
 msgstr "Rețea"
 
-#: mate-panel/panel-menu-items.c:1095
+#: mate-panel/panel-menu-items.c:1094
 msgid "Browse bookmarked and local network locations"
 msgstr "Navighează prin locațiile favorite sau din rețeaua locală"
 
-#: mate-panel/panel-menu-items.c:1489
+#: mate-panel/panel-menu-items.c:1457
 msgid "Places"
 msgstr "Locuri"
 
-#: mate-panel/panel-menu-items.c:1517
+#: mate-panel/panel-menu-items.c:1485
 msgid "System"
 msgstr "Sistem"
 
 #. Translators: translate "1" (msgctxt: "panel:showusername") to anything
 #. * but "1" if "Log Out %s" doesn't make any sense in your
 #. * language (where %s is a username).
-#: mate-panel/panel-menu-items.c:1602
+#: mate-panel/panel-menu-items.c:1570
 msgctxt "panel:showusername"
 msgid "1"
 msgstr "1"
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: mate-panel/panel-menu-items.c:1614
+#: mate-panel/panel-menu-items.c:1582
 #, c-format
 msgid "Log Out %s..."
 msgstr "Deconectare %s..."
 
 #. Translators: this string is used ONLY if you translated
 #. * "1" (msgctxt: "panel:showusername") to "1"
-#: mate-panel/panel-menu-items.c:1618
+#: mate-panel/panel-menu-items.c:1586
 #, c-format
 msgid "Log out %s of this session to log in as a different user"
 msgstr ""
 "Ieșiți din sesiunea contului %s pentru a vă autentifica ca un utilizator "
 "diferit"
 
-#: mate-panel/panel-properties-dialog.c:119 mate-panel/panel-test-applets.c:58
+#: mate-panel/panel-properties-dialog.c:120 mate-panel/panel-test-applets.c:59
 msgctxt "Orientation"
 msgid "Top"
 msgstr "Sus"
 
-#: mate-panel/panel-properties-dialog.c:120 mate-panel/panel-test-applets.c:59
+#: mate-panel/panel-properties-dialog.c:121 mate-panel/panel-test-applets.c:60
 msgctxt "Orientation"
 msgid "Bottom"
 msgstr "Jos"
 
-#: mate-panel/panel-properties-dialog.c:121 mate-panel/panel-test-applets.c:60
+#: mate-panel/panel-properties-dialog.c:122 mate-panel/panel-test-applets.c:61
 msgctxt "Orientation"
 msgid "Left"
 msgstr "Stânga"
 
-#: mate-panel/panel-properties-dialog.c:122 mate-panel/panel-test-applets.c:61
+#: mate-panel/panel-properties-dialog.c:123 mate-panel/panel-test-applets.c:62
 msgctxt "Orientation"
 msgid "Right"
 msgstr "Dreapta"
 
-#: mate-panel/panel-properties-dialog.c:818
+#: mate-panel/panel-properties-dialog.c:827
 msgid "Drawer Properties"
 msgstr "Proprietăți sertar"
 
@@ -2909,17 +2958,17 @@ msgstr "Alege o culoare"
 msgid "<small>Transparent</small>"
 msgstr "<small>Transparent</small>"
 
-#: mate-panel/panel-properties-dialog.ui:553
+#: mate-panel/panel-properties-dialog.ui:545
+msgid "<small>Opaque</small>"
+msgstr "<small>Opac</small>"
+
+#: mate-panel/panel-properties-dialog.ui:566
 msgid "Co_lor:"
 msgstr "Cu_loare:"
 
-#: mate-panel/panel-properties-dialog.ui:566
+#: mate-panel/panel-properties-dialog.ui:579
 msgid "S_tyle:"
 msgstr "S_til:"
-
-#: mate-panel/panel-properties-dialog.ui:580
-msgid "<small>Opaque</small>"
-msgstr "<small>Opac</small>"
 
 #: mate-panel/panel-properties-dialog.ui:613
 msgid "Background _image:"
@@ -2982,42 +3031,42 @@ msgstr ""
 msgid "Clear Recent Documents"
 msgstr "Golește lista documentelor recente"
 
-#: mate-panel/panel-recent.c:199
+#: mate-panel/panel-recent.c:200
 msgid "Recent Documents"
 msgstr "Documente recente"
 
-#: mate-panel/panel-recent.c:238
+#: mate-panel/panel-recent.c:242
 msgid "Clear Recent Documents..."
 msgstr "Golește lista documentelor recente..."
 
-#: mate-panel/panel-recent.c:240
+#: mate-panel/panel-recent.c:244
 msgid "Clear all items from the recent documents list"
 msgstr "Șterge toate elementețe lista documentelor recente"
 
-#: mate-panel/panel-run-dialog.c:436
+#: mate-panel/panel-run-dialog.c:469
 #, c-format
 msgid "Could not run command '%s'"
 msgstr "Nu se poate executa comanda „%s”"
 
-#: mate-panel/panel-run-dialog.c:477
+#: mate-panel/panel-run-dialog.c:510
 #, c-format
 msgid "Could not convert '%s' from UTF-8"
 msgstr "Nu s-a putut converti „%s” din UTF-8"
 
-#: mate-panel/panel-run-dialog.c:1270
+#: mate-panel/panel-run-dialog.c:1335
 msgid "Choose a file to append to the command..."
 msgstr "Alegeți un fișier de adăugat în linia de comandă..."
 
-#: mate-panel/panel-run-dialog.c:1652 mate-panel/panel-run-dialog.ui:272
+#: mate-panel/panel-run-dialog.c:1689 mate-panel/panel-run-dialog.ui:272
 msgid "Select an application to view its description."
 msgstr "Alegeți o aplicație pentru a-i vedea descrierea."
 
-#: mate-panel/panel-run-dialog.c:1690
+#: mate-panel/panel-run-dialog.c:1746
 #, c-format
 msgid "Will run command: '%s'"
 msgstr "Va executa comanda: „%s”"
 
-#: mate-panel/panel-run-dialog.c:1723
+#: mate-panel/panel-run-dialog.c:1779
 #, c-format
 msgid "URI list dropped on run dialog had wrong format (%d) or length (%d)\n"
 msgstr ""
@@ -3088,21 +3137,21 @@ msgstr "C_urăță"
 msgid "D_on't Delete"
 msgstr "_Nu șterge"
 
-#: mate-panel/panel-test-applets.c:39
+#: mate-panel/panel-test-applets.c:40
 msgid "Specify an applet IID to load"
 msgstr "Alegeți IID-ul miniaplicației de încărcat"
 
-#: mate-panel/panel-test-applets.c:40
+#: mate-panel/panel-test-applets.c:41
 msgid ""
 "Specify a gsettings path in which the applet preferences should be stored"
 msgstr ""
 
-#: mate-panel/panel-test-applets.c:41
+#: mate-panel/panel-test-applets.c:42
 msgid "Specify the initial size of the applet (xx-small, medium, large etc.)"
 msgstr ""
 "Specifică mărimea inițială a miniaplicației (minusculă, medie, mare etc.)"
 
-#: mate-panel/panel-test-applets.c:42
+#: mate-panel/panel-test-applets.c:43
 msgid ""
 "Specify the initial orientation of the applet (top, bottom, left or right)"
 msgstr ""
@@ -3165,32 +3214,32 @@ msgstr "Mini_aplicație:"
 msgid "_Prefs Path:"
 msgstr "Cale _preferințe:"
 
-#: mate-panel/panel-toplevel.c:1209
+#: mate-panel/panel-toplevel.c:1207
 msgid "Hide Panel"
 msgstr "Ascunde panou"
 
-#: mate-panel/panel-toplevel.c:1649 mate-panel/panel-toplevel.c:1659
+#: mate-panel/panel-toplevel.c:1646 mate-panel/panel-toplevel.c:1656
 msgid "Top Panel"
 msgstr "Panoul de sus"
 
-#: mate-panel/panel-toplevel.c:1651
+#: mate-panel/panel-toplevel.c:1648
 msgid "Bottom Panel"
 msgstr "Panoul de jos"
 
-#: mate-panel/panel-toplevel.c:1653
+#: mate-panel/panel-toplevel.c:1650
 msgid "Left Panel"
 msgstr "Panoul dins stânga"
 
-#: mate-panel/panel-toplevel.c:1655
+#: mate-panel/panel-toplevel.c:1652
 msgid "Right Panel"
 msgstr "Panoul din dreapta"
 
-#: mate-panel/panel-util.c:350
+#: mate-panel/panel-util.c:351
 #, c-format
 msgid "Icon '%s' not found"
 msgstr "Pictograma „%s” nu a fost găsită"
 
-#: mate-panel/panel-util.c:474
+#: mate-panel/panel-util.c:475
 #, c-format
 msgid "Could not execute '%s'"
 msgstr "Nu se poate executa „%s”"
@@ -3199,17 +3248,17 @@ msgstr "Nu se poate executa „%s”"
 msgid "file"
 msgstr "fișier"
 
-#: mate-panel/panel-util.c:876
+#: mate-panel/panel-util.c:870
 msgid "Home Folder"
 msgstr "Dosar personal"
 
 #. Translators: this is the same string as the one found in
 #. * caja
-#: mate-panel/panel-util.c:888
+#: mate-panel/panel-util.c:882
 msgid "File System"
 msgstr "Sistem de fișiere"
 
-#: mate-panel/panel-util.c:1062
+#: mate-panel/panel-util.c:1045
 msgid "Search"
 msgstr "Caută"
 
@@ -3217,47 +3266,47 @@ msgstr "Caută"
 #. * method, and the second string is a path. For
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
-#: mate-panel/panel-util.c:1108
+#: mate-panel/panel-util.c:1091
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: mate-panel/panel.c:505
+#: mate-panel/panel.c:504
 #, c-format
 msgid "Open URL: %s"
 msgstr "Deschide URL-ul: %s"
 
-#: mate-panel/panel.c:671
+#: mate-panel/panel.c:670
 msgid "You dropped an image on the panel, what do you want to do?"
 msgstr ""
 
-#: mate-panel/panel.c:673
+#: mate-panel/panel.c:672
 #, c-format
 msgid "You dropped the image \"%s\" on the panel."
 msgstr ""
 
-#: mate-panel/panel.c:676
+#: mate-panel/panel.c:675
 msgid ""
 "Do you want to create a launcher for it or use it as the panel's background?"
 msgstr ""
 
-#: mate-panel/panel.c:679
+#: mate-panel/panel.c:678
 msgid "Do you want to use it as the panel's background?"
 msgstr ""
 
-#: mate-panel/panel.c:693
+#: mate-panel/panel.c:692
 msgid "Create _Launcher"
 msgstr ""
 
-#: mate-panel/panel.c:697
+#: mate-panel/panel.c:696
 msgid "Set _Background Image"
 msgstr ""
 
-#: mate-panel/panel.c:1477
+#: mate-panel/panel.c:1471
 msgid "Delete this drawer?"
 msgstr "Șterge acest sertar?"
 
-#: mate-panel/panel.c:1478
+#: mate-panel/panel.c:1472
 msgid ""
 "When a drawer is deleted, the drawer and its\n"
 "settings are lost."
@@ -3265,11 +3314,11 @@ msgstr ""
 "Când un sertar este eliminat, sertarul și configurările\n"
 "sale sunt pierdute."
 
-#: mate-panel/panel.c:1481
+#: mate-panel/panel.c:1475
 msgid "Delete this panel?"
 msgstr "Elimină acest panou?"
 
-#: mate-panel/panel.c:1482
+#: mate-panel/panel.c:1476
 msgid ""
 "When a panel is deleted, the panel and its\n"
 "settings are lost."

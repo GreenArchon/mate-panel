@@ -67,6 +67,14 @@ libclock_applet_la_LIBADD = $(CLOCK_LDADD)
 libclock_applet_la_LDFLAGS = -module -avoid-version
 libclock_applet_la_CFLAGS = $(AM_CFLAGS)
 $(libclock_applet_la_OBJECTS): $(BUILT_SOURCES)
+
+if ENABLE_WAYLAND
+libclock_applet_la_LIBADD += \
+	$(WAYLAND_LIBS)
+
+AM_CPPFLAGS += \
+	$(WAYLAND_CFLAGS)
+endif
 else
 APPLET_IN_PROCESS = false
 APPLET_LOCATION = $(libexecdir)/clock-applet
@@ -138,9 +146,9 @@ $(applet_in_files): $(applet_in_files).in Makefile
 $(applet_DATA): $(applet_in_files)
 	$(AM_V_GEN) $(MSGFMT) --desktop --keyword= --keyword=Name --keyword=Description --template $< -d $(top_srcdir)/po -o $@
 
+service_in_files = org.mate.panel.applet.ClockAppletFactory.service.in
 if !CLOCK_INPROCESS
 servicedir       = $(datadir)/dbus-1/services
-service_in_files = org.mate.panel.applet.ClockAppletFactory.service.in
 service_DATA     = $(service_in_files:.service.in=.service)
 
 org.mate.panel.applet.ClockAppletFactory.service: $(service_in_files)

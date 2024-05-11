@@ -1,6 +1,7 @@
 /* Mate panel: Initialization routines
  * (C) 1997,1998,1999,2000 the Free Software Foundation
  * (C) 2000 Eazel, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * Authors: Federico Mena
  *          Miguel de Icaza
@@ -58,7 +59,7 @@ static const GOptionEntry options[] = {
   { "run-dialog", 0, 0, G_OPTION_ARG_NONE, &run_dialog, N_("Execute the run dialog"), NULL },
   /* default panels layout */
   { "layout", 0, 0, G_OPTION_ARG_STRING, &layout, N_("Set the default panel layout"), NULL },
-  { NULL }
+  { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
 };
 
 static void

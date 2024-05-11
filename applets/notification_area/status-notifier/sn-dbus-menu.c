@@ -419,8 +419,8 @@ sn_dbus_menu_finalize (GObject *object)
 
   menu = SN_DBUS_MENU (object);
 
-  g_free (menu->bus_name);
-  g_free (menu->object_path);
+  g_clear_pointer (&menu->bus_name, g_free);
+  g_clear_pointer (&menu->object_path, g_free);
 
   G_OBJECT_CLASS (sn_dbus_menu_parent_class)->finalize (object);
 }
@@ -485,7 +485,7 @@ sn_dbus_menu_class_init (SnDBusMenuClass *menu_class)
 static void
 sn_dbus_menu_init (SnDBusMenu *menu)
 {
-  menu->items = g_hash_table_new_full (NULL, NULL, NULL, sn_dubs_menu_item_free);
+  menu->items = g_hash_table_new_full (NULL, NULL, NULL, sn_dbus_menu_item_free);
   menu->cancellable = g_cancellable_new ();
 }
 

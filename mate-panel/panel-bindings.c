@@ -2,6 +2,7 @@
  * panel-bindings.c: panel keybindings support module
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -190,7 +191,7 @@ panel_bindings_mouse_modifier_changed (GSettings *settings,
 static void
 panel_bindings_initialise (void)
 {
-	int          i;
+	gsize        i;
 	char        *str;
 
 	if (initialised)
@@ -228,7 +229,7 @@ panel_bindings_initialise (void)
 void
 panel_bindings_set_entries (GtkBindingSet *binding_set)
 {
-	int i;
+	gsize i;
 
 	if (!initialised)
 		panel_bindings_initialise ();

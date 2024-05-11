@@ -1,6 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*- */
 /*
  * Copyright (C) 2004 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -49,7 +50,6 @@ typedef struct {
 
 static PanelLockdown panel_lockdown = { 0, };
 
-
 static inline void
 panel_lockdown_invoke_closures (PanelLockdown *lockdown)
 {
@@ -64,7 +64,7 @@ locked_down_notify (GSettings     *settings,
                     gchar         *key,
                     PanelLockdown *lockdown)
 {
-        lockdown->locked_down = g_settings_get_boolean (settings, key);
+        lockdown->locked_down = (g_settings_get_boolean (settings, key) != FALSE);
         panel_lockdown_invoke_closures (lockdown);
 }
 
@@ -73,7 +73,7 @@ disable_command_line_notify (GSettings     *settings,
                              gchar         *key,
                              PanelLockdown *lockdown)
 {
-        lockdown->disable_command_line = g_settings_get_boolean (settings, key);
+        lockdown->disable_command_line = (g_settings_get_boolean (settings, key) != FALSE);
         panel_lockdown_invoke_closures (lockdown);
 }
 
@@ -82,7 +82,7 @@ disable_lock_screen_notify (GSettings     *settings,
                             gchar         *key,
                             PanelLockdown *lockdown)
 {
-        lockdown->disable_lock_screen = g_settings_get_boolean (settings, key);
+        lockdown->disable_lock_screen = (g_settings_get_boolean (settings, key) != FALSE);
         panel_lockdown_invoke_closures (lockdown);
 }
 
@@ -91,7 +91,7 @@ disable_log_out_notify (GSettings     *settings,
                         gchar         *key,
                         PanelLockdown *lockdown)
 {
-        lockdown->disable_log_out = g_settings_get_boolean (settings, key);
+        lockdown->disable_log_out = (g_settings_get_boolean (settings, key) != FALSE);
         panel_lockdown_invoke_closures (lockdown);
 }
 
@@ -100,7 +100,7 @@ disable_force_quit_notify (GSettings     *settings,
                            gchar         *key,
                            PanelLockdown *lockdown)
 {
-        lockdown->disable_force_quit = g_settings_get_boolean (settings, key);
+        lockdown->disable_force_quit = (g_settings_get_boolean (settings, key) != FALSE);
         panel_lockdown_invoke_closures (lockdown);
 }
 
@@ -161,34 +161,34 @@ panel_lockdown_init (void)
         panel_lockdown.lockdown_settings = g_settings_new (LOCKDOWN_SCHEMA);
 
         panel_lockdown.locked_down =
-                panel_lockdown_load_bool (&panel_lockdown,
-                                          panel_lockdown.panel_settings,
-                                          PANEL_LOCKED_DOWN_KEY,
-                                          G_CALLBACK (locked_down_notify));
+                (panel_lockdown_load_bool (&panel_lockdown,
+                                           panel_lockdown.panel_settings,
+                                           PANEL_LOCKED_DOWN_KEY,
+                                           G_CALLBACK (locked_down_notify)) != FALSE);
 
         panel_lockdown.disable_command_line =
-                panel_lockdown_load_bool (&panel_lockdown,
-                                          panel_lockdown.lockdown_settings,
-                                          LOCKDOWN_DISABLE_COMMAND_LINE_KEY,
-                                          G_CALLBACK (disable_command_line_notify));
+                (panel_lockdown_load_bool (&panel_lockdown,
+                                           panel_lockdown.lockdown_settings,
+                                           LOCKDOWN_DISABLE_COMMAND_LINE_KEY,
+                                           G_CALLBACK (disable_command_line_notify)) != FALSE);
 
         panel_lockdown.disable_lock_screen =
-                panel_lockdown_load_bool (&panel_lockdown,
-                                          panel_lockdown.lockdown_settings,
-                                          LOCKDOWN_DISABLE_LOCK_SCREEN_KEY,
-                                          G_CALLBACK (disable_lock_screen_notify));
+                (panel_lockdown_load_bool (&panel_lockdown,
+                                           panel_lockdown.lockdown_settings,
+                                           LOCKDOWN_DISABLE_LOCK_SCREEN_KEY,
+                                           G_CALLBACK (disable_lock_screen_notify)) != FALSE);
 
         panel_lockdown.disable_log_out =
-                panel_lockdown_load_bool (&panel_lockdown,
-                                          panel_lockdown.lockdown_settings,
-                                          LOCKDOWN_DISABLE_LOG_OUT_KEY,
-                                          G_CALLBACK (disable_log_out_notify));
+                (panel_lockdown_load_bool (&panel_lockdown,
+                                           panel_lockdown.lockdown_settings,
+                                           LOCKDOWN_DISABLE_LOG_OUT_KEY,
+                                           G_CALLBACK (disable_log_out_notify)) != FALSE);
 
         panel_lockdown.disable_force_quit =
-                panel_lockdown_load_bool (&panel_lockdown,
-                                          panel_lockdown.panel_settings,
-                                          PANEL_DISABLE_FORCE_QUIT_KEY,
-                                          G_CALLBACK (disable_force_quit_notify));
+                (panel_lockdown_load_bool (&panel_lockdown,
+                                           panel_lockdown.panel_settings,
+                                           PANEL_DISABLE_FORCE_QUIT_KEY,
+                                           G_CALLBACK (disable_force_quit_notify)) != FALSE);
 
         panel_lockdown.disabled_applets =
                 panel_lockdown_load_disabled_applets (&panel_lockdown,
@@ -269,12 +269,10 @@ panel_lockdown_get_disable_force_quit (void)
 gboolean
 panel_lockdown_is_applet_disabled (const char *iid)
 {
-        gint i;
-
         g_assert (panel_lockdown.initialized != FALSE);
 
         if (panel_lockdown.disabled_applets)
-                for (i = 0; panel_lockdown.disabled_applets[i]; i++)
+                for (gint i = 0; panel_lockdown.disabled_applets[i]; i++)
                         if (!strcmp (panel_lockdown.disabled_applets[i], iid))
                                 return TRUE;
 
@@ -286,9 +284,7 @@ panel_lockdown_notify_find (GSList    *closures,
                             GCallback  callback_func,
                             gpointer   user_data)
 {
-        GSList *l;
-
-        for (l = closures; l; l = l->next) {
+        for (GSList *l = closures; l; l = l->next) {
                 GCClosure *cclosure = l->data;
                 GClosure  *closure  = l->data;
 

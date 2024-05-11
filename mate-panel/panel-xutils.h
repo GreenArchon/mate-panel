@@ -2,6 +2,7 @@
  * panel-xutils.h: X related utility methods.
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,7 +20,7 @@
  * 02110-1301, USA.
  *
  * Authors:
- *	Mark McLoughlin <mark@skynet.ie>
+ *        Mark McLoughlin <mark@skynet.ie>
  */
 
 #ifndef __PANEL_XUTILS_H__
@@ -44,14 +45,18 @@ extern "C" {
 #endif
 
 void panel_xutils_set_strut       (GdkWindow             *gdk_window,
-				   PanelOrientation       orientation,
-				   guint32                strut,
-				   guint32                strut_start,
-				   guint32                strut_end);
+                                   PanelOrientation       orientation,
+                                   guint32                strut,
+                                   guint32                strut_start,
+                                   guint32                strut_end,
+                                   GdkRectangle          *rect,
+                                   int                    scale);
+
+void panel_xutils_unset_strut     (GdkWindow             *gdk_window);
 
 void panel_warp_pointer           (GdkWindow             *gdk_window,
-				   int                    x,
-				   int                    y);
+                                   int                    x,
+                                   int                    y);
 
 guint panel_get_real_modifier_mask (guint modifier_mask);
 

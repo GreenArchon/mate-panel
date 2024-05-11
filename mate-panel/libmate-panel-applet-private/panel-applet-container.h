@@ -2,6 +2,7 @@
  * panel-applet-container.h: a container for applets.
  *
  * Copyright (C) 2010 Carlos Garcia Campos <carlosgc@gnome.org>
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -72,7 +73,6 @@ struct _MatePanelAppletContainerClass {
 GType      mate_panel_applet_container_get_type                (void) G_GNUC_CONST;
 GQuark     mate_panel_applet_container_error_quark             (void) G_GNUC_CONST;
 GtkWidget *mate_panel_applet_container_new                     (void);
-
 
 void       mate_panel_applet_container_add                     (MatePanelAppletContainer *container,
 							   GdkScreen            *screen,

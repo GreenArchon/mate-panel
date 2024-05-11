@@ -5,6 +5,7 @@
  * Copyright (C) 2001 - 2003 Sun Microsystems, Inc.
  * Copyright (C) 2010 Carlos Garcia Campos <carlosgc@gnome.org>
  * Copyright (C) 2010 Vincent Untz <vuntz@gnome.org>
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -69,7 +70,7 @@ get_mate_panel_applet_orient (PanelOrientation orientation)
 		return 2;
 	default:
 		g_assert_not_reached ();
-		break;
+		return 0;
 	}
 }
 
@@ -90,7 +91,6 @@ mate_panel_applet_frame_dbus_update_flags (MatePanelAppletFrame *frame,
 
 	_mate_panel_applet_frame_update_flags (frame, major, minor, has_handle);
 }
-
 
 static void
 mate_panel_applet_frame_dbus_get_flags_cb (MatePanelAppletContainer *container,

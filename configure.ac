@@ -1,4 +1,4 @@
-AC_INIT([mate-panel], [1.25.2], [https://github.com/mate-desktop/mate-panel/issues],
+AC_INIT([mate-panel], [1.29.0], [https://github.com/mate-desktop/mate-panel/issues],
     [mate-panel], [https://mate-desktop.org])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-xz tar-ustar -Wno-portability check-news])
@@ -42,7 +42,7 @@ PANEL_INTLTOOL_MATE_PANEL_APPLET_RULE='%.mate-panel-applet: %.mate-panel-applet.
 AC_SUBST([PANEL_INTLTOOL_MATE_PANEL_APPLET_RULE])
 
 AC_ARG_ENABLE(deprecation_flags,
-              [AC_HELP_STRING([--enable-deprecation-flags],
+              [AS_HELP_STRING([--enable-deprecation-flags],
                               [use *_DISABLE_DEPRECATED flags @<:@default=no@:>@])],,
               [enable_deprecation_flags=no])
 
@@ -53,7 +53,7 @@ fi
 
 LT_LIB_M
 
-LIBMATE_DESKTOP_REQUIRED=1.17.0
+LIBMATE_DESKTOP_REQUIRED=1.28.2
 GDK_PIXBUF_REQUIRED=2.26.0
 PANGO_REQUIRED=1.15.4
 GLIB_REQUIRED=2.50.0
@@ -115,7 +115,7 @@ PANEL_INPROCESS_NONE=
 PANEL_INPROCESS_ALL=
 PANEL_INPROCESS_APPLETS=
 AC_ARG_WITH(in-process-applets,
-	AC_HELP_STRING([--with-in-process-applets=APPLETS],
+	AS_HELP_STRING([--with-in-process-applets=APPLETS],
 		[comma-separated list of applets to compile in-process (possible values: none, clock, fish, notification-area, wncklet, all) @<:@default=none@:>@]),
 	[for i in `echo $withval | tr , ' '`; do
 		if test $i = "none"; then
@@ -178,14 +178,14 @@ AC_STRUCT_DIRENT_D_TYPE
 
 # $enable_x11 and $enable_wayland will be set to "yes", "no" or "auto"
 AC_ARG_ENABLE(x11,
-              [AC_HELP_STRING([--enable-x11],
+              [AS_HELP_STRING([--enable-x11],
                               [Explicitly enable or disable X11 support
                               (default is to enable only if X development libraries are detected)])],
               [enable_x11=$enableval],
               [enable_x11=auto])
 
 AC_ARG_ENABLE(wayland,
-              [AC_HELP_STRING([--enable-wayland],
+              [AS_HELP_STRING([--enable-wayland],
                               [Explicitly enable or disable Wayland support
                               (default is to enable only if Wayland client development library is detected)])],
               [enable_wayland=$enableval],
@@ -293,7 +293,7 @@ if test "x$enable_rebuilds" = "xyes" && \
 fi
 AC_SUBST(REBUILD)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 data/Makefile
 data/theme/Makefile
@@ -343,6 +343,7 @@ help/mate-clock/Makefile
 help/mate-fish/Makefile
 man/Makefile
 ])
+AC_OUTPUT
 
 if echo foo | xgettext --from-code=UTF-8 -LC -o - - 2>/dev/null ; then
 :;

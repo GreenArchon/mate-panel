@@ -2,6 +2,7 @@
  * panel-run-dialog.c:
  *
  * Copyright (C) 2003 Frank Worsley <fworsley@shaw.ca>
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -38,6 +39,7 @@
 #include <unistd.h>
 
 #include <glib/gi18n.h>
+#include <glib.h>
 #include <gio/gio.h>
 #include <gdk/gdkkeysyms.h>
 #include <matemenu-tree.h>
@@ -88,7 +90,7 @@ typedef struct {
 	GHashTable       *dir_hash;
 	GList		 *possible_executables;
 	GList		 *completion_items;
-	GCompletion      *completion;
+	GtkEntryCompletion *completion;
 
 	int	          add_items_idle_id;
 	int		  find_command_idle_id;
@@ -105,12 +107,36 @@ typedef struct {
 enum {
 	COLUMN_GICON,
 	COLUMN_NAME,
+	COLUMN_ACCELERATOR_MASK,
+	COLUMN_ACCELERATOR_KEY_VALUE,
 	COLUMN_COMMENT,
 	COLUMN_PATH,
 	COLUMN_EXEC,
 	COLUMN_VISIBLE,
 	NUM_COLUMNS
 };
+
+typedef struct {
+        gint list_item_idx;
+        GdkModifierType modifier;
+        guint key_id;
+} AcceleratorKeyMapping;
+
+const AcceleratorKeyMapping accelerator_key_mapping[] =
+{
+        {0, GDK_MOD1_MASK, GDK_KEY_1 },
+        {1, GDK_MOD1_MASK, GDK_KEY_2 },
+        {2, GDK_MOD1_MASK, GDK_KEY_3 },
+        {3, GDK_MOD1_MASK, GDK_KEY_4 },
+        {4, GDK_MOD1_MASK, GDK_KEY_5 },
+        {5, GDK_MOD1_MASK, GDK_KEY_6 },
+        {6, GDK_MOD1_MASK, GDK_KEY_7 },
+        {7, GDK_MOD1_MASK, GDK_KEY_8 },
+        {8, GDK_MOD1_MASK, GDK_KEY_9 },
+        {9, GDK_MOD1_MASK, GDK_KEY_0 },
+};
+
+static GHashTable *accelerator_keys_to_tree_iter_map = NULL;
 
 static PanelRunDialog *static_dialog = NULL;
 
@@ -136,9 +162,7 @@ _panel_run_get_recent_programs_list (PanelRunDialog *dialog)
 	history_max_size = g_settings_get_uint (dialog->settings, PANEL_RUN_HISTORY_MAX_SIZE_KEY);
 	history_reverse = g_settings_get_boolean (dialog->settings, PANEL_RUN_HISTORY_REVERSE_KEY);
 	items = g_settings_get_strv (dialog->settings, PANEL_RUN_HISTORY_KEY);
-	for (i = 0;
-	     items[i] && i < history_max_size;
-	     i++) {
+	for (i = 0; i < history_max_size && items[i]; i++) {
 		GtkTreeIter iter;
 		/* add history in reverse */
 		if (history_reverse)
@@ -198,8 +222,7 @@ _panel_run_save_recent_programs_list (PanelRunDialog   *dialog,
 		}
 
 		if (history_max_size < items_added + 1) {
-			g_free (items[history_max_size]);
-			items[history_max_size] = NULL;
+			g_clear_pointer (&items[history_max_size], g_free);
 		} else {
 			items[items_added + 1] = NULL;
 		}
@@ -220,11 +243,9 @@ panel_run_dialog_destroy (PanelRunDialog *dialog)
 
 	g_object_unref (dialog->program_list_box);
 
-	g_clear_object (&(dialog->icon));
-	g_free (dialog->desktop_path);
-	dialog->desktop_path = NULL;
-	g_free (dialog->item_name);
-	dialog->item_name = NULL;
+	g_clear_object (&dialog->icon);
+	g_clear_pointer (&dialog->desktop_path, g_free);
+	g_clear_pointer (&dialog->item_name, g_free);
 
 	if (dialog->add_items_idle_id)
 		g_source_remove (dialog->add_items_idle_id);
@@ -234,13 +255,15 @@ panel_run_dialog_destroy (PanelRunDialog *dialog)
 		g_source_remove (dialog->find_command_idle_id);
 	dialog->find_command_idle_id = 0;
 
-	if (dialog->settings != NULL)
-		g_object_unref (dialog->settings);
-	dialog->settings = NULL;
+	g_clear_object (&dialog->settings);
 
 	if (dialog->dir_hash)
 		g_hash_table_destroy (dialog->dir_hash);
 	dialog->dir_hash = NULL;
+
+	if (accelerator_keys_to_tree_iter_map)
+		g_hash_table_destroy (accelerator_keys_to_tree_iter_map);
+	accelerator_keys_to_tree_iter_map = NULL;
 
 	for (l = dialog->possible_executables; l; l = l->next)
 		g_free (l->data);
@@ -251,10 +274,6 @@ panel_run_dialog_destroy (PanelRunDialog *dialog)
 		g_free (l->data);
 	g_list_free (dialog->completion_items);
 	dialog->completion_items = NULL;
-
-	if (dialog->completion)
-		g_completion_free (dialog->completion);
-	dialog->completion = NULL;
 
 	panel_run_dialog_disconnect_pixmap (dialog);
 
@@ -335,6 +354,9 @@ command_is_executable (const char   *command,
 		       char       ***argvp)
 {
 	gboolean   result;
+	GRegex    *regex = NULL;
+	gsize      argv_len;
+	g_autofree gchar *home_path = NULL;
 	char     **argv;
 	char      *path;
 	int        argc;
@@ -344,6 +366,18 @@ command_is_executable (const char   *command,
 	if (!result)
 		return FALSE;
 
+	regex = g_regex_new ("^~/", 0, 0, NULL);
+	argv_len = g_strv_length (argv);
+	home_path = g_build_filename (g_get_home_dir (), "/", NULL);
+	for (gsize i = 0; i < argv_len; i++)
+	{
+		gchar *tmp_argv = NULL;
+
+		tmp_argv = g_regex_replace_literal (regex, argv[i], -1, 0, home_path, 0, NULL);
+		g_free (argv[i]);
+		argv[i] = tmp_argv;
+	}
+	g_regex_unref (regex);
 	path = g_find_program_in_path (argv[0]);
 
 	if (!path) {
@@ -373,15 +407,6 @@ command_is_executable (const char   *command,
 	return TRUE;
 }
 
-/*
- * Set the DISPLAY variable, to be use by g_spawn_async.
- */
-static void
-set_environment (gpointer display)
-{
-  g_setenv ("DISPLAY", display, TRUE);
-}
-
 static void
 dummy_child_watch (GPid         pid,
 		   		   gint         status,
@@ -398,32 +423,24 @@ panel_run_dialog_launch_command (PanelRunDialog *dialog,
 				 const char     *command,
 				 const char     *locale_command)
 {
-	GdkDisplay *display;
-	GdkScreen  *screen;
 	gboolean    result;
 	GError     *error = NULL;
 	char      **argv;
 	int         argc;
-	char       *display_name;
 	GPid        pid;
 
 	if (!command_is_executable (locale_command, &argc, &argv))
 		return FALSE;
 
-	screen = gtk_window_get_screen (GTK_WINDOW (dialog->run_dialog));
-
 	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dialog->terminal_checkbox)))
 		mate_desktop_prepend_terminal_to_vector (&argc, &argv);
-
-	display = gdk_screen_get_display (screen);
-	display_name = g_strdup (gdk_display_get_name (display));
 
 	result = g_spawn_async (NULL, /* working directory */
 				argv,
 				NULL, /* envp */
 				G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-				set_environment,
-				display_name,
+				NULL,
+				NULL,
 				&pid,
 				&error);
 
@@ -443,7 +460,6 @@ panel_run_dialog_launch_command (PanelRunDialog *dialog,
 	}
 
 	g_strfreev (argv);
-	g_free (display_name);
 
 	return result;
 }
@@ -657,19 +673,6 @@ fuzzy_command_match (const char *cmd1,
 }
 
 static gboolean
-panel_run_dialog_make_all_list_visible (GtkTreeModel *model,
-					GtkTreePath  *path,
-					GtkTreeIter  *iter,
-					gpointer      data)
-{
-	gtk_list_store_set (GTK_LIST_STORE (model), iter,
-			    COLUMN_VISIBLE, TRUE,
-			    -1);
-
-	return FALSE;
-}
-
-static gboolean
 panel_run_dialog_find_command_idle (PanelRunDialog *dialog)
 {
 	GtkTreeIter   iter;
@@ -679,6 +682,7 @@ panel_run_dialog_find_command_idle (PanelRunDialog *dialog)
 	GIcon        *found_icon;
 	char         *found_name;
 	gboolean      fuzzy;
+	gint          visible_program_idx = 0;
 
 	model = GTK_TREE_MODEL (dialog->program_list_store);
 	path = gtk_tree_path_new_first ();
@@ -697,12 +701,14 @@ panel_run_dialog_find_command_idle (PanelRunDialog *dialog)
 	found_icon = NULL;
 	found_name = NULL;
 	fuzzy = FALSE;
+	g_hash_table_remove_all (accelerator_keys_to_tree_iter_map);
 
 	do {
 		char *exec = NULL;
 		GIcon *icon = NULL;
 		char *name = NULL;
 		char *comment = NULL;
+		gboolean visible = FALSE;
 
 		gtk_tree_model_get (model, &iter,
 				    COLUMN_EXEC,      &exec,
@@ -734,6 +740,23 @@ panel_run_dialog_find_command_idle (PanelRunDialog *dialog)
 			gtk_list_store_set (dialog->program_list_store,
 					    &iter,
 					    COLUMN_VISIBLE, FALSE,
+					    -1);
+		}
+
+		gtk_tree_model_get (model, &iter, COLUMN_VISIBLE, &visible, -1);
+		if (visible && visible_program_idx < G_N_ELEMENTS (accelerator_key_mapping)) {
+			gtk_list_store_set (dialog->program_list_store,
+					    &iter,
+					    COLUMN_ACCELERATOR_MASK, (gint)accelerator_key_mapping[visible_program_idx].modifier,
+					    COLUMN_ACCELERATOR_KEY_VALUE, accelerator_key_mapping[visible_program_idx].key_id,
+					    -1);
+			g_hash_table_insert (accelerator_keys_to_tree_iter_map, GUINT_TO_POINTER(accelerator_key_mapping[visible_program_idx].key_id), GINT_TO_POINTER(visible_program_idx));
+			visible_program_idx++;
+		} else {
+			gtk_list_store_set (dialog->program_list_store,
+					    &iter,
+					    COLUMN_ACCELERATOR_MASK, 0,
+					    COLUMN_ACCELERATOR_KEY_VALUE, 0,
 					    -1);
 		}
 
@@ -888,6 +911,8 @@ panel_run_dialog_add_items_idle (PanelRunDialog *dialog)
 	dialog->program_list_store = gtk_list_store_new (NUM_COLUMNS,
 							 G_TYPE_ICON,
 							 G_TYPE_STRING,
+							 G_TYPE_INT, // For accelerator modifier mask
+							 G_TYPE_UINT, // For accelerator key value
 							 G_TYPE_STRING,
 							 G_TYPE_STRING,
 							 G_TYPE_STRING,
@@ -915,6 +940,9 @@ panel_run_dialog_add_items_idle (PanelRunDialog *dialog)
 		}
 	}
 
+	gint i = 0;
+	g_hash_table_remove_all (accelerator_keys_to_tree_iter_map);
+
 	for (l = all_applications; l; l = l->next) {
 		MateMenuTreeEntry *entry = l->data;
 		GtkTreeIter    iter;
@@ -933,6 +961,19 @@ panel_run_dialog_add_items_idle (PanelRunDialog *dialog)
 				    COLUMN_PATH,      matemenu_tree_entry_get_desktop_file_path (entry),
 				    COLUMN_VISIBLE,   TRUE,
 				    -1);
+		if (i < G_N_ELEMENTS (accelerator_key_mapping)) {
+			gtk_list_store_set (dialog->program_list_store, &iter,
+					    COLUMN_ACCELERATOR_MASK, (gint)accelerator_key_mapping[i].modifier,
+					    COLUMN_ACCELERATOR_KEY_VALUE, accelerator_key_mapping[i].key_id,
+					    -1);
+			g_hash_table_insert (accelerator_keys_to_tree_iter_map, GUINT_TO_POINTER(accelerator_key_mapping[i].key_id), GINT_TO_POINTER(i));
+			i++;
+		} else {
+			gtk_list_store_set (dialog->program_list_store, &iter,
+					    COLUMN_ACCELERATOR_MASK, (gint)GDK_MOD1_MASK,
+					    COLUMN_ACCELERATOR_KEY_VALUE, 0,
+					    -1);
+		}
 	}
 	g_slist_free_full (all_applications, matemenu_tree_item_unref);
 
@@ -956,11 +997,23 @@ panel_run_dialog_add_items_idle (PanelRunDialog *dialog)
                                              NULL);
 
 	renderer = gtk_cell_renderer_text_new ();
-	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_set_attributes (column, renderer,
                                              "text", COLUMN_NAME,
                                              NULL);
 
+	gtk_tree_view_column_set_sizing (column, 
+	                                 GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+
+	gtk_tree_view_append_column (GTK_TREE_VIEW (dialog->program_list), column);
+
+	renderer = gtk_cell_renderer_accel_new ();
+	g_object_set (renderer, "accel-mode", GTK_CELL_RENDERER_ACCEL_MODE_GTK,
+	             "editable", FALSE, NULL);
+
+	column = gtk_tree_view_column_new_with_attributes ("Shortcut", renderer,
+	                                                  "accel-mods", COLUMN_ACCELERATOR_MASK, "accel-key",
+	                                                  COLUMN_ACCELERATOR_KEY_VALUE, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (dialog->program_list), column);
 
 	dialog->add_items_idle_id = 0;
@@ -1047,12 +1100,9 @@ program_list_selection_changed (GtkTreeSelection *selection,
 	}
 
 	dialog->use_program_list = TRUE;
-	if (dialog->desktop_path)
-		g_free (dialog->desktop_path);
+	g_free (dialog->desktop_path);
 	dialog->desktop_path = g_strdup (path);
-	if (dialog->item_name)
-		g_free (dialog->item_name);
-	dialog->item_name = NULL;
+	g_clear_pointer (&dialog->item_name, g_free);
 
 	/* Order is important here. We have to set the text first so that the
 	 * drag source is enabled, otherwise the drag icon can't be set by
@@ -1107,7 +1157,6 @@ program_list_selection_activated (GtkTreeView       *view,
 	/* now launch the command */
 	gtk_dialog_response (GTK_DIALOG (dialog->run_dialog), GTK_RESPONSE_OK);
 }
-
 
 static void
 panel_run_dialog_setup_program_list (PanelRunDialog *dialog,
@@ -1314,8 +1363,7 @@ fill_files_from (const char *dirname,
 		char       *item;
 		const char *suffix;
 
-		if (!dent->d_name ||
-		    dent->d_name [0] != prefix)
+		if (dent->d_name [0] != prefix)
 			continue;
 
 		file = g_build_filename (dirname, dent->d_name, NULL);
@@ -1418,6 +1466,33 @@ fill_executables (GList *possible_executables,
 	return list;
 }
 
+static GtkTreeModel *
+create_completion_model (GList *list)
+{
+	GtkListStore *store;
+	GtkTreeIter   iter;
+	GList        *l;
+
+	store = gtk_list_store_new (1, G_TYPE_STRING);
+	for (l = list; l; l = l->next)
+	{
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 0, l->data, -1);
+	}
+
+	return GTK_TREE_MODEL (store);
+}
+
+static void
+completion_add_items (GtkEntryCompletion *completion, GList *list)
+{
+	GtkTreeModel          *completion_model;
+
+	completion_model = create_completion_model (list);
+	gtk_entry_completion_set_model (completion, completion_model);
+	g_object_unref (completion_model);
+}
+
 static void
 panel_run_dialog_update_completion (PanelRunDialog *dialog,
 				    const char     *text)
@@ -1434,14 +1509,6 @@ panel_run_dialog_update_completion (PanelRunDialog *dialog,
 
 	list = NULL;
 	executables = NULL;
-
-	if (!dialog->completion) {
-		dialog->completion = g_completion_new (NULL);
-		dialog->possible_executables = fill_possible_executables ();
-		dialog->dir_hash = g_hash_table_new_full (g_str_hash,
-							  g_str_equal,
-							  g_free, NULL);
-	}
 
 	buf = g_path_get_basename (text);
 	prefix = buf[0];
@@ -1486,8 +1553,7 @@ panel_run_dialog_update_completion (PanelRunDialog *dialog,
 	if (list == NULL)
 		return;
 
-	g_completion_add_items (dialog->completion, list);
-
+	completion_add_items (dialog->completion, list);
 	dialog->completion_items = g_list_concat (dialog->completion_items,
 						  list);
 }
@@ -1499,7 +1565,6 @@ entry_event (GtkEditable    *entry,
 {
 	char             *prefix;
 	char             *nospace_prefix;
-	char             *nprefix;
 	char             *temp;
 	int               pos, tmp;
 
@@ -1525,7 +1590,7 @@ entry_event (GtkEditable    *entry,
 		if (dialog->completion_started &&
 		    pos != tmp &&
 		    pos != 1 &&
-		    tmp == strlen (gtk_entry_get_text (GTK_ENTRY (entry)))) {
+		    ((size_t) tmp) == strlen (gtk_entry_get_text (GTK_ENTRY (entry)))) {
 	    		gtk_editable_select_region (entry, 0, 0);
 			gtk_editable_set_position (entry, -1);
 
@@ -1538,12 +1603,12 @@ entry_event (GtkEditable    *entry,
 		if (dialog->completion_started &&
 		    pos != tmp &&
 		    pos != 0 &&
-		    tmp == strlen (gtk_entry_get_text (GTK_ENTRY (entry)))) {
+		    ((size_t) tmp) == strlen (gtk_entry_get_text (GTK_ENTRY (entry)))) {
 			temp = gtk_editable_get_chars (entry, 0, pos);
 			prefix = g_strconcat (temp, event->string, NULL);
 			g_free (temp);
 		} else if (pos == tmp &&
-			   tmp == strlen (gtk_entry_get_text (GTK_ENTRY (entry)))) {
+			   ((size_t) tmp) == strlen (gtk_entry_get_text (GTK_ENTRY (entry)))) {
 			prefix = g_strconcat (gtk_entry_get_text (GTK_ENTRY (entry)),
 					      event->string, NULL);
 		} else {
@@ -1562,43 +1627,6 @@ entry_event (GtkEditable    *entry,
 		if (!dialog->completion) {
 			g_free (prefix);
 			return FALSE;
-		}
-
-		pos = strlen (prefix);
-		nprefix = NULL;
-
-		g_completion_complete_utf8 (dialog->completion, nospace_prefix,
-					    &nprefix);
-
-		if (nprefix) {
-			int insertpos;
-			insertpos = 0;
-
-			temp = g_strndup (prefix, nospace_prefix - prefix);
-			g_free (prefix);
-
-			prefix = g_strconcat (temp, nprefix, NULL);
-
-			g_signal_handler_block (dialog->combobox,
-						dialog->changed_id);
-			gtk_editable_delete_text (entry, 0, -1);
-			g_signal_handler_unblock (dialog->combobox,
-						  dialog->changed_id);
-
-			gtk_editable_insert_text (entry,
-						  prefix, strlen (prefix),
-						  &insertpos);
-
- 			gtk_editable_set_position (entry, pos);
-			gtk_editable_select_region (entry, pos, -1);
-
-			dialog->completion_started = TRUE;
-
-			g_free (temp);
-			g_free (nprefix);
-			g_free (prefix);
-
-			return TRUE;
 		}
 
 		g_free (prefix);
@@ -1630,7 +1658,7 @@ combobox_changed (GtkComboBox    *combobox,
 	}
 
 	/* desensitize run button if no text entered */
-	if (!start || !start [0]) {
+	if (!start [0]) {
 		g_free (text);
 
 		gtk_widget_set_sensitive (dialog->run_button, FALSE);
@@ -1648,12 +1676,31 @@ combobox_changed (GtkComboBox    *combobox,
 		}
 
 		if (panel_profile_get_enable_program_list ()) {
-			GtkTreeIter  iter;
-			GtkTreePath *path;
+			GtkTreeIter   iter;
+			GtkTreePath  *path;
+			GtkTreeModel *model;
+			gint          i = 0;
+			gboolean      valid = FALSE;
 
-			gtk_tree_model_foreach (GTK_TREE_MODEL (dialog->program_list_store),
-						panel_run_dialog_make_all_list_visible,
-						NULL);
+			g_hash_table_remove_all (accelerator_keys_to_tree_iter_map);
+			model = GTK_TREE_MODEL (dialog->program_list_store);
+			for (valid = gtk_tree_model_get_iter_first (model, &iter); valid; valid = gtk_tree_model_iter_next (model, &iter)) {
+				if (i < G_N_ELEMENTS (accelerator_key_mapping)) {
+					gtk_list_store_set (GTK_LIST_STORE (GTK_TREE_MODEL (dialog->program_list_store)), &iter,
+							    COLUMN_VISIBLE, TRUE,
+							    COLUMN_ACCELERATOR_MASK, (gint)accelerator_key_mapping[i].modifier,
+							    COLUMN_ACCELERATOR_KEY_VALUE, accelerator_key_mapping[i].key_id,
+							    -1);
+					g_hash_table_insert (accelerator_keys_to_tree_iter_map, GUINT_TO_POINTER (accelerator_key_mapping[i].key_id), GINT_TO_POINTER(i));
+					i++;
+				} else {
+					gtk_list_store_set (GTK_LIST_STORE (GTK_TREE_MODEL (dialog->program_list_store)), &iter,
+							    COLUMN_VISIBLE, TRUE,
+							    COLUMN_ACCELERATOR_MASK, (gint)GDK_MOD1_MASK,
+							    COLUMN_ACCELERATOR_KEY_VALUE, 0,
+							    -1);
+				}
+			}
 
 			path = gtk_tree_path_new_first ();
 			if (gtk_tree_model_get_iter (gtk_tree_view_get_model (GTK_TREE_VIEW (dialog->program_list)),
@@ -1748,9 +1795,17 @@ panel_run_dialog_setup_entry (PanelRunDialog *dialog,
 	GtkWidget             *entry;
 
 	dialog->combobox = PANEL_GTK_BUILDER_GET (gui, "comboboxentry");
+	dialog->possible_executables = fill_possible_executables ();
+	dialog->dir_hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 	entry = gtk_bin_get_child (GTK_BIN (dialog->combobox));
 	gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
+
+	dialog->completion = gtk_entry_completion_new ();
+	gtk_entry_completion_set_inline_completion (dialog->completion, TRUE);
+	gtk_entry_completion_set_popup_completion (dialog->completion, FALSE);
+	gtk_entry_set_completion (GTK_ENTRY (entry), dialog->completion);
+	gtk_entry_completion_set_text_column (dialog->completion, 0);
 
 	gtk_combo_box_set_model (GTK_COMBO_BOX (dialog->combobox),
 				 _panel_run_get_recent_programs_list (dialog));
@@ -1778,7 +1833,7 @@ panel_run_dialog_setup_entry (PanelRunDialog *dialog,
 			   GDK_ACTION_COPY);
 	gtk_drag_dest_add_uri_targets (dialog->combobox);
 
-	g_signal_connect (dialog->combobox, "drag_data_received",
+	g_signal_connect (dialog->combobox, "drag-data-received",
 			  G_CALLBACK (entry_drag_data_received), dialog);
 }
 
@@ -1847,10 +1902,8 @@ panel_run_dialog_create_desktop_file (PanelRunDialog *dialog)
 	save_uri = panel_make_unique_desktop_uri (g_get_tmp_dir (), name);
 	disk = g_filename_from_uri (save_uri, NULL, NULL);
 
-	if (!disk || !panel_key_file_to_file (key_file, disk, NULL)) {
-		g_free (save_uri);
-		save_uri = NULL;
-	}
+	if (!disk || !panel_key_file_to_file (key_file, disk, NULL))
+		g_clear_pointer (&save_uri, g_free);
 
 	g_key_file_free (key_file);
 	g_free (disk);
@@ -1923,7 +1976,7 @@ panel_run_dialog_setup_pixmap (PanelRunDialog *dialog,
 			  G_CALLBACK (panel_run_dialog_screen_changed),
 			  dialog);
 
-	g_signal_connect (dialog->run_dialog, "drag_data_get",
+	g_signal_connect (dialog->run_dialog, "drag-data-get",
 			  G_CALLBACK (pixmap_drag_data_get),
 			  dialog);
 }
@@ -1957,6 +2010,22 @@ key_press_event (GtkWidget    *run_dialog,
 	return FALSE;
 }
 
+static void
+panel_run_dialog_accelerator_key_pressed (GtkAccelGroup   *accel_group,
+					  GObject         *acceleratable,
+					  guint            keyval,
+					  GdkModifierType  modifier,
+					  PanelRunDialog  *dialog)
+{
+	GtkTreePath *path;
+	gpointer index_of_entry;
+	gboolean found = g_hash_table_lookup_extended (accelerator_keys_to_tree_iter_map, GUINT_TO_POINTER(keyval), NULL, &index_of_entry);
+	if (!found) return;
+	path = gtk_tree_path_new_from_indices(GPOINTER_TO_INT(index_of_entry), -1);
+	gtk_tree_view_set_cursor (GTK_TREE_VIEW (dialog->program_list), path, NULL, FALSE);
+	gtk_widget_grab_focus (dialog->program_list);
+}
+
 static PanelRunDialog *
 panel_run_dialog_new (GdkScreen  *screen,
 		      GtkBuilder *gui,
@@ -1973,6 +2042,20 @@ panel_run_dialog_new (GdkScreen  *screen,
 
 	g_signal_connect_swapped (dialog->run_dialog, "destroy",
 				  G_CALLBACK (panel_run_dialog_destroy), dialog);
+
+	GtkAccelGroup* accel_group = gtk_accel_group_new ();
+	gtk_window_add_accel_group (GTK_WINDOW(dialog->run_dialog), accel_group);
+	g_object_unref (accel_group);
+	for (gint i = 0; i < G_N_ELEMENTS (accelerator_key_mapping); i++)
+	{
+		GClosure *closure_key = g_cclosure_new (
+			G_CALLBACK (panel_run_dialog_accelerator_key_pressed), dialog, NULL);
+		gtk_accel_group_connect (accel_group,
+					 accelerator_key_mapping[i].key_id,
+					 accelerator_key_mapping[i].modifier,
+					 0,
+					 closure_key);
+	}
 
 	dialog->run_button = PANEL_GTK_BUILDER_GET (gui, "run_button");
 	dialog->terminal_checkbox = PANEL_GTK_BUILDER_GET (gui, "terminal_checkbox");
@@ -2035,6 +2118,7 @@ panel_run_dialog_present (GdkScreen *screen,
 			  guint32    activate_time)
 {
 	GtkBuilder *gui;
+	accelerator_keys_to_tree_iter_map = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, NULL);
 
 	if (panel_lockdown_get_disable_command_line ())
 		return;

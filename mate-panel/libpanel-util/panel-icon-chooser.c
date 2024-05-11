@@ -2,6 +2,7 @@
  * panel-icon-chooser.c: An icon chooser widget
  *
  * Copyright (C) 2010 Novell, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -152,17 +153,9 @@ panel_icon_chooser_dispose (GObject *object)
 
 	/* remember, destroy can be run multiple times! */
 
-	if (chooser->priv->fallback_icon_name != NULL)
-		g_free (chooser->priv->fallback_icon_name);
-	chooser->priv->fallback_icon_name = NULL;
-
-	if (chooser->priv->icon != NULL)
-		g_free (chooser->priv->icon);
-	chooser->priv->icon = NULL;
-
-	if (chooser->priv->icon_theme_dir != NULL)
-		g_free (chooser->priv->icon_theme_dir);
-	chooser->priv->icon_theme_dir = NULL;
+	g_clear_pointer (&chooser->priv->fallback_icon_name, g_free);
+	g_clear_pointer (&chooser->priv->icon, g_free);
+	g_clear_pointer (&chooser->priv->icon_theme_dir, g_free);
 
 	G_OBJECT_CLASS (panel_icon_chooser_parent_class)->dispose (object);
 }
@@ -438,9 +431,9 @@ _panel_icon_chooser_clicked (GtkButton *button)
 
 	chooser->priv->filechooser = filechooser;
 
-	g_signal_connect (G_OBJECT (filechooser), "destroy",
-			  G_CALLBACK (gtk_widget_destroyed),
-			  &chooser->priv->filechooser);
+	g_signal_connect (filechooser, "destroy",
+	                  G_CALLBACK (gtk_widget_destroyed),
+	                  &chooser->priv->filechooser);
 
 	gtk_widget_show (filechooser);
 }
@@ -503,8 +496,7 @@ panel_icon_chooser_set_fallback_icon_name (PanelIconChooser *chooser,
 	if (g_strcmp0 (chooser->priv->fallback_icon_name, fallback_icon_name) == 0)
 		return;
 
-	if (chooser->priv->fallback_icon_name)
-		g_free (chooser->priv->fallback_icon_name);
+	g_free (chooser->priv->fallback_icon_name);
 	chooser->priv->fallback_icon_name = g_strdup (fallback_icon_name);
 
 	_panel_icon_chooser_update (chooser);
@@ -529,8 +521,7 @@ panel_icon_chooser_set_icon (PanelIconChooser *chooser,
 	if (g_strcmp0 (chooser->priv->icon, icon) == 0)
 		return;
 
-	if (chooser->priv->icon)
-		g_free (chooser->priv->icon);
+	g_free (chooser->priv->icon);
 	chooser->priv->icon = g_strdup (icon);
 
 	_panel_icon_chooser_update (chooser);

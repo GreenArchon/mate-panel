@@ -4,6 +4,7 @@
  *
  * Copyright (C) 2010 Carlos Garcia Campos <carlosgc@gnome.org>
  * Copyright (C) 2001 - 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -437,8 +438,7 @@ mate_panel_applet_frame_finalize (GObject *object)
 	panel_lockdown_notify_remove (G_CALLBACK (mate_panel_applet_frame_sync_menu_state),
 				      frame);
 
-	g_free (frame->priv->iid);
-	frame->priv->iid = NULL;
+	g_clear_pointer (&frame->priv->iid, g_free);
 
 	G_OBJECT_CLASS (mate_panel_applet_frame_parent_class)->finalize (object);
 }
@@ -551,8 +551,7 @@ void
 _mate_panel_applet_frame_set_iid (MatePanelAppletFrame *frame,
 			     const gchar      *iid)
 {
-	if (frame->priv->iid)
-		g_free (frame->priv->iid);
+	g_free (frame->priv->iid);
 	frame->priv->iid = g_strdup (iid);
 }
 
@@ -614,7 +613,7 @@ _mate_panel_applet_frame_update_flags (MatePanelAppletFrame *frame,
 		frame->priv->panel, GTK_WIDGET (frame), major, minor);
 
 	old_has_handle = frame->priv->has_handle;
-	frame->priv->has_handle = has_handle;
+	frame->priv->has_handle = (has_handle != FALSE);
 
 	if (!old_has_handle && frame->priv->has_handle) {
 		/* we've added an handle, so we need to get the background for
@@ -628,12 +627,12 @@ _mate_panel_applet_frame_update_flags (MatePanelAppletFrame *frame,
 
 void
 _mate_panel_applet_frame_update_size_hints (MatePanelAppletFrame *frame,
-				       gint             *size_hints,
-				       guint             n_elements)
+                                            gint                 *size_hints,
+                                            gsize                 n_elements)
 {
 	if (frame->priv->has_handle) {
 		gint extra_size = HANDLE_SIZE + 1;
-		gint i;
+		gsize i;
 
 		for (i = 0; i < n_elements; i++)
 			size_hints[i] += extra_size;

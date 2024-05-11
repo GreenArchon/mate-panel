@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2001 George Lebl <jirka@5z.com>
  *               2002 Sun Microsystems Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -70,7 +71,6 @@ _panel_multimonitor_output_should_be_first (Display       *xdisplay,
 	unsigned long  nitems;
 	unsigned long  bytes_after;
 	unsigned char *prop;
-	gboolean       retval;
 
 	connector_type_atom = XInternAtom (xdisplay, "ConnectorType", False);
 
@@ -80,7 +80,7 @@ _panel_multimonitor_output_should_be_first (Display       *xdisplay,
 				  &nitems, &bytes_after, &prop) == Success) {
 		if (actual_type == XA_ATOM && nitems == 1 && actual_format == 32) {
 			char *connector_type = XGetAtomName (xdisplay, prop[0]);
-			retval = g_strcmp0 (connector_type, "Panel") == 0;
+			gboolean retval = g_strcmp0 (connector_type, "Panel") == 0;
 			XFree (connector_type);
 			return retval;
 		}
@@ -239,20 +239,22 @@ static void
 panel_multimonitor_get_raw_monitors (int           *monitors_ret,
 				     GdkRectangle **geometries_ret)
 {
-	gboolean res = FALSE;
-
 	*monitors_ret = 0;
 	*geometries_ret = NULL;
 
 #ifdef HAVE_X11
 #ifdef HAVE_RANDR
 	if (GDK_IS_X11_DISPLAY (gdk_display_get_default ()) && have_randr)
-		res = panel_multimonitor_get_randr_monitors (monitors_ret, geometries_ret);
+	{
+		gboolean res;
+
+		res = panel_multimonitor_get_randr_monitors (monitors_ret,
+		                                             geometries_ret);
+		if (res && *monitors_ret > 0)
+			return;
+	}
 #endif /* HAVE_RANDR */
 #endif /* HAVE_X11 */
-
-	if (res && *monitors_ret > 0)
-		return;
 
 	panel_multimonitor_get_gdk_monitors (monitors_ret, geometries_ret);
 }

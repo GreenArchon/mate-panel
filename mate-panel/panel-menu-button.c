@@ -2,6 +2,7 @@
  * panel-menu-button.c: panel menu button
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -107,7 +108,7 @@ static const char *
 panel_menu_path_root_to_filename (MenuPathRoot path_root)
 {
 	const char *retval;
-	int         i;
+	gsize       i;
 
 	retval = NULL;
 
@@ -125,7 +126,7 @@ static const char *
 panel_menu_filename_to_scheme (const char *filename)
 {
 	const char *retval;
-	int         i;
+	gsize       i;
 	gchar *basename;
 
 	retval = NULL;
@@ -161,7 +162,7 @@ static MenuPathRoot
 panel_menu_scheme_to_path_root (const char *scheme)
 {
 	MenuPathRoot retval;
-	int          i;
+	gsize        i;
 
 	retval = LAST_MENU;
 
@@ -214,17 +215,10 @@ panel_menu_button_finalize (GObject *object)
 		button->priv->menu = NULL;
 	}
 
-	g_free (button->priv->applet_id);
-	button->priv->applet_id = NULL;
-
-	g_free (button->priv->menu_path);
-	button->priv->menu_path = NULL;
-
-	g_free (button->priv->custom_icon);
-	button->priv->custom_icon = NULL;
-
-	g_free (button->priv->tooltip);
-	button->priv->tooltip = NULL;
+	g_clear_pointer (&button->priv->applet_id, g_free);
+	g_clear_pointer (&button->priv->menu_path, g_free);
+	g_clear_pointer (&button->priv->custom_icon, g_free);
+	g_clear_pointer (&button->priv->tooltip, g_free);
 
 	G_OBJECT_CLASS (panel_menu_button_parent_class)->finalize (object);
 }
@@ -465,19 +459,21 @@ panel_menu_button_popup_menu (PanelMenuButton *button,
 	switch (panel_toplevel_get_orientation (button->priv->toplevel)) {
 	case PANEL_ORIENTATION_TOP:
 		widget_anchor = GDK_GRAVITY_SOUTH_WEST;
-		g_message ("PANEL_ORIENTATION_TOP");
+		/*g_message ("PANEL_ORIENTATION_TOP");  comment this out by default, 
+         *it is useful in debugging menu issues in wayland so don't remove it
+         */
 		break;
 	case PANEL_ORIENTATION_BOTTOM:
 		menu_anchor = GDK_GRAVITY_SOUTH_WEST;
-		g_message ("PANEL_ORIENTATION_BOTTOM");
+		/*g_message ("PANEL_ORIENTATION_BOTTOM");*/
 		break;
 	case PANEL_ORIENTATION_LEFT:
 		widget_anchor = GDK_GRAVITY_NORTH_EAST;
-		g_message ("PANEL_ORIENTATION_LEFT");
+		/*g_message ("PANEL_ORIENTATION_LEFT");*/
 		break;
 	case PANEL_ORIENTATION_RIGHT:
 		menu_anchor = GDK_GRAVITY_NORTH_EAST;
-		g_message ("PANEL_ORIENTATION_RIGHT");
+		/*g_message ("PANEL_ORIENTATION_RIGHT");*/
 		break;
 	}
 
@@ -588,7 +584,6 @@ panel_menu_button_class_init (PanelMenuButtonClass *klass)
 					      "Use the icon specified by the custom-icon property",
 					      FALSE,
 					      G_PARAM_READWRITE));
-
 
 	g_object_class_install_property (
 			gobject_class,
@@ -824,8 +819,6 @@ panel_menu_button_set_menu_path (PanelMenuButton *button,
 		return;
 
 	g_free (button->priv->menu_path);
-	button->priv->menu_path = NULL;
-
 	button->priv->menu_path = g_strdup (menu_path);
 
 	if (button->priv->menu)
@@ -842,10 +835,10 @@ panel_menu_button_set_custom_icon (PanelMenuButton *button,
 	g_return_if_fail (PANEL_IS_MENU_BUTTON (button));
 
 	g_free (button->priv->custom_icon);
-	button->priv->custom_icon = NULL;
-
 	if (custom_icon && custom_icon [0])
 		button->priv->custom_icon = g_strdup (custom_icon);
+	else
+		button->priv->custom_icon = NULL;
 
 	panel_menu_button_set_icon (button);
 }
@@ -857,11 +850,11 @@ panel_menu_button_set_tooltip (PanelMenuButton *button,
 	g_return_if_fail (PANEL_IS_MENU_BUTTON (button));
 
 	g_free (button->priv->tooltip);
-	button->priv->tooltip = NULL;
-
 	if (tooltip && tooltip [0]) {
 		button->priv->tooltip = g_strdup (tooltip);
 		panel_util_set_tooltip_text (GTK_WIDGET (button), tooltip);
+	} else {
+		button->priv->tooltip = NULL;
 	}
 }
 
@@ -876,11 +869,12 @@ panel_menu_button_set_use_menu_path (PanelMenuButton *button,
 	if (button->priv->use_menu_path == use_menu_path)
 		return;
 
-	button->priv->use_menu_path = use_menu_path;
+	button->priv->use_menu_path = (use_menu_path != FALSE);
 
-	if (button->priv->menu)
+	if (button->priv->menu) {
 		gtk_menu_detach (GTK_MENU (button->priv->menu));
-	button->priv->menu = NULL;
+		button->priv->menu = NULL;
+	}
 
 	panel_menu_button_set_icon (button);
 }
@@ -914,7 +908,6 @@ panel_menu_button_set_has_arrow (PanelMenuButton *button,
 
 	button_widget_set_has_arrow (BUTTON_WIDGET (button), has_arrow);
 }
-
 
 void
 panel_menu_button_load_from_gsettings (PanelWidget *panel,

@@ -82,7 +82,7 @@ clock_location_tile_new (ClockLocation *loc,
 
         g_signal_connect (priv->weather_icon, "query-tooltip",
                           G_CALLBACK (weather_tooltip), this);
-        priv->location_weather_updated_id = g_signal_connect (G_OBJECT (loc), "weather-updated",
+        priv->location_weather_updated_id = g_signal_connect (loc, "weather-updated",
                                                               G_CALLBACK (update_weather_icon), this);
 
         return this;
@@ -140,22 +140,22 @@ clock_location_tile_finalize (GObject *g_obj)
         priv = clock_location_tile_get_instance_private (this);
 
         if (priv->location) {
-                g_signal_handler_disconnect (priv->location, priv->location_weather_updated_id);
-                priv->location_weather_updated_id = 0;
+#if GLIB_CHECK_VERSION(2,62,0)
+                g_clear_signal_handler (&priv->location_weather_updated_id,
+                                        priv->location);
+#else
+                if (priv->location_weather_updated_id != 0) {
+                        g_signal_handler_disconnect (priv->location,
+                                                     priv->location_weather_updated_id);
+                        priv->location_weather_updated_id = 0;
+                }
+#endif
 
-                g_object_unref (priv->location);
-                priv->location = NULL;
+                g_clear_object (&priv->location);
         }
 
-        if (priv->button_group) {
-                g_object_unref (priv->button_group);
-                priv->button_group = NULL;
-        }
-
-        if (priv->current_group) {
-                g_object_unref (priv->current_group);
-                priv->current_group = NULL;
-        }
+        g_clear_object (&priv->button_group);
+        g_clear_object (&priv->current_group);
 
         G_OBJECT_CLASS (clock_location_tile_parent_class)->finalize (g_obj);
 }

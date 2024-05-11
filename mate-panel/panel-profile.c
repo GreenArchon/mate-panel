@@ -2,6 +2,7 @@
  * panel-profile.c:
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -157,8 +158,7 @@ panel_profile_find_new_id (PanelGSettingsKeyType type)
 
 		for (j = 0; existing_ids[j] != NULL; j++) {
 			if (g_strcmp0 (existing_ids[j], retval) == 0) {
-				g_free (retval);
-				retval = NULL;
+				g_clear_pointer (&retval, g_free);
 				break;
 			}
 		}
@@ -835,6 +835,52 @@ key_from_type (PanelGSettingsKeyType type) {
 	return NULL;
 }
 
+static GVariant *
+remove_from_dict (GVariant *dict, const gchar *path)
+{
+    GVariantIter iter;
+    GVariantBuilder builder;
+
+    gchar *key;
+    gchar *value;
+
+    g_variant_builder_init (&builder, (const GVariantType *) "a{ss}");
+    g_variant_iter_init (&iter, dict);
+
+    while (g_variant_iter_next (&iter, "{ss}", &key, &value)) {
+        if ( g_strcmp0 (value, path) != 0) {
+            g_variant_builder_add (&builder, "{ss}", key, value);
+        }
+
+        g_free (key);
+        g_free (value);
+    }
+
+    return g_variant_ref_sink (g_variant_builder_end (&builder));
+}
+
+static void
+unregister_dconf_editor_relocatable_schema (const gchar *path)
+{
+    GSettings *dconf_editor_settings;
+    dconf_editor_settings = g_settings_new ("ca.desrt.dconf-editor.Settings");
+
+    if (dconf_editor_settings && g_settings_is_writable (dconf_editor_settings, "relocatable-schemas-user-paths")) {
+        GVariant *relocatable_schemas = g_settings_get_value (dconf_editor_settings, "relocatable-schemas-user-paths");
+
+        if (g_variant_is_of_type (relocatable_schemas, G_VARIANT_TYPE_DICTIONARY)) {
+            GVariant * new_relocatable_schemas = remove_from_dict (relocatable_schemas, path);
+            g_settings_set_value (dconf_editor_settings, "relocatable-schemas-user-paths", new_relocatable_schemas);
+            g_variant_unref (new_relocatable_schemas);
+        }
+
+        g_variant_unref (relocatable_schemas);
+    }
+
+    g_object_unref (dconf_editor_settings);
+}
+
+
 void
 panel_profile_add_to_list (PanelGSettingsKeyType  type,
 						   const char        *id)
@@ -1310,6 +1356,7 @@ panel_profile_delete_dir (PanelGSettingsKeyType  type,
 		gchar *subdir;
 		subdir = g_strdup_printf (PANEL_TOPLEVEL_PATH "%s/prefs/", id);
 		mate_dconf_recursive_reset (subdir, NULL);
+		unregister_dconf_editor_relocatable_schema (subdir);
 		g_free (subdir);
 	}
 
@@ -1386,8 +1433,7 @@ panel_profile_load_added_ids (GSList                 *list,
 		if (id && id[0])
 			load_handler (id);
 
-		g_free (l->data);
-		l->data = NULL;
+		g_clear_pointer (&l->data, g_free);
 	}
 
 	g_slist_free (added_ids);
@@ -1418,8 +1464,7 @@ panel_profile_delete_removed_ids (PanelGSettingsKeyType    type,
 		panel_profile_delete_dir (type, id);
 		destroy_handler (id);
 
-		g_free (l->data);
-		l->data = NULL;
+		g_clear_pointer (&l->data, g_free);
 	}
 	g_slist_free (removed_ids);
 }
@@ -1538,11 +1583,9 @@ panel_profile_load_list (GSettings              *settings,
 						 PanelProfileLoadFunc    load_handler,
 						 GCallback               notify_handler)
 {
-
 	const gchar *key = key_from_type (type);
 	gchar  *changed_signal;
 	gchar **list;
-	gint    i;
 
 	changed_signal = g_strdup_printf ("changed::%s", key);
 	g_signal_connect (settings, changed_signal, G_CALLBACK (notify_handler), NULL);
@@ -1550,12 +1593,13 @@ panel_profile_load_list (GSettings              *settings,
 
 	list = g_settings_get_strv (settings, key);
 
-	for (i = 0; list[i]; i++) {
-		load_handler (list[i]);
-	}
+	if (list) {
+		for (gint i = 0; list[i]; i++) {
+			load_handler (list[i]);
+		}
 
-	if (list)
 		g_strfreev (list);
+	}
 }
 
 static void

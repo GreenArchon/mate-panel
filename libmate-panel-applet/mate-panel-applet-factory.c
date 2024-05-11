@@ -2,6 +2,7 @@
  * mate-panel-applet-factory.c: panel applet writing API.
  *
  * Copyright (C) 2010 Carlos Garcia Campos <carlosgc@gnome.org>
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -77,10 +78,7 @@ mate_panel_applet_factory_finalize (GObject *object)
 		factories = NULL;
 	}
 
-	if (factory->factory_id) {
-		g_free (factory->factory_id);
-		factory->factory_id = NULL;
-	}
+	g_clear_pointer (&factory->factory_id, g_free);
 
 	if (factory->applets) {
 		g_hash_table_unref (factory->applets);
@@ -177,7 +175,6 @@ set_applet_constructor_properties (GObject  *applet,
 	}
 }
 
-
 static void
 mate_panel_applet_factory_get_applet (MatePanelAppletFactory *factory,
                                       GDBusConnection        *connection,
@@ -272,7 +269,8 @@ static const gchar introspection_xml[] =
 static const GDBusInterfaceVTable interface_vtable = {
 	method_call_cb,
 	NULL,
-	NULL
+	NULL,
+	{ 0 }
 };
 
 static GDBusNodeInfo *introspection_data = NULL;

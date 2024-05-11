@@ -2,6 +2,7 @@
  * panel-session.c:
  *
  * Copyright (C) 2008 Novell, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -38,8 +39,7 @@ panel_session_manager_finalize (GObject *object)
 {
 	PanelSessionManager *manager = PANEL_SESSION_MANAGER (object);
 
-	if (manager->proxy != NULL)
-		g_object_unref (manager->proxy);
+	g_clear_object (&manager->proxy);
 
 	G_OBJECT_CLASS (panel_session_manager_parent_class)->finalize (object);
 }

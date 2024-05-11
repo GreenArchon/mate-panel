@@ -115,7 +115,6 @@ typedef struct {
 	MatePanelAppletClass klass;
 } FishAppletClass;
 
-
 static gboolean load_fish_image          (FishApplet *fish);
 static void     update_pixmap            (FishApplet *fish);
 static void     something_fishy_going_on (FishApplet *fish, const char *message);
@@ -502,7 +501,7 @@ static void display_preferences_dialog(GtkAction* action, FishApplet* fish)
 			   NULL /* label_post */,
 			   FISH_ROTATE_KEY /* key */);
 
-	g_signal_connect (fish->preferences_dialog, "delete_event",
+	g_signal_connect (fish->preferences_dialog, "delete-event",
 			  G_CALLBACK (delete_event), fish);
 	g_signal_connect (fish->preferences_dialog, "response",
 			  G_CALLBACK (handle_response), fish);
@@ -856,7 +855,7 @@ static void display_fortune_dialog(FishApplet* fish)
 		gtk_dialog_set_default_response (
 			GTK_DIALOG (fish->fortune_dialog), GTK_RESPONSE_CLOSE);
 
-		g_signal_connect (fish->fortune_dialog, "delete_event",
+		g_signal_connect (fish->fortune_dialog, "delete-event",
 				  G_CALLBACK (delete_event), fish);
 		g_signal_connect (fish->fortune_dialog, "response",
 				  G_CALLBACK (handle_fortune_response), fish);
@@ -1661,15 +1660,15 @@ static void setup_fish_widget(FishApplet* fish)
 				       GDK_LEAVE_NOTIFY_MASK |
 				       GDK_BUTTON_RELEASE_MASK);
 
-	g_signal_connect_swapped (widget, "enter_notify_event",
+	g_signal_connect_swapped (widget, "enter-notify-event",
 				  G_CALLBACK (fish_enter_notify), fish);
-	g_signal_connect_swapped (widget, "leave_notify_event",
+	g_signal_connect_swapped (widget, "leave-notify-event",
 				  G_CALLBACK (fish_leave_notify), fish);
-	g_signal_connect_swapped (widget, "button_release_event",
+	g_signal_connect_swapped (widget, "button-release-event",
 				  G_CALLBACK (handle_button_release), fish);
 
 	gtk_widget_add_events (fish->drawing_area, GDK_BUTTON_RELEASE_MASK);
-	g_signal_connect_swapped (fish->drawing_area, "button_release_event",
+	g_signal_connect_swapped (fish->drawing_area, "button-release-event",
 				  G_CALLBACK (handle_button_release), fish);
 
 	load_fish_image (fish);
@@ -1681,7 +1680,7 @@ static void setup_fish_widget(FishApplet* fish)
 	set_tooltip (fish);
 	set_ally_name_desc (GTK_WIDGET (fish), fish);
 
-	g_signal_connect (fish, "key_press_event",
+	g_signal_connect (fish, "key-press-event",
 			  G_CALLBACK (handle_keypress), fish);
 
 	gtk_widget_show_all (widget);
@@ -1779,28 +1778,14 @@ static void fish_applet_dispose (GObject *object)
 					  fish);
 
 	if (fish->timeout)
-	{
 		g_source_remove (fish->timeout);
-	}
-
 	fish->timeout = 0;
 
-	if (fish->settings)
-		g_object_unref (fish->settings);
-	fish->settings = NULL;
-
-	if (fish->lockdown_settings)
-		g_object_unref (fish->lockdown_settings);
-	fish->lockdown_settings = NULL;
-
-	g_free (fish->name);
-	fish->name = NULL;
-
-	g_free (fish->image);
-	fish->image = NULL;
-
-	g_free (fish->command);
-	fish->command = NULL;
+	g_clear_object (&fish->settings);
+	g_clear_object (&fish->lockdown_settings);
+	g_clear_pointer (&fish->name, g_free);
+	g_clear_pointer (&fish->image, g_free);
+	g_clear_pointer (&fish->command, g_free);
 
 	if (fish->surface)
 		cairo_surface_destroy (fish->surface);
@@ -1808,9 +1793,7 @@ static void fish_applet_dispose (GObject *object)
 	fish->surface_width = 0;
 	fish->surface_height = 0;
 
-	if (fish->pixbuf)
-		g_object_unref (fish->pixbuf);
-	fish->pixbuf = NULL;
+	g_clear_object (&fish->pixbuf);
 
 	if (fish->preferences_dialog)
 		gtk_widget_destroy (fish->preferences_dialog);

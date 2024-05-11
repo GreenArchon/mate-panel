@@ -16,11 +16,12 @@
  */
 
 #include <config.h>
+#include <libmate-desktop/mate-image-menu-item.h>
 
 #include "sn-dbus-menu-item.h"
 
 static GdkPixbuf *
-pxibuf_new (GVariant *variant)
+pixbuf_new (GVariant *variant)
 {
   gsize length;
   const guchar *data;
@@ -149,7 +150,7 @@ sn_dbus_menu_item_new (GVariant *props)
       else if (g_strcmp0 (prop, "icon-name") == 0)
         item->icon_name = g_variant_dup_string (value, NULL);
       else if (g_strcmp0 (prop, "icon-data") == 0)
-        item->icon_data = pxibuf_new (value);
+        item->icon_data = pixbuf_new (value);
       else if (g_strcmp0 (prop, "label") == 0)
         item->label = g_variant_dup_string (value, NULL);
       else if (g_strcmp0 (prop, "shortcut") == 0)
@@ -203,8 +204,8 @@ sn_dbus_menu_item_new (GVariant *props)
               cairo_surface_destroy (surface);
             }
 
-          item->item = gtk_image_menu_item_new ();
-          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item->item),
+          item->item = mate_image_menu_item_new ();
+          mate_image_menu_item_set_image (MATE_IMAGE_MENU_ITEM (item->item),
                                          image);
         }
 
@@ -252,7 +253,7 @@ sn_dbus_menu_item_new (GVariant *props)
 }
 
 void
-sn_dubs_menu_item_free (gpointer data)
+sn_dbus_menu_item_free (gpointer data)
 {
   SnDBusMenuItem *item;
 
@@ -325,7 +326,7 @@ sn_dbus_menu_item_update_props (SnDBusMenuItem *item,
               image = NULL;
             }
 
-          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item->item),
+          mate_image_menu_item_set_image (MATE_IMAGE_MENU_ITEM (item->item),
                                          image);
         }
       else if (g_strcmp0 (prop, "icon-data") == 0)
@@ -333,7 +334,7 @@ sn_dbus_menu_item_update_props (SnDBusMenuItem *item,
           GtkWidget *image;
 
           g_clear_object (&item->icon_data);
-          item->icon_data = pxibuf_new (value);
+          item->icon_data = pixbuf_new (value);
 
           if (item->icon_data)
             {
@@ -347,7 +348,7 @@ sn_dbus_menu_item_update_props (SnDBusMenuItem *item,
               image = NULL;
             }
 
-          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item->item),
+          mate_image_menu_item_set_image (MATE_IMAGE_MENU_ITEM (item->item),
                                          image);
         }
       else if (g_strcmp0 (prop, "label") == 0)
@@ -437,18 +438,18 @@ sn_dbus_menu_item_remove_props (SnDBusMenuItem *item,
       else if (g_strcmp0 (prop, "icon-name") == 0)
         {
           g_clear_pointer (&item->icon_name, g_free);
-          if (GTK_IS_IMAGE_MENU_ITEM (item->item))
+          if (MATE_IS_IMAGE_MENU_ITEM (item->item))
             {
-              gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item->item),
+              mate_image_menu_item_set_image (MATE_IMAGE_MENU_ITEM (item->item),
                                              NULL);
             }
         }
       else if (g_strcmp0 (prop, "icon-data") == 0)
         {
           g_clear_object (&item->icon_data);
-          if (GTK_IS_IMAGE_MENU_ITEM (item->item))
+          if (MATE_IS_IMAGE_MENU_ITEM (item->item))
             {
-              gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item->item),
+              mate_image_menu_item_set_image (MATE_IMAGE_MENU_ITEM (item->item),
                                              NULL);
             }
         }

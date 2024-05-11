@@ -3,6 +3,7 @@
  * panel-recent.c
  *
  * Copyright (C) 2002 James Willcox <jwillcox@gnome.org>
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -29,6 +30,8 @@
 #include <glib/gi18n.h>
 #include <gio/gio.h>
 
+#include <libmate-desktop/mate-image-menu-item.h>
+
 #include <libpanel-util/panel-error.h>
 #include <libpanel-util/panel-show.h>
 #include <libpanel-util/panel-gtk.h>
@@ -48,7 +51,6 @@ show_uri (const char *uri, const char *mime_type, GdkScreen *screen,
 					       gtk_get_current_event_time (),
 					       error);
 }
-
 
 static void
 recent_documents_activate_cb (GtkRecentChooser *chooser,
@@ -185,13 +187,14 @@ recent_documents_clear_cb (GtkMenuItem      *menuitem,
 
 void
 panel_recent_append_documents_menu (GtkWidget        *top_menu,
-				    GtkRecentManager *manager)
+				    GtkRecentManager *manager,
+				    int               recent_items_limit)
 {
 	GtkWidget      *recent_menu;
 	GtkWidget      *menu_item;
 	int             size;
 
-	menu_item = gtk_image_menu_item_new ();
+	menu_item = mate_image_menu_item_new ();
 	setup_menuitem_with_icon (menu_item,
 				  panel_menu_icon_get_size (),
 				  NULL,
@@ -200,8 +203,12 @@ panel_recent_append_documents_menu (GtkWidget        *top_menu,
 	recent_menu = gtk_recent_chooser_menu_new_for_manager (manager);
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), recent_menu);
 
-	g_signal_connect (G_OBJECT (recent_menu), "button_press_event",
-			  G_CALLBACK (menu_dummy_button_press_event), NULL);
+	gtk_recent_chooser_set_limit (GTK_RECENT_CHOOSER (recent_menu),
+				      recent_items_limit);
+
+	g_signal_connect (recent_menu, "button-press-event",
+			  G_CALLBACK (menu_dummy_button_press_event),
+	                  NULL);
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (top_menu), menu_item);
 	gtk_widget_show_all (menu_item);
@@ -213,8 +220,7 @@ panel_recent_append_documents_menu (GtkWidget        *top_menu,
 	gtk_recent_chooser_set_sort_type (GTK_RECENT_CHOOSER (recent_menu),
 					  GTK_RECENT_SORT_MRU);
 
-	g_signal_connect (GTK_RECENT_CHOOSER (recent_menu),
-			  "item-activated",
+	g_signal_connect (recent_menu, "item-activated",
 			  G_CALLBACK (recent_documents_activate_cb),
 			  NULL);
 
@@ -230,7 +236,7 @@ panel_recent_append_documents_menu (GtkWidget        *top_menu,
 
 	add_menu_separator (recent_menu);
 
-	menu_item = gtk_image_menu_item_new ();
+	menu_item = mate_image_menu_item_new ();
 	setup_menuitem_with_icon (menu_item,
 				   panel_menu_icon_get_size (),
 				   NULL,

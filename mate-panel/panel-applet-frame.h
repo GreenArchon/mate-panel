@@ -2,6 +2,7 @@
  * panel-applet-frame.h: panel side container for applets
  *
  * Copyright (C) 2001 - 2003 Sun Microsystems, Inc.
+ * Copyright (C) 2012-2021 MATE Developers
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -101,7 +102,6 @@ void  mate_panel_applet_frame_change_background  (MatePanelAppletFrame    *frame
 void  mate_panel_applet_frame_set_panel          (MatePanelAppletFrame    *frame,
 					     PanelWidget         *panel);
 
-
 /* For module implementations only */
 
 typedef struct _MatePanelAppletFrameActivating        MatePanelAppletFrameActivating;
@@ -126,8 +126,8 @@ void  _mate_panel_applet_frame_update_flags          (MatePanelAppletFrame *fram
 						 gboolean          has_handle);
 
 void  _mate_panel_applet_frame_update_size_hints     (MatePanelAppletFrame *frame,
-						 gint             *size_hints,
-						 guint             n_elements);
+                                                      gint                 *size_hints,
+                                                      gsize                 n_elements);
 
 char *_mate_panel_applet_frame_get_background_string (MatePanelAppletFrame    *frame,
 						 PanelWidget         *panel,
